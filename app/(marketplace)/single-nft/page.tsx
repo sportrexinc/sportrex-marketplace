@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect } from "react";
 import ParentLayout from "@/app/layouts/ParentLayout";
 import {
@@ -21,7 +21,7 @@ const SingleNft = () => {
     name: yup.string().required("Required"),
     symbol: yup.string().required("Required"),
     tokenURI: yup.string().required("Required"),
-    blockChain: yup.string().required("Required"),
+    blockChain: yup.string().required("Require"),
   });
 
   const { t } = useTranslation("translation");
