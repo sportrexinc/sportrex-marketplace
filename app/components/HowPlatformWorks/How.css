@@ -1,0 +1,126 @@
+.shape-ex{
+    width: 214px;
+    height: 214px;
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background:   linear-gradient(
+    91.02deg,
+    #fac744 8.95%,
+    #8b14ef 58.82%,
+    #3333ff 107.66%
+  );
+  
+  display: grid;
+  place-items: center;
+}
+.shape-in{
+    width: 210px;
+    height: 210px;
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background:   #020733;
+  
+  display: grid;
+  place-items: center;
+}
+
+.internal{
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background-color: #0E1648;
+    width: 192px;
+    height: 192px;
+}
+
+@media screen and (min-width: 768px) {
+  .shape-ex{
+    width: 292px;
+    height: 292px;
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background:   linear-gradient(
+    91.02deg,
+    #fac744 8.95%,
+    #8b14ef 58.82%,
+    #3333ff 107.66%
+  );
+  
+  display: grid;
+  place-items: center;
+  }
+  .shape-in{
+    width: 290px;
+    height: 290px;
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background:   #020733;
+  
+  display: grid;
+  place-items: center;
+  }
+  .internal{
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background-color: #0E1648;
+    width: 252px;
+    height: 252px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .shape-ex{
+    width: 342px;
+    height: 342px;
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background:   linear-gradient(
+    91.02deg,
+    #fac744 8.95%,
+    #8b14ef 58.82%,
+    #3333ff 107.66%
+  );
+  
+  display: grid;
+  place-items: center;
+  }
+  .shape-in{
+    width: 340px;
+    height: 340px;
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background:   #020733;
+  
+  display: grid;
+  place-items: center;
+  }
+  .internal{
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background-color: #0E1648;
+    width: 302px;
+    height: 302px;
+  }
+}
+@media screen and (min-width: 1300px) {
+  .shape-ex{
+    width: 392px;
+    height: 392px;
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background:   linear-gradient(
+    91.02deg,
+    #fac744 8.95%,
+    #8b14ef 58.82%,
+    #3333ff 107.66%
+  );
+  
+  display: grid;
+  place-items: center;
+  }
+  .shape-in{
+    width: 390px;
+    height: 390px;
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background:   #020733;
+  
+  display: grid;
+  place-items: center;
+  }
+  .internal{
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background-color: #0E1648;
+    width: 352px;
+    height: 352px;
+  }
+}
+    

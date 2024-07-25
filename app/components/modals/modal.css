@@ -1,0 +1,12 @@
+.connect-bg{
+    background-attachment: fixed;
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image:  url(../../assets/connect/connect-bg.png);
+    background-size: cover;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
