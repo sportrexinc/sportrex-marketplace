@@ -29,7 +29,7 @@ const CollectionsCard = () => {
             )}
           </div>
           <div className="img-container w-full mt-4  2xl:mt-10 flex justify-center ">
-            <img src={ilus} alt="life" className="w-20 xl:w-24 h-auto" />
+            <Image  src={ilus} alt="life" className="w-20 xl:w-24 h-auto" />
           </div>
           <div className="flex flex-col p-4 mt-2 sm:mt-6 2xl:mt-10">
             <p className="text-[18px] leading-[30px]">New Age</p>

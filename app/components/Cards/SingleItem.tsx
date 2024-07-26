@@ -1,6 +1,7 @@
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {useState} from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
 const SingleItem = ({
   isTrending,
   image,
@@ -16,13 +17,13 @@ const SingleItem = ({
     }) => {
     const [liked, setLiked] = useState(false);
 
-    const navigate = useNavigate();
+    const navigate = useRouter();
     return (
       <div
         className="bg-blue-header w-full max-w-[256px] flex flex-col p-3 rounded-[20px] cursor-pointer "
-        onClick={() => navigate("/mint-nft")}
+        onClick={() => navigate.push("/mint-nft")}
       >
-        <img src={image} alt="" className="rounded-[20px]" />
+        <Image src={image} alt="" className="rounded-[20px]" />
         <p className="text-[18px] leading-[30px] mt-4">Heartcrib</p>
         <div className="flex justify-between w-full mt-2">
           <p className="text-[#FAC744] semibold leading-[22px]">{price} SPT</p>

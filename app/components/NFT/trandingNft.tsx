@@ -1,9 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import NftCard from "../Carousel/NftCard";
 import NormalLayout from "../../layouts/NormalLayout";
 import { IoIosArrowForward } from "react-icons/io";
 import { useTranslation } from "react-i18next";
+import Link from "next/link";
 
 const TrendingNFT = () => {
    const { t } = useTranslation(["translation"]);
@@ -23,7 +23,7 @@ const TrendingNFT = () => {
           </div>
           <div className="w-full flex justify-center items-center mt-8">
             <Link
-              to="/market"
+              href="/market"
               className="text-white flex space-x-3 text-lg regular semibold items-center "
             >
               <span className="text-sm md:text-lg regular">View More</span>

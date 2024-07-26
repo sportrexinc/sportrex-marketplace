@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import { SearchIcon,CollapseIcon } from '../../assets/icons';
+import { SearchIcon,CollapseIcon } from '@/public/assets/icons';
 import Select from '../Select/ReuseSelect';
 import { SingleItemsData } from '../../utils/marketDatas';
 import SingleItemCard from '../Cards/SingleCard';

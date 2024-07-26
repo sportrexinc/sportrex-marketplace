@@ -7,6 +7,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { MediaRenderer, useContract, useMetadata, useNFTs, useTotalCount } from "@thirdweb-dev/react";
 import { CollectionResult } from "@/types";
 import CollectionLoading from "../../Loader/CollectionLoading";
+import Image from "next/image";
 const CollectionsCard: FC<{
   collection: CollectionResult;
 }> = ({ collection }) => {
@@ -54,7 +55,7 @@ if(isLoading) return <CollectionLoading />
           </div>
         </div>
       <div className="w-full h-full blur-sm absolute z-0 flex  ">
-        <img
+        <Image
         // @ts-ignore
           src={metadata?.image || soccer}
           alt="fghj"

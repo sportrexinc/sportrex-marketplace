@@ -3,6 +3,7 @@ import heart from "@/public/assets/heart.svg";
 import UnlockSelect from "../Select/UnlockSelect";
 import ActionBtn from "../Button/ActionBtn";
 import UnStakeNftModal from "../modals/UnstakeNftModal";
+import Image from "next/image";
 const LockedCard = () => {
   const [open, setOpen] = useState(false);
   let current = 1;
@@ -16,7 +17,7 @@ const LockedCard = () => {
   return (
     <div className="w-full h-auto rounded-[20px] bg-blue-card flex flex-col p-4 ">
       <div className="img-container relative h-auto w-full ">
-        <img src={heart} alt="heart" className="w-full h-auto" />
+        <Image src={heart} alt="heart" className="w-full h-auto" />
         <p className="bg-grey-900 text-white regular text-md absolute bottom-0 right-0 p-2  rounded-br-[10px]  ">
           #547582754
         </p>

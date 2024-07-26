@@ -1,11 +1,12 @@
 import {useState} from 'react'
-import { CollapseIcon, FilterIcon,SearchIcon } from '../../assets/icons';
+import { CollapseIcon, FilterIcon,SearchIcon } from '@/public/assets/icons';
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import pricePic from "../../assets/png/price-samp.png"
-import one from "../../assets/png/unsplash_CuEvrPd3NYc.png";
-import two from "../../assets/png/unsplash_iMdsjoiftZo.png";
-import three from "../../assets/png/unsplash_lylCw4zcA7I.png";
-import four from "../../assets/png/unsplash_tXz6g8JYYoI.png";
+import pricePic from "@/public/assets/png/price-samp.png"
+import one from "@/public/assets/png/unsplash_CuEvrPd3NYc.png";
+import two from "@/public/assets/png/unsplash_iMdsjoiftZo.png";
+import three from "@/public/assets/png/unsplash_lylCw4zcA7I.png";
+import four from "@/public/assets/png/unsplash_tXz6g8JYYoI.png";
+import Image from 'next/image';
 
 const collectData = [
   {
@@ -117,7 +118,7 @@ const MarketSidebar = ({ openSide, setOpenSide }: { openSide: boolean; setOpenSi
         </div>
         {openPrice && (
           <div className="w-full flex items-center justify-center gap-y-5 mt-4 pl-8 pr-10 py-6 bg-[#0E1648]">
-            <img src={pricePic} alt="price pic" />
+            <Image src={pricePic} alt="price pic" />
           </div>
         )}
         {/* enf of Price */}
@@ -149,7 +150,7 @@ const MarketSidebar = ({ openSide, setOpenSide }: { openSide: boolean; setOpenSi
               collectData.map((item: any, index: number) => {
                 return (
                   <div className="flex space-x-4 items-center " key={index}>
-                    <img src={item.image} alt="name" />
+                    <Image src={item.image} alt="name" />
                     <p className="semibold text-white">
                       {item.name}
                     </p>
@@ -185,7 +186,7 @@ const MarketSidebar = ({ openSide, setOpenSide }: { openSide: boolean; setOpenSi
               catData.map((item: any, index: number) => {
                 return (
                   <div className="flex space-x-4 items-center " key={index}>
-                    <img src={item.image} alt="name" />
+                    <Image src={item.image} alt="name" />
                     <p className="semibold text-white">
                       {item.name}
                     </p>
