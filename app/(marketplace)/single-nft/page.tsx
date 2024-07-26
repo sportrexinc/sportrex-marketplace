@@ -20,7 +20,7 @@ const SingleNft = () => {
     logo: yup.mixed().required("Required"),
     name: yup.string().required("Required"),
     symbol: yup.string().required("Required"),
-    tokenURI: yup.string().required("Required"),
+    tokenURI: yup.string().required("Require"),
     blockChain: yup.string().required("Require"),
   });
 
