@@ -1,14 +1,14 @@
 import React, { FC, useEffect, useState } from "react";
-import heart from "../..//assets/heart.svg";
+import heart from "@/public/assets/heart.svg";
 import {
   MediaRenderer,
   useContract,
   useUpdateMetadata,
 } from "@thirdweb-dev/react";
-import { CreateCollectionProps } from "../../types";
+import { CreateCollectionProps } from "@/types";
 import ActionBtn from "../Button/ActionBtn";
 import { YellowActionBtn } from "..";
-import Abi from "../../abi/SptNFTContract.json";
+import Abi from "@/abi/SptNFTContract.json";
 
 const CollectionCard: FC<{
   data?: CreateCollectionProps | null;

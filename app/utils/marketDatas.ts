@@ -1,4 +1,4 @@
-import heart from "../assets/heart.svg";
+import heart from "@/public/assets/heart.svg";
 
 export const SingleItemsData = [
   {
