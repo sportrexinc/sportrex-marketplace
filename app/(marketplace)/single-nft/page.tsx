@@ -19,7 +19,7 @@ const SingleNft = () => {
   const validationSchema = yup.object().shape({
     logo: yup.mixed().required("Required"),
     name: yup.string().required("Required"),
-    symbol: yup.string().required("Require"),
+    symbol: yup.string().required("Required"),
     tokenURI: yup.string().required("Require"),
     blockChain: yup.string().required("Require"),
   });
