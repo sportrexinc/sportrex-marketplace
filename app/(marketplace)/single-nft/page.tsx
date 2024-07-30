@@ -21,7 +21,7 @@ const SingleNft = () => {
     name: yup.string().required("Required"),
     symbol: yup.string().required("Required"),
     tokenURI: yup.string().required("Required"),
-    blockChain: yup.string().required("Require"),
+    blockChain: yup.string().required("Required"),
   });
 
   const { t } = useTranslation("translation");
