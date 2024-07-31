@@ -155,16 +155,7 @@ const SingleNft = () => {
                     />
                   }
                 />
-                {/* <SelectInput
-              placeholder={t("collections")}
-              label={t("collection_label")}
-              name="collections"
-              options={[
-                { value: "collection", label: "Collection" },
-                { value: "single", label: "Single" },
-                { value: "bundle", label: "Bundle" },
-              ]}
-            /> */}
+
                 <SelectInput
                   placeholder={t("ethereum")}
                   label={t("blockchain_technology")}
