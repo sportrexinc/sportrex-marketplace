@@ -32,6 +32,7 @@ const ConnectedNav = ({ current }: any) => {
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   const [mainAddress, setMainAddress] = useState<any>(auth?.address);
+  const [signed, setSignedIn] = useState(false);
   const [signature, setSignature] = useState("N/A");
   const address = useAddress();
   const currentDate = new Date();
@@ -49,11 +50,19 @@ const ConnectedNav = ({ current }: any) => {
   \n Login Date & Time: ${date} ${currentTime}`;
   const sdk = useSDK();
   const signMessageFunc = async () => {
-    const userSignature = await sdk?.wallet.sign(signInMessage);
-    if (!userSignature) {
-      throw new Error("No Signature!");
+    if (!address) return; // Add this line to prevent function execution if address is undefined
+    try {
+      const userSignature = await sdk?.wallet.sign(signInMessage);
+      if (!userSignature) {
+        throw new Error("No Signature!");
+      }
+      console.log(userSignature);
+      setSignature(userSignature);
+      setSignedIn(true);
+    } catch (error) {
+      console.error(error);
+      setSignedIn(false);
     }
-    console.log(userSignature);
   };
   const { t } = useTranslation(["translation"]);
 
@@ -63,16 +72,15 @@ const ConnectedNav = ({ current }: any) => {
 
   useEffect(() => {
     setMainAddress(address);
-    if (address) setOpen(false);
-  }, [address]);
-
-  useEffect(() => {
     if (address) {
-      dispatch(setAddress(mainAddress));
+      dispatch(setAddress(address));
+      setOpen(false);
+    }
+    if (!signed) {
       signMessageFunc();
     }
-  }, [address]);
-
+  }, [address, dispatch]);
+  console.log(signed);
   return (
     <div className="hidden lg:flex w-full bg-blue-card h-[82px] z-100 z-[9999] px-16  items-center sticky top-0 ">
       <div className="w-full flex justify-between items-center 2xl:container 2xl:mx-auto ">

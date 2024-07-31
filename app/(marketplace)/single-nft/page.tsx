@@ -26,11 +26,12 @@ const SingleNft = () => {
 
   const { t } = useTranslation("translation");
   const { contract } = useContract(
-    process.env.REACT_APP_SPT_MASTER_CONTRACT_FACTORY,
+    process.env.NEXT_PUBLIC_SPT_MASTER_CONTRACT_FACTORY,
     ContractFactoryAbi
   );
   useEffect(() => {
     window.scrollTo(0, 0);
+    console.log(process.env.NEXT_PUBLIC_SPT_MASTER_CONTRACT_FACTORY);
   }, []);
 
   return (
@@ -155,16 +156,7 @@ const SingleNft = () => {
                     />
                   }
                 />
-                {/* <SelectInput
-              placeholder={t("collections")}
-              label={t("collection_label")}
-              name="collections"
-              options={[
-                { value: "collection", label: "Collection" },
-                { value: "single", label: "Single" },
-                { value: "bundle", label: "Bundle" },
-              ]}
-            /> */}
+
                 <SelectInput
                   placeholder={t("ethereum")}
                   label={t("blockchain_technology")}

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import ParentLayout from "@/app/layouts/ParentLayout";
 import {
@@ -31,7 +31,7 @@ const CollectionNft = () => {
   // @ts-ignore
   const { t } = useTranslation("translation");
   const { contract } = useContract(
-    process.env.REACT_APP_SPT_MASTER_CONTRACT_FACTORY,
+    process.env.NEXT_SPT_MASTER_CONTRACT_FACTORY,
     ContractFactoryAbi
   );
   const { mutateAsync: createNFTCollection } = useContractWrite(
