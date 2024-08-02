@@ -11,7 +11,7 @@ const PlatformWork = () => {
       </h1>
       <div className="flex space-x-[32px] overflow-scroll no-scrollbar">
         {[0, 1, 2].map((i) => (
-          <div className={`rounded-xl w-full overflow-scroll md:flex-shrink md:overflow-hidden flow-hide-x flex-shrink-0`}>
+          <div key={i} className={`rounded-xl w-full overflow-scroll md:flex-shrink md:overflow-hidden flow-hide-x flex-shrink-0`}>
             <div className="px-[20px] md:px-[40px] py-[22px] md:py-[44px] relative w-full  h-full bg-contain bg-no-repeat border-gradient rounded-md">
               <div className="space-y-[12px] z-10">
                 <img

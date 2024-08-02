@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import NormalLayout from '../../layouts/NormalLayout'
 import Select from '../Select/ReuseSelect';
-import pick from "../../assets/icons/name-icon.svg";
-import sptIcon from "../../assets/icons/spt-coin.svg"
+import pick from "@/public/assets/icons/name-icon.svg";
+import sptIcon from "@/public/assets/icons/spt-coin.svg"
 const NftRankingBody = () => {
     const [selected,setSelected] = useState<any>({})
   return (
@@ -62,7 +62,7 @@ const NftRankingBody = () => {
               {[1, 2, 3, 3, 3, 3, 3, 3, 3, 3].map(
                 (item: any, index: number) => {
                   return (
-                    <div className="w-full flex items-center justify-between  ">
+                    <div key={index} className="w-full flex items-center justify-between  ">
                       {/* start */}
                       <div className="flex space-x-2 items-center w-2/12">
                         <span className="text-xl regular text-white">1</span>

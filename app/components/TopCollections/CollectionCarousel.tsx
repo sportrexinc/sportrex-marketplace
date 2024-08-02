@@ -44,9 +44,9 @@ const CollectionCarousel: React.FC<CarouselProps> = ({ items }) => {
       </div>
       <div className=" xl:hidden gap-0 overflow-hidden flex">
         {items.slice(currentIndex, currentIndex + 4).map((item, index) => (
-            <div className="min-w-[304px]"> 
+            <div className="min-w-[304px]"  key={index}> 
 
-          <NewNftCard key={index} {...item} />
+          <NewNftCard {...item} />
             </div>
         ))}
       </div>

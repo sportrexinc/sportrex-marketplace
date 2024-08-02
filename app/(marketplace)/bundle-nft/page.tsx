@@ -69,7 +69,7 @@ const BundleNft = () => {
               </label>
               <div className="w-full">
                 {inputs.map((input, index) => (
-                  <div className="flex items-center gap-2 w-full ">
+                  <div key={index} className="flex items-center gap-2 w-full ">
                     <span className="bold text-white lg:text-[22px] text-base mt-2 w-auto ">
                       {index + 1}
                     </span>

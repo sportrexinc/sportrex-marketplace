@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { getStorageValue } from "./localStorage";
+// import { getStorageValue } from "./localStorage";
 import { ethers } from "ethers";
 
 // const getError = (error: any) => {
@@ -142,15 +142,15 @@ export function convertTimeStamp(timestamp: any) {
   return date;
 }
 
-export const handleInviteRedirect = (timer?: number) => {
-  const inviteUrl = getStorageValue("inviteUrl");
-  if (inviteUrl) {
-    if (timer) {
-      window.setTimeout(() => {
-        window.location.replace(inviteUrl);
-      }, timer);
-    } else {
-      window.location.replace(inviteUrl);
-    }
-  }
-};
+// export const handleInviteRedirect = (timer?: number) => {
+//   const inviteUrl = getStorageValue("inviteUrl");
+//   if (inviteUrl) {
+//     if (timer) {
+//       window.setTimeout(() => {
+//         window.location.replace(inviteUrl);
+//       }, timer);
+//     } else {
+//       window.location.replace(inviteUrl);
+//     }
+//   }
+// };
