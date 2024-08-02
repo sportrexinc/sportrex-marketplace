@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from "react";
 import ParentLayout from "@/app/layouts/ParentLayout";
 import dummy from "@/public/assets/general/edit-dummy.png";

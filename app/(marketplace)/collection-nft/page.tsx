@@ -60,10 +60,11 @@ const CollectionNft = () => {
       {address ? (
         <div className="w-full flex flex-col md:w-10/12 xl:w-6/12 mx-auto mb-32 ">
           <ReUseModal
-            children={<CollectionCard data={collection} />}
             open={modal}
             setOpen={() => setModal(false)}
-          />
+          >
+            <CollectionCard data={collection} />
+          </ReUseModal>
           <div className="flex flex-col mt-8 xl:mt-20 ">
             <Header>{t("collection_creation")}</Header>
             <p className="text-grey-800  text-sm regular">{t("all_fields")}</p>

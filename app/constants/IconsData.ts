@@ -1,8 +1,8 @@
-import telegram from "../assets/icons/telegram.png";
-import twitter from "../assets/icons/twitter.png";
-import instagram from "../assets/icons/instagram.png";
-import discord from "../assets/icons/discord.png";
-import twitch from "../assets/icons/twitch.png";
+import telegram from "@/public/assets/icons/telegram.png";
+import twitter from "@/public/assets/icons/twitter.png";
+import instagram from "@/public/assets/icons/instagram.png";
+import discord from "@/public/assets/icons/discord.png";
+import twitch from "@/public/assets/icons/twitch.png";
 
 export const linksArrayA = [
   {

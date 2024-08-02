@@ -48,9 +48,9 @@ const SalesCarousel: React.FC<CarouselProps> = ({ items }) => {
       </div>
       <div className="  lg:hidden gap-0 overflow-hidden flex">
         {items.slice(currentMobileIndex, currentMobileIndex + 4).map((item, index) => (
-          <div className="min-w-[304px]">
+          <div className="min-w-[304px]"  key={index}>
 
-          <NftCard key={index} isTrending={false}  />
+          <NftCard isTrending={false}  />
           </div>
         ))}
       </div>
