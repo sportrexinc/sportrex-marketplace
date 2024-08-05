@@ -125,7 +125,7 @@ const TrendingFashion = () => {
               </span>
             </Link>
           </div>
-          <div className="absolute fashion-bg-sub right-0 h-full top-0 bottom-0 2xl:w-[243px] xl:w-[220px] xl:flex items-center justify-center min-h-inherit hidden">
+          <div className="absolute  right-0 h-full top-0 bottom-0 2xl:w-[243px] xl:w-[220px] xl:flex items-center justify-center min-h-inherit hidden xl:h-[553px] backdrop-blur-lg">
             <Link href={"/"} className="flex items-center gap-4 text-yellow">
               <span className="bold lg:text-2xl text-lg">View More</span>
               <span>
@@ -161,7 +161,7 @@ const TrendingFashion = () => {
             <Image
               src={starbox}
               alt="star"
-              className="w-[124px] h-auto lg:w-auto"
+              className="w-[124px] h-auto lg:w-auto rotate-spin"
             />
           </div>
         </NormalLayout>

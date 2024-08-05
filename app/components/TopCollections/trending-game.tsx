@@ -109,7 +109,7 @@ const TrendingGame = () => {
               </span>
             </Link>
           </div>
-          <div className="absolute game-bg-sub right-0 h-full top-0 bottom-0 2xl:w-[243px] xl:w-[220px]  items-center justify-center min-h-inherit hidden xl:flex">
+          <div className="absolute  right-0 h-full top-0 bottom-0 2xl:w-[243px] xl:w-[220px]  items-center justify-center min-h-inherit xl:h-[553px] backdrop-blur-lg   hidden xl:flex">
             <Link href={"/"} className="flex items-center gap-4 text-yellow">
               <span className="bold lg:text-2xl text-lg">View More</span>
               <span>

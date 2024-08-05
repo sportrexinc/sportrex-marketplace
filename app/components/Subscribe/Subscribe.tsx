@@ -55,7 +55,8 @@ const Subscribe = () => {
             <div className={styles.title}>
               {/* <ColouredHeaderText text="Be Part Of Greatness, Join the Sportex community " size="30px" /> */}
               <h1 className="grad-text text-22px  md:text-[30px] text-center lg:text-start">
-                {t("be_part")}
+                {/* {t("be_part")} */}
+                Be Part Of Greatness, Join the Sportex community
               </h1>
             </div>
           </div>
@@ -69,7 +70,6 @@ const Subscribe = () => {
                 placeholder="johndoe@gmail.com"
                 name="email"
                 required
-                
               />
 
               <button type="submit">

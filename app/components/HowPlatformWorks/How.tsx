@@ -48,7 +48,8 @@ const How = () => {
         <div className="header">
           <div className="w-full flex justify-center ">
             <h1 className="text-center grad-text text-3xl bold">
-              {t("how_title")}
+              {/* {t("how_title")} */}
+              How The Platform Works
             </h1>
           </div>
           <div className="mt-[90px] hidden lg:flex w-full  space-x-8 justify-between items-center flow-hide-x lg:overflow-x-hidden overflow-y-hidden h-full">
@@ -70,7 +71,7 @@ const How = () => {
                     borderBottomLeftRadius: "30px",
                   }}
                 >
-                  <div className="internal">
+                  <div className="internal rounded-b-[30px] rounded-tr-[20px]">
                     <div className="w-full flex py-4 lg:py-8 px-4 flex-col flow-hide ">
                       <div className="img-container">
                         <Image
