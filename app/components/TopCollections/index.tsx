@@ -45,7 +45,8 @@ const Top = () => {
           <div className="title flex flex-col gap-4 xl:flex-row  lg:justify-between">
             <div className="w auto flex items-center gap-3 ">
               <h1 className="grad-text text-center bold text-[22px] md:text-3xl font-bold bold ">
-                {t("top_10")}
+                {/* {t("top_10")} */}
+                Top Collections
               </h1>
               <p className="regular text-base lg:text-xl text-[#2E405D]">
                 Trending Collections
@@ -59,7 +60,7 @@ const Top = () => {
                     : "h-[41px] w-[39px] sm:w-[50px] flex rounded-[8px] items-center justify-center text-white regular text-[10px] sm:text-sm bg-[#0E1648]"
                 }
               >
-                1hrs
+                1hrs 
               </p>
               <p
                 className={
@@ -166,7 +167,7 @@ const Top = () => {
             <Image
               src={sptStar}
               alt="spt"
-              className="w-[124px] h-auto lg:w-auto"
+              className="w-[124px] h-auto lg:w-auto rotate-spin"
             />
           </div>
         </div>
@@ -197,7 +198,7 @@ const Top = () => {
             <Image
               src={sptStar}
               alt="spt"
-              className="w-[124px] h-auto lg:w-auto"
+              className="w-[124px] h-auto lg:w-auto rotate-spin"
             />
           </div>
         </NormalLayout>

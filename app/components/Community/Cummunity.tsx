@@ -54,7 +54,7 @@ const Community = () => {
                 className="relative w-[50px] h-[100px] bg-no-repeat bg-cover "
                 style={{ backgroundImage: `url(${LinkBg})` }}
               >
-                <div className="w-full h-full blur-[.1px] flex justify-center pt-2">
+                <div className="w-full h-full blur-[.1px] flex justify-center items-center ">
                   <Image
                     src={link.icon}
                     alt="link"
