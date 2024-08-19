@@ -31,7 +31,7 @@ const CollectionNft = () => {
   // @ts-ignore
   const { t } = useTranslation("translation");
   const { contract } = useContract(
-    process.env.NEXT_SPT_MASTER_CONTRACT_FACTORY,
+    process.env.NEXT_PUBLIC_SPT_MASTER_CONTRACT_FACTORY,
     ContractFactoryAbi
   );
   const { mutateAsync: createNFTCollection } = useContractWrite(
