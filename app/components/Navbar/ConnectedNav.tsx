@@ -32,8 +32,13 @@ const ConnectedNav = ({ current }: any) => {
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   const [mainAddress, setMainAddress] = useState<any>(auth?.address);
-  const [signed, setSignedIn] = useState(false);
-  const [signature, setSignature] = useState("N/A");
+  const [signature, setSignature] = useState<any>(() => {
+    // Initialize signature from sessionStorage if available
+    const storedSignature = sessionStorage.getItem("signedIn");
+    console.log("Initial signature from sessionStorage:", storedSignature);
+    return storedSignature || null;
+  });
+  const [walletConnected, setWalletConnected] = useState<boolean>(false);
   const address = useAddress();
   const currentDate = new Date();
   const currentTime =
@@ -49,19 +54,45 @@ const ConnectedNav = ({ current }: any) => {
   ${address} to use our platform. 
   \n Login Date & Time: ${date} ${currentTime}`;
   const sdk = useSDK();
+
+  const checkWalletConnection = async () =>{
+    if (!address){
+      console.log("Wallet not connected, address is undefined.");
+    return false;
+    }
+    // Optionally, check if the SDK is connected properly
+  const walletInfo = await sdk?.wallet.getAddress();
+  if (!walletInfo || walletInfo !== address) {
+    console.log("Wallet address from SDK does not match:", walletInfo);
+    return false;
+  }
+
+  console.log("Wallet is connected with address:", address);
+  return true;
+  }
+
+
+
+
+
   const signMessageFunc = async () => {
-    if (!address) return; // Add this line to prevent function execution if address is undefined
+    const connected = await checkWalletConnection();
+    if(!connected){
+      console.error("Wallet not connected, cannot sign the message.");
+    return;
+    }
+
     try {
+      console.log("Attempting to sign in with address:", address);
       const userSignature = await sdk?.wallet.sign(signInMessage);
       if (!userSignature) {
         throw new Error("No Signature!");
       }
-      console.log(userSignature);
+      console.log("User signature obtained:", userSignature);
       setSignature(userSignature);
-      setSignedIn(true);
+      sessionStorage.setItem("signedIn", userSignature);
     } catch (error) {
-      console.error(error);
-      setSignedIn(false);
+      console.error("Error during sign-in:", error);
     }
   };
   const { t } = useTranslation(["translation"]);
@@ -71,16 +102,32 @@ const ConnectedNav = ({ current }: any) => {
   };
 
   useEffect(() => {
-    setMainAddress(address);
     if (address) {
+      setWalletConnected(true)
       dispatch(setAddress(address));
       setOpen(false);
+    }else{
+      setWalletConnected(false)
     }
-    if (!signed) {
+    // Check if signature exists, otherwise sign in
+     if (walletConnected && !signature) {
+      console.log("No signature found, calling signMessageFunc.");
       signMessageFunc();
+    } else if (!walletConnected) {
+      console.log("Wallet not connected, waiting for connection.");
+    } else {
+      console.log("Signature found, skipping signMessageFunc.");
     }
-  }, [address, dispatch]);
-  console.log(signed);
+  }, [address, walletConnected]);
+
+  useEffect(() => {
+    if (signature) {
+      console.log("Setting main address because signature is present.");
+      setMainAddress(address);
+    }
+  }, [signature, address]);
+  
+  console.log("Current signature state:", signature);
   return (
     <div className="hidden lg:flex w-full bg-blue-card h-[82px] z-100 z-[9999] px-16  items-center sticky top-0 ">
       <div className="w-full flex justify-between items-center 2xl:container 2xl:mx-auto ">
