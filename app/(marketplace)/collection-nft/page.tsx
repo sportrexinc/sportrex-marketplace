@@ -115,7 +115,7 @@ const CollectionNft = () => {
                   formData.append("external_link", values.external_link);
                 const response: AxiosResponse<{ data: CreateCollectionProps }> =
                   await APIService.post(
-                    `${baseUrl}/user/${address}/collection`,
+                    `/user/${address}/collection`,
                     formData
                   );
                 setCollection(response.data.data);
