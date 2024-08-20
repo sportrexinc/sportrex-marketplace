@@ -12,10 +12,14 @@ import {
 import { useTranslation } from "react-i18next";
 import { useAddress, useContract } from "@thirdweb-dev/react";
 import { Formik, ErrorMessage } from "formik";
+import { useStorageUpload } from "@thirdweb-dev/react";
 import * as yup from "yup";
 import { CreateSingleNFTProps } from "@/types";
 import ContractFactoryAbi from "@/abi/SptContractFactory.json";
 const SingleNft = () => {
+  const {mutateAsync: upload, isLoading} = useStorageUpload()
+
+ 
   const validationSchema = yup.object().shape({
     logo: yup.mixed().required("Required"),
     name: yup.string().required("Required"),
@@ -50,13 +54,14 @@ const SingleNft = () => {
         onSubmit={async (values, { setSubmitting }) => {
           try {
             setSubmitting(true);
-            const data = await contract?.call("create_nft", [
-              values.name,
-              values.symbol,
-              values.tokenURI,
-            ]);
-
-            console.log(data);
+           
+            // const data = await contract?.call("create_nft", [
+            //   values.name,
+            //   values.symbol,
+            //   values.tokenURI,
+            // ]);
+            console.log(values.logo)
+            
           } catch (error: any) {
             setSubmitting(false);
             alert(error.message);
@@ -70,7 +75,21 @@ const SingleNft = () => {
           handleChange,
           handleSubmit,
           setFieldValue,
-        }) => (
+          
+        }) => {
+          // Move getURI function here, so it's accessible within the JSX
+          const getURI = async () => {
+            try {
+              const filesToUpload = [values.logo];
+              const uris = await upload({ data: filesToUpload });
+              console.log(uris);
+              // Set the URI in the form if needed
+              setFieldValue("tokenURI", uris[0]);
+            } catch (error) {
+              console.error("Error uploading file:", error);
+            }
+          };
+         return (
           <div className="w-full flex flex-col md:w-10/12 xl:w-6/12 mx-auto mb-32 ">
             <div className="flex flex-col mt-8 xl:mt-20 ">
               <Header>{t("nft_creation")}</Header>
@@ -142,6 +161,11 @@ const SingleNft = () => {
                     />
                   }
                 />
+               <ActionBtn
+                 loading={isLoading}
+                 name={t("Get URI")}
+                 action={getURI}
+               />
                 <TextAreaInput
                   placeholder={t("nft_desc_placeholder")}
                   label={t("desc")}
@@ -194,7 +218,7 @@ const SingleNft = () => {
               </div>
             </div>
           </div>
-        )}
+        )}}
       </Formik>
     </ParentLayout>
   );
