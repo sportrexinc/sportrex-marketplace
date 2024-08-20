@@ -88,13 +88,11 @@ const SingleNft = () => {
           handleSubmit,
           setFieldValue,
         }) => {
-          // Move getURI function here, so it's accessible within the JSX
           const getURI = async () => {
             try {
               const filesToUpload = [values.logo];
               const uris = await upload({ data: filesToUpload });
               console.log(uris);
-              // Set the URI in the form if needed
               setFieldValue("tokenURI", uris[0]);
             } catch (error) {
               console.error("Error uploading file:", error);
@@ -213,7 +211,7 @@ const SingleNft = () => {
                     <div className="w-6/12">
                       <ActionBtn
                         loading={isSubmitting}
-                        name={t("create_nft")}
+                        name={t("Create Single NFT")}
                         action={handleSubmit}
                       />
                     </div>
