@@ -1,5 +1,5 @@
-"use client"
-import { useEffect } from 'react';
+"use client";
+import { useEffect } from "react";
 import {
   ConnectedNav,
   Footer,
@@ -9,42 +9,38 @@ import {
   MainHero,
   MobileNavbar,
   How,
- 
-} from '@/app/components';
-import MarketCategory from '@/app/components/MarketCategory/MarketCategory';
-import Community from '@/app/components/Community/Cummunity';
+} from "@/app/components";
+import MarketCategory from "@/app/components/MarketCategory/MarketCategory";
+import Community from "@/app/components/Community/Cummunity";
 
-import Blog from '@/app/components/LatestBlog/Blog';
-import NewNft from '@/app/components/NFT/newNft';
-import TrendingNFT from '@/app/components/NFT/trandingNft';
-import { useMetadata, useContract } from '@thirdweb-dev/react';
-import NewHero from '@/app/components/Hero/NewHero';
-import TrendingGame from "@/app/components/TopCollections/trending-game"
-import TrendingFashion from '@/app/components/TopCollections/trending-fashion';
-import TopSales from '@/app/components/TopCollections/TopSales';
-import MobileHero from '@/app/components/Hero/MobileHero';
+import Blog from "@/app/components/LatestBlog/Blog";
+import NewNft from "@/app/components/NFT/newNft";
+import TrendingNFT from "@/app/components/NFT/trandingNft";
+import { useMetadata, useContract } from "@thirdweb-dev/react";
+import NewHero from "@/app/components/Hero/NewHero";
+import TrendingGame from "@/app/components/TopCollections/trending-game";
+import TrendingFashion from "@/app/components/TopCollections/trending-fashion";
+import TopSales from "@/app/components/TopCollections/TopSales";
+import MobileHero from "@/app/components/Hero/MobileHero";
 const Home = () => {
-  const contractAddress = "0xa12c6af626218ae1b3341771ab1a657b44050e7a"
-  const { contract } = useContract(contractAddress)
-  const { data } = useMetadata(contract)
-
-   useEffect(() => {
-     window.scrollTo(0, 0);
-     console.log(data);
-     
-   }, [data]);
+  const contractAddress = "0xa12c6af626218ae1b3341771ab1a657b44050e7a";
+  const { contract } = useContract(contractAddress);
+  const { data } = useMetadata(contract);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    console.log(data);
+  }, [data]);
   return (
     <div className="w-full min-h-screen h-full bg-blue-body text-white">
       <ConnectedNav />
       <MobileNavbar />
       <Divider size={78}>
-
         <MainHero />
-      </Divider> 
+      </Divider>
 
       {/* <NewHero />
       <MobileHero/> */}
-  
+
       {/* <Divider size={78}>
         <BlockhainList />
       </Divider> */}
@@ -86,9 +82,15 @@ const Home = () => {
     </div>
   );
 };
-const Divider = ({ size, children }: { size?: string | number; children?: any; }) => {
+const Divider = ({
+  size,
+  children,
+}: {
+  size?: string | number;
+  children?: any;
+}) => {
   return (
-    <div className="w-full h-full" style={{ marginTop: size || '150px' }}>
+    <div className="w-full h-full" style={{ marginTop: size || "150px" }}>
       {children}
     </div>
   );
