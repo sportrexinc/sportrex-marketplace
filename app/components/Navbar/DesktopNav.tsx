@@ -45,7 +45,7 @@ const DesktopNav = () => {
           <ul className="w-full flex items-center justify-around">
             <li className={styles.listItem}>
               <Link
-                href="/home"
+                href="/"
                 className={current === 1 ? styles.active : styles.inactive}
               >
                 {t("home")}
