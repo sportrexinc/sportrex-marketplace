@@ -67,6 +67,7 @@ export interface CreateSingleNFTProps {
   name: string;
   desc: string;
   external_link?: string;
+  supply?: string;
   category?: string;
   blockChain?: string;
   feature?: any;
@@ -79,4 +80,5 @@ export interface CreateSingleNFTProps {
   creator?: string;
   contractAddress?: string;
   tokenURI: string;
+  collectionName:string,
 }

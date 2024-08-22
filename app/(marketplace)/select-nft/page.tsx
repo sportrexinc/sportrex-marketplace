@@ -2,7 +2,7 @@
 import ParentLayout from "@/app/layouts/ParentLayout";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-
+import Link from "next/link";
 const SelectNft = () => {
   const { t } = useTranslation("translation");
   const navigate = useRouter();
@@ -20,55 +20,55 @@ const SelectNft = () => {
           </p>
           <p className="text-grey-800 text-md flex items-center space-x-1 regular">
             <span className="text-white">
-              {t("collection")}
-              
+              {/* {t("collection")} */}
+              Collection
             </span>
             <span>or</span>
 
             <span className="text-white">
               Single
-            {t("single")}
+            {/* {t("single")} */}
             </span>
           </p>
         </div>
         {/* #$$$$$$$$$$$$$$$$$$$$$$$ */}
         <div className="mt-16 mb-20 w-full lg:w-10/12 grid sm:gap-x-8 gap-y-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
           <div className="box-bordery  p-[2px] ">
-            <div
+            <Link href={"/single-nft"}
               className="flex justify-center  items-center bold text-white xl:text-3xl h-[150px]  xl:h-[225px] bg-blue-header rounded-[25px]  cursor-pointer "
-              onClick={() => navigate.push("/single-nft")}
+              // onClick={() => navigate.push("/single-nft")}
             >
               <p>
-                {t("single_nft")}
-                
+                {/* {t("single_nft")} */}
+                Single NFT
 
               </p>
-            </div>
+            </Link>
           </div>
           <div className="box-bordery  p-[2px] ">
-            <div
+              <Link href={"/bundle-nft"}
               className="flex justify-center  items-center bold text-white xl:text-3xl h-[150px] xl:h-[225px] bg-blue-header rounded-[25px] cursor-pointer"
-              onClick={() => navigate.push("/bundle-nft")}
+              // onClick={() => navigate.push("/bundle-nft")}
             >
               <p>
-                {t("bundle_nft")}
-                
+                {/* {t("bundle_nft")} */}
+                Bundle NFT
 
               </p>
-            </div>
+            </Link>
           </div>
           <div className="box-bordery  p-[2px] ">
 
-          <div
+            <Link href={"/collection-nft"}
             className="flex justify-center  items-center bold text-white xl:text-3xl h-[150px] xl:h-[225px] bg-blue-header rounded-[25px] cursor-pointer"
-            onClick={() => navigate.push("/collection-nft")}
+            // onClick={() => navigate.push("/collection-nft")}
             >
               <p>
-                {t("collection_nft")}
-                
+                {/* {t("collection_nft")} */}
+                Collection NFT
                 
             </p>
-          </div>
+          </Link>
             </div>
         </div>
 
