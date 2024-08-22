@@ -8,7 +8,7 @@ export const navData: {
     id: 1,
     text: "home",
 
-    linkTo: "/home",
+    linkTo: "/",
   },
   {
     id: 2,

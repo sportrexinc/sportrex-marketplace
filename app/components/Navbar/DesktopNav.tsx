@@ -36,7 +36,7 @@ const DesktopNav = () => {
   }, [address]);
 
   return (
-    <div className="hidden lg:flex w-full bg-blue-card h-[82px] z-10 px-16  items-center sticky top-0 ">
+    <div className="hidden lg:flex w-full bg-blue-card h-[82px] z-10 px-16  items-center  ">
       <div className="w-full flex justify-between items-center 2xl:container 2xl:mx-auto ">
         <div className="w-3/12 h-auto">
           <Image src={logo} alt="logo" className="w-48" />

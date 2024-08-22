@@ -59,15 +59,14 @@ const CollectionNft = () => {
     <ParentLayout>
       {address ? (
         <div className="w-full flex flex-col md:w-10/12 xl:w-6/12 mx-auto mb-32 ">
-          <ReUseModal
-            open={modal}
-            setOpen={() => setModal(false)}
-          >
+          <ReUseModal open={modal} setOpen={() => setModal(false)}>
             <CollectionCard data={collection} />
           </ReUseModal>
           <div className="flex flex-col mt-8 xl:mt-20 ">
-            <Header>{t("collection_creation")}</Header>
-            <p className="text-grey-800  text-sm regular">{t("all_fields")}</p>
+            <Header>Collection Creation</Header>
+            <p className="text-grey-800  text-sm regular">
+              All fields with asterisks are required
+            </p>
           </div>
           <Formik
             initialValues={
@@ -139,9 +138,9 @@ const CollectionNft = () => {
               <div className="mt-12">
                 <div className="form space-y-8 ">
                   <TextInput
-                    placeholder={t("name_placeholder")}
-                    label={t("name")}
-                    name="title"
+                    placeholder={"Your Nft Name"}
+                    label={"Name*"}
+                    name="name"
                     value={values.name}
                     setValue={handleChange("name")}
                     errMessage={
@@ -153,8 +152,8 @@ const CollectionNft = () => {
                     }
                   />
                   <TextInput
-                    placeholder={t("nft_symbol_placeholder")}
-                    label={t("symbol")}
+                    placeholder={"Input your symbol here"}
+                    label={"Symbol"}
                     name="symbol"
                     value={values.symbol}
                     setValue={handleChange("symbol")}
@@ -172,7 +171,7 @@ const CollectionNft = () => {
                       console.log(e.target.files[0]);
                       setFieldValue("logo", e.target.files[0]);
                     }}
-                    label={t("upload_logo")}
+                    label={"Upload Logo"}
                     errMessage={
                       <ErrorMessage
                         className="text-red-500"
@@ -182,7 +181,7 @@ const CollectionNft = () => {
                     }
                   />
 
-                  <TextAreaInput
+                  {/* <TextAreaInput
                     placeholder={t("nft_desc_placeholder")}
                     label={t("description")}
                     name="desc"
@@ -195,8 +194,8 @@ const CollectionNft = () => {
                         component={"div"}
                       />
                     }
-                  />
-                  <TextInput
+                  /> */}
+                  {/* <TextInput
                     placeholder={t("external_link_placeholder")}
                     label={t("external_label")}
                     name="external_link"
@@ -209,8 +208,8 @@ const CollectionNft = () => {
                         component={"div"}
                       />
                     }
-                  />
-                  <FileInput
+                  /> */}
+                  {/* <FileInput
                     name="banner"
                     onChange={(e) => {
                       console.log(e.target.files[0]);
@@ -224,8 +223,8 @@ const CollectionNft = () => {
                         component={"div"}
                       />
                     }
-                  />
-
+                  /> */}
+                  {/* 
                   <SelectInput
                     placeholder={t("select_category")}
                     label={t("category")}
@@ -247,8 +246,8 @@ const CollectionNft = () => {
                         component={"div"}
                       />
                     }
-                  />
-                  <SelectInput
+                  /> */}
+                  {/* <SelectInput
                     placeholder="Select %fee"
                     label="% Fee for creator earning "
                     name="fee"
@@ -257,10 +256,10 @@ const CollectionNft = () => {
                       { value: "10%", label: "10%" },
                       { value: "15%", label: "15%" },
                     ]}
-                  />
+                  /> */}
                   <SelectInput
                     placeholder=""
-                    label={t("blockchain_technology")}
+                    label={"Blockchain Technology"}
                     name="blockChain"
                     value={values.blockChain}
                     handleChange={handleChange("blockChain")}
@@ -288,7 +287,9 @@ const CollectionNft = () => {
                   </div>
                   <div className="flex justify-center items-center mt-10">
                     <p className="semibold text-grey-800 text-center text-sm md:text-base regular ">
-                      {t("create_note")}
+                      {/* {t("create_note")} */}
+                      By clicking create , you are agreeing to our Terms of
+                      Service and conditions
                     </p>
                   </div>
                 </div>
