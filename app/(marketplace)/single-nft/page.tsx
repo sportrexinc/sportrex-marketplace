@@ -17,6 +17,7 @@ import { useStorageUpload } from "@thirdweb-dev/react";
 import * as yup from "yup";
 import { CreateCollectionProps, CreateSingleNFTProps } from "@/types";
 import ContractFactoryAbi from "@/abi/SptContractFactory.json";
+import SPT721Abi from "@/abi/SptERC721.json";
 import StandardModal from "@/app/components/modals/StandardModal";
 import NormalLayout from "@/app/layouts/NormalLayout";
 import { CloseIcon } from "@/public/assets/svg";
@@ -61,9 +62,9 @@ const SingleNft = () => {
   };
 
   const { t } = useTranslation("translation");
-  const { contract } = useContract(
-    process.env.NEXT_PUBLIC_SPT_MASTER_CONTRACT_FACTORY,
-    ContractFactoryAbi
+  const {contract } = useContract(
+    process.env.NEXT_PUBLIC_SPT_ERC_721,
+    SPT721Abi
   );
 
   useEffect(() => {
@@ -138,7 +139,7 @@ const SingleNft = () => {
             onSubmit={async (values, { setSubmitting, setFieldValue }) => {
               try {
                 setSubmitting(true);
-                setOpenModal(true);
+                // setOpenModal(true);
                 try {
                   const filesToUpload = [
                     values.collectionAddress,
