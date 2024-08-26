@@ -16,8 +16,6 @@ import { Formik, ErrorMessage } from "formik";
 import { useStorageUpload } from "@thirdweb-dev/react";
 import * as yup from "yup";
 import { CreateCollectionProps, CreateSingleNFTProps } from "@/types";
-import ContractFactoryAbi from "@/abi/SptContractFactory.json";
-import SPT721Abi from "@/abi/SptERC721.json";
 import StandardModal from "@/app/components/modals/StandardModal";
 import NormalLayout from "@/app/layouts/NormalLayout";
 import { CloseIcon } from "@/public/assets/svg";
@@ -26,7 +24,7 @@ import picOne from "../../../public/assets/market/one.png";
 import Link from "next/link";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import APIService from "@/app/utils/APIServices";
-interface TraitsProps {
+export interface TraitsProps {
   value: string;
   trait_type: string;
 }
@@ -34,9 +32,6 @@ const SingleNft = () => {
   const { mutateAsync: upload, isLoading } = useStorageUpload();
   const [modal, setModal] = useState<boolean>(false);
   const [collections, setCollections] = useState<CreateCollectionProps[]>([]);
-  const [tokenURI, setTokenURI] = useState<any>();
-  const [singleCreatedNFT, setSingleCreatedNFT] =
-    useState<CreateSingleNFTProps | null>(null);
   const [trait, setTrait] = useState<TraitsProps>({
     value: "",
     trait_type: "",
@@ -44,6 +39,7 @@ const SingleNft = () => {
   const [traits, setTraits] = useState<TraitsProps[]>([]);
   const [isMinted, setIsMinted] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(false);
+  const [singleNFTData, setSingleNFTData] = useState({})
   const address = useAddress();
   const validationSchema = yup.object().shape({
     logo: yup.mixed().required("Required"),
@@ -62,10 +58,7 @@ const SingleNft = () => {
   };
 
   const { t } = useTranslation("translation");
-  const {contract } = useContract(
-    process.env.NEXT_PUBLIC_SPT_ERC_721,
-    SPT721Abi
-  );
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -130,41 +123,14 @@ const SingleNft = () => {
             initialValues={{
               logo: null,
               name: "",
-              symbol: "",
               desc: "",
               traits: [] as TraitsProps[],
               collectionAddress: "",
               external_link: "",
             }}
             onSubmit={async (values, { setSubmitting, setFieldValue }) => {
-              try {
-                setSubmitting(true);
-                // setOpenModal(true);
-                try {
-                  const filesToUpload = [
-                    values.collectionAddress,
-                    values.logo,
-                    values.name,
-                    values.desc,
-                  ];
-                  const uris = await upload({ data: filesToUpload });
-                  console.log(uris);
-                  setTokenURI(uris);
-                } catch (error) {
-                  console.error("Error uploading file:", error);
-                }
-
-                // RE_WRITE THE LOGIC TO MINT NFT INTO A COLLECTION
-
-                const data = await contract?.call("mintToken", [
-                   tokenURI,
-                 ]);
-                setSingleCreatedNFT(data.receipt);
-                 console.log(data);
-              } catch (error: any) {
-                 setSubmitting(false);
-                 alert(error.message);
-              }
+              setSingleNFTData(values)
+              setOpenModal(true)
             }}
             validationSchema={validationSchema}
           >
@@ -299,11 +265,14 @@ const SingleNft = () => {
                             {traits?.map((item, index) => {
                               return (
                                 <>
-                                  <div className="w-full grid grid-cols-2 gap-[22px] ">
+                                  <div
+                                    key={index}
+                                    className="w-full grid grid-cols-2 gap-[22px] "
+                                  >
                                     <span className="w-full">
                                       <input
                                         type="text"
-                                        className="h-12 rounded-[7px] bg-[#ababab] bg-opacity-10 text-sm text-white placeholder:text-[#ABABAB] regular px-4 w-full outline-none border-none focus:border-none focus:outline-none "
+                                        className="h-12 rounded-[7px] bg-[#ababab] bg-opacity-10 text-sm text-white placeholder:text-[#ABABAB] regular px-4 w-full outline-none border-none focus:border-none focus:outline-none"
                                         placeholder="Trait Type"
                                         onChange={(e: any) =>
                                           setTrait((prev) => ({
@@ -377,6 +346,7 @@ const SingleNft = () => {
           </Formik>
           {openModal && (
             <StandardModal
+            singleNFTData={singleNFTData as any}
               showHeader={true}
               showCloseIcon={true}
               showfooter={true}
