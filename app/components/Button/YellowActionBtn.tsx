@@ -8,7 +8,7 @@ const YellowBtn = ({ action, name }: ActionType) => {
 
       onClick={action}
     >
-      <p>{name}</p>
+      <p className="mx-auto text-center text-yellow hover:text-blue-body">{name}</p>
     </div>
   );
 };
