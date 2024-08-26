@@ -29,6 +29,7 @@ export interface TraitsProps {
   trait_type: string;
 }
 const SingleNft = () => {
+
   const { mutateAsync: upload, isLoading } = useStorageUpload();
   const [modal, setModal] = useState<boolean>(false);
   const [collections, setCollections] = useState<CreateCollectionProps[]>([]);
@@ -39,6 +40,7 @@ const SingleNft = () => {
   const [traits, setTraits] = useState<TraitsProps[]>([]);
   const [isMinted, setIsMinted] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(false);
+  const [contractAddress, setContractAddress] = useState<string>('')
   const [singleNFTData, setSingleNFTData] = useState({})
   const address = useAddress();
   const validationSchema = yup.object().shape({
@@ -62,7 +64,7 @@ const SingleNft = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    getAllUserCollections();
+    if(address) getAllUserCollections();
   }, [address]);
 
   return (
@@ -172,8 +174,12 @@ const SingleNft = () => {
                               label: item.name,
                             }))
                       }
-                      value={values.collectionAddress}
-                      handleChange={handleChange("collectionAddress")}
+                      value={contractAddress}
+                      handleChange={(e) => {
+                        setFieldValue('collectionAddress', e.target.value);
+                        setContractAddress(e.target.value);
+                        console.log(e.target.value);
+                      }}
                       errMessage={
                         <ErrorMessage
                           className="text-red-500"
@@ -347,6 +353,7 @@ const SingleNft = () => {
           {openModal && (
             <StandardModal
             singleNFTData={singleNFTData as any}
+            contractAddress={contractAddress}
               showHeader={true}
               showCloseIcon={true}
               showfooter={true}

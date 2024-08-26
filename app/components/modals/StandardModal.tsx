@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import "./modal.css";
 import { CloseIcon } from "../../../public/assets/svg/index";
 import { useAddress, useContract } from "@thirdweb-dev/react";
@@ -35,7 +35,9 @@ interface modalProps {
     external_link: string;
     traits: TraitsProps[];
     collectionAddress: string;
+    
   };
+  contractAddress: string
 }
 
 const StandardModal = ({
@@ -58,7 +60,11 @@ const StandardModal = ({
   modalBodyClasses,
   modalFooterClasses,
   singleNFTData,
+  contractAddress
 }: modalProps) => {
+
+
+
   const { mutateAsync: upload, isLoading } = useStorageUpload();
   const [singleCreatedNFT, setSingleCreatedNFT] =
     useState<CreateSingleNFTProps | null>(null);
@@ -74,11 +80,12 @@ const StandardModal = ({
 
     return closeModal(e);
   };
-  const { contract } = useContract(singleNFTData.collectionAddress, SPT721Abi);
+  const { contract } = useContract(contractAddress, SPT721Abi);
 
   const handleSingleNFTMint = async () => {
     try {
       let tokenURI;
+
 
       const imageToUpload = [singleNFTData.logo];
       const imageURI = await upload({ data: imageToUpload });
@@ -104,6 +111,7 @@ const StandardModal = ({
       console.log(metaDataURI[0]);
 
       // RE_WRITE THE LOGIC TO MINT NFT INTO A COLLECTION
+      
 
       const data = await contract?.call("mintToken", [metaDataURI[0]]);
       //setSingleCreatedNFT(data);
@@ -113,9 +121,12 @@ const StandardModal = ({
       //alert(error.message);
     }
   };
-  useEffect(() => {
-    handleSingleNFTMint();
-  }, []);
+  useLayoutEffect(() => {
+    handleSingleNFTMint()
+  },[])
+  // useEffect(() => {
+  //   handleSingleNFTMint();
+  // }, []);
   return (
     <div className="modal-mask modal-close">
       <div className="modal-wrapper">
