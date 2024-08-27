@@ -29,9 +29,9 @@ export interface TraitsProps {
   trait_type: string;
 }
 const SingleNft = () => {
-
   const { mutateAsync: upload, isLoading } = useStorageUpload();
   const [modal, setModal] = useState<boolean>(false);
+  const [isCollectionLoading, setIsCollectionLoading]= useState(true)
   const [collections, setCollections] = useState<CreateCollectionProps[]>([]);
   const [trait, setTrait] = useState<TraitsProps>({
     value: "",
@@ -40,8 +40,8 @@ const SingleNft = () => {
   const [traits, setTraits] = useState<TraitsProps[]>([]);
   const [isMinted, setIsMinted] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(false);
-  const [contractAddress, setContractAddress] = useState<string>('')
-  const [singleNFTData, setSingleNFTData] = useState({})
+  const [contractAddress, setContractAddress] = useState<string>("");
+  const [singleNFTData, setSingleNFTData] = useState({});
   const address = useAddress();
   const validationSchema = yup.object().shape({
     logo: yup.mixed().required("Required"),
@@ -56,15 +56,16 @@ const SingleNft = () => {
       setCollections(res.data.data);
     } catch (error: any) {
       console.log(error.message);
+    }finally{
+      setIsCollectionLoading(false)
     }
   };
 
   const { t } = useTranslation("translation");
 
-
   useEffect(() => {
     window.scrollTo(0, 0);
-    if(address) getAllUserCollections();
+    getAllUserCollections();
   }, [address]);
 
   return (
@@ -131,8 +132,9 @@ const SingleNft = () => {
               external_link: "",
             }}
             onSubmit={async (values, { setSubmitting, setFieldValue }) => {
-              setSingleNFTData(values)
-              setOpenModal(true)
+              setSingleNFTData(values);
+              console.log(contractAddress);
+              setOpenModal(true);
             }}
             validationSchema={validationSchema}
           >
@@ -162,21 +164,12 @@ const SingleNft = () => {
                       label="Choose your collection"
                       name="select"
                       options={
-                        collections.length === 0
-                          ? [
-                              {
-                                value: "",
-                                label: "No collection created yet..",
-                              },
-                            ]
-                          : collections.map((item) => ({
-                              value: item.contractAddress as string,
-                              label: item.name,
-                            }))
+                        isCollectionLoading ? [{value: "", label:"Loading collections..."}]
+                        : collections.length === 0 ? [{value: "", label: "No collection created yet..",}]: collections.map((item) =>({value: item.contractAddress as string, label: item.name}))
                       }
                       value={contractAddress}
                       handleChange={(e) => {
-                        setFieldValue('collectionAddress', e.target.value);
+                        setFieldValue("collectionAddress", e.target.value);
                         setContractAddress(e.target.value);
                         console.log(e.target.value);
                       }}
@@ -352,8 +345,8 @@ const SingleNft = () => {
           </Formik>
           {openModal && (
             <StandardModal
-            singleNFTData={singleNFTData as any}
-            contractAddress={contractAddress}
+              singleNFTData={singleNFTData as any}
+              contractAddress={contractAddress}
               showHeader={true}
               showCloseIcon={true}
               showfooter={true}

@@ -35,9 +35,8 @@ interface modalProps {
     external_link: string;
     traits: TraitsProps[];
     collectionAddress: string;
-    
   };
-  contractAddress: string
+  contractAddress: string;
 }
 
 const StandardModal = ({
@@ -60,11 +59,8 @@ const StandardModal = ({
   modalBodyClasses,
   modalFooterClasses,
   singleNFTData,
-  contractAddress
+  contractAddress,
 }: modalProps) => {
-
-
-
   const { mutateAsync: upload, isLoading } = useStorageUpload();
   const [singleCreatedNFT, setSingleCreatedNFT] =
     useState<CreateSingleNFTProps | null>(null);
@@ -80,12 +76,14 @@ const StandardModal = ({
 
     return closeModal(e);
   };
-  const { contract } = useContract(contractAddress, SPT721Abi);
+  const { contract, isLoading: isContractLoading } = useContract(
+    contractAddress ? contractAddress : null,
+    SPT721Abi
+  );
 
   const handleSingleNFTMint = async () => {
     try {
       let tokenURI;
-
 
       const imageToUpload = [singleNFTData.logo];
       const imageURI = await upload({ data: imageToUpload });
@@ -111,22 +109,27 @@ const StandardModal = ({
       console.log(metaDataURI[0]);
 
       // RE_WRITE THE LOGIC TO MINT NFT INTO A COLLECTION
-      
-
-      const data = await contract?.call("mintToken", [metaDataURI[0]]);
+      if (contract && !isContractLoading) {
+        try {
+          const data = await contract?.call("mintToken", [metaDataURI[0]]);
+          console.log(data);
+        } catch (error) {
+          console.error("Contract call failed", error);
+        }
+      }
       //setSingleCreatedNFT(data);
-      console.log(data);
     } catch (error: any) {
       console.log(error.message);
       //alert(error.message);
     }
   };
-  useLayoutEffect(() => {
-    handleSingleNFTMint()
-  },[])
-  // useEffect(() => {
-  //   handleSingleNFTMint();
-  // }, []);
+  useEffect(() => {
+    if (contract && !isContractLoading) {
+      handleSingleNFTMint();
+    }else{
+      console.log("Contract not loaded yet");
+    }
+  }, [contract, isContractLoading]);
   return (
     <div className="modal-mask modal-close">
       <div className="modal-wrapper">
