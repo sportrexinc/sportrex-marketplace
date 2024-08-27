@@ -9,7 +9,6 @@ import {
   ActionBtn,
   Header,
   YellowActionBtn,
-
 } from "@/app/components";
 import { useTranslation } from "react-i18next";
 import { useAddress, useContract } from "@thirdweb-dev/react";
@@ -17,30 +16,33 @@ import { Formik, ErrorMessage } from "formik";
 import { useStorageUpload } from "@thirdweb-dev/react";
 import * as yup from "yup";
 import { CreateCollectionProps, CreateSingleNFTProps } from "@/types";
-import ContractFactoryAbi from "@/abi/SptContractFactory.json";
 import StandardModal from "@/app/components/modals/StandardModal";
 import NormalLayout from "@/app/layouts/NormalLayout";
 import { CloseIcon } from "@/public/assets/svg";
-import Image from "next/image"
+import Image from "next/image";
 import picOne from "../../../public/assets/market/one.png";
 import Link from "next/link";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import APIService from "@/app/utils/APIServices";
-interface TraitsProps {
-  value: string,
-  trait_type:string,
+export interface TraitsProps {
+  value: string;
+  trait_type: string;
 }
 const SingleNft = () => {
   const { mutateAsync: upload, isLoading } = useStorageUpload();
   const [modal, setModal] = useState<boolean>(false);
-  const [collections, setCollections] = useState<CreateCollectionProps[]>([])
-  const [singleCreatedNFT, setSingleCreatedNFT] =
-    useState<CreateSingleNFTProps | null>(null);
-  const [trait, setTrait] = useState<TraitsProps>({ value: "", trait_type: "" });
+  const [isCollectionLoading, setIsCollectionLoading]= useState(true)
+  const [collections, setCollections] = useState<CreateCollectionProps[]>([]);
+  const [trait, setTrait] = useState<TraitsProps>({
+    value: "",
+    trait_type: "",
+  });
   const [traits, setTraits] = useState<TraitsProps[]>([]);
   const [isMinted, setIsMinted] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(false);
-  const address = useAddress()
+  const [contractAddress, setContractAddress] = useState<string>("");
+  const [singleNFTData, setSingleNFTData] = useState({});
+  const address = useAddress();
   const validationSchema = yup.object().shape({
     logo: yup.mixed().required("Required"),
     name: yup.string().required("Required"),
@@ -49,25 +51,21 @@ const SingleNft = () => {
 
   const getAllUserCollections = async () => {
     try {
-      const res = await APIService.get(`/user/${address}/collection`)
-      console.log(res.data, 'response')
-      setCollections(res.data.data)
+      const res = await APIService.get(`/user/${address}/collection`);
+      console.log(res.data, "response");
+      setCollections(res.data.data);
     } catch (error: any) {
-      console.log(error.message)
+      console.log(error.message);
+    }finally{
+      setIsCollectionLoading(false)
     }
-  }
+  };
 
-   
   const { t } = useTranslation("translation");
-  const { contract } = useContract(
-    process.env.NEXT_PUBLIC_SPT_MASTER_CONTRACT_FACTORY,
-    ContractFactoryAbi
-  );
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    getAllUserCollections()
-
+    getAllUserCollections();
   }, [address]);
 
   return (
@@ -98,7 +96,10 @@ const SingleNft = () => {
                   <YellowActionBtn name={"View Item"} />
                 </div>
                 <div className="mx-auto mt-7">
-                  <Link href={"#"} className="text-white flex items-center gap-2">
+                  <Link
+                    href={"#"}
+                    className="text-white flex items-center gap-2"
+                  >
                     View on Etherscan{" "}
                     <span>
                       <FaArrowUpRightFromSquare />
@@ -122,35 +123,18 @@ const SingleNft = () => {
         </div>
         </div> */}
           <Formik
-            initialValues={
-              {
-                logo: null,
-                name: "",
-                symbol: "",
-                desc: "",
-                traits: [] as TraitsProps[],
-                collectionAddress: "",
-                external_link: ""
-              } 
-            }
+            initialValues={{
+              logo: null,
+              name: "",
+              desc: "",
+              traits: [] as TraitsProps[],
+              collectionAddress: "",
+              external_link: "",
+            }}
             onSubmit={async (values, { setSubmitting, setFieldValue }) => {
-              try {
-                setSubmitting(true);
-                setOpenModal(true)
-               
-                // RE_WRITE THE LOGIC TO MINT NFT INTO A COLLECTION
-
-                // const data = await contract?.call("create_nft", [
-                //   values.name,
-                //   values.supply,
-                //   values.tokenURI,
-                // ]);
-                // setSingleCreatedNFT(data.receipt);
-                // console.log(data);
-              } catch (error: any) {
-                // setSubmitting(false);
-                // alert(error.message);
-              }
+              setSingleNFTData(values);
+              console.log(contractAddress);
+              setOpenModal(true);
             }}
             validationSchema={validationSchema}
           >
@@ -161,16 +145,6 @@ const SingleNft = () => {
               handleSubmit,
               setFieldValue,
             }) => {
-              const getURI = async () => {
-                try {
-                  const filesToUpload = [values.logo];
-                  const uris = await upload({ data: filesToUpload });
-                  console.log(uris);
-                  setFieldValue("tokenURI", uris[0]);
-                } catch (error) {
-                  console.error("Error uploading file:", error);
-                }
-              };
               return (
                 <div className="w-full flex flex-col md:w-10/12 xl:w-6/12 mx-auto mb-32 ">
                   <div className="flex flex-col mt-8 xl:mt-20 ">
@@ -184,25 +158,29 @@ const SingleNft = () => {
                     </p>
                   </div>
                   <div className="mt-12">
-                  <SelectInput
-                        placeholder={"Select Collection"}
-                        // label={t("blockchain_technology")}
-                        label="Choose your collection"
-                        name="select"
-                        options={
-                          collections.length === 0 ? [{value: '', label: "No collection created yet.."}] :
-                          collections.map(item => ({ value: item.contractAddress as string, label: item.name }))
-                        }
-                        value={values.collectionAddress}
-                        handleChange={handleChange("collectionAddress")}
-                        errMessage={
-                          <ErrorMessage
-                            className="text-red-500"
-                            name="collectionName"
-                            component={"div"}
-                          />
-                        }
-                      />
+                    <SelectInput
+                      placeholder={"Select Collection"}
+                      // label={t("blockchain_technology")}
+                      label="Choose your collection"
+                      name="select"
+                      options={
+                        isCollectionLoading ? [{value: "", label:"Loading collections..."}]
+                        : collections.length === 0 ? [{value: "", label: "No collection created yet..",}]: collections.map((item) =>({value: item.contractAddress as string, label: item.name}))
+                      }
+                      value={contractAddress}
+                      handleChange={(e) => {
+                        setFieldValue("collectionAddress", e.target.value);
+                        setContractAddress(e.target.value);
+                        console.log(e.target.value);
+                      }}
+                      errMessage={
+                        <ErrorMessage
+                          className="text-red-500"
+                          name="collectionName"
+                          component={"div"}
+                        />
+                      }
+                    />
                     <div className="flex-col mt-8">
                       <h1 className="semibold text-white text-md md:text-xl">
                         {/* {t("upload")} (s)* */}
@@ -259,7 +237,7 @@ const SingleNft = () => {
                           />
                         }
                       />
-                    
+
                       <TextInput
                         placeholder={"external link"}
                         label={"External Link*"}
@@ -285,24 +263,39 @@ const SingleNft = () => {
                           <div className="w-auto flex-grow flex flex-col gap-[11px]">
                             {traits?.map((item, index) => {
                               return (
-                                <div className="w-full grid grid-cols-2 gap-[22px] ">
-                                  <span className="w-full">
-                                    <input
-                                      type="text"
-                                      className="h-12 rounded-[7px] bg-[#ababab] bg-opacity-10 text-sm text-white placeholder:text-[#ABABAB] regular px-4 w-full outline-none border-none focus:border-none focus:outline-none "
-                                      placeholder="Trait Type"
-                                      onChange={(e: any) => setTrait(prev => ({...prev, trait_type: e.target.value}))}
-                                    />
-                                  </span>
-                                  <span className="w-full">
-                                    <input
-                                      type="text"
-                                      className="h-12 rounded-[7px] bg-[#ababab] bg-opacity-10 text-sm text-white placeholder:text-[#ABABAB] regular px-4 w-full "
-                                      placeholder="Trait Name"
-                                      onChange={(e: any) => setTrait(prev => ({...prev, value: e.target.value}))}
-                                    />
-                                  </span>
-                                </div>
+                                <>
+                                  <div
+                                    key={index}
+                                    className="w-full grid grid-cols-2 gap-[22px] "
+                                  >
+                                    <span className="w-full">
+                                      <input
+                                        type="text"
+                                        className="h-12 rounded-[7px] bg-[#ababab] bg-opacity-10 text-sm text-white placeholder:text-[#ABABAB] regular px-4 w-full outline-none border-none focus:border-none focus:outline-none"
+                                        placeholder="Trait Type"
+                                        onChange={(e: any) =>
+                                          setTrait((prev) => ({
+                                            ...prev,
+                                            trait_type: e.target.value,
+                                          }))
+                                        }
+                                      />
+                                    </span>
+                                    <span className="w-full">
+                                      <input
+                                        type="text"
+                                        className="h-12 rounded-[7px] bg-[#ababab] bg-opacity-10 text-sm text-white placeholder:text-[#ABABAB] regular px-4 w-full "
+                                        placeholder="Trait Name"
+                                        onChange={(e: any) =>
+                                          setTrait((prev) => ({
+                                            ...prev,
+                                            value: e.target.value,
+                                          }))
+                                        }
+                                      />
+                                    </span>
+                                  </div>
+                                </>
                               );
                             })}
                           </div>
@@ -310,9 +303,12 @@ const SingleNft = () => {
                             <button
                               className="bg-white regular text-sm text-[#020733] h-12 rounded-[7px] flex items-center justify-center min-w-[139px]  cursor-pointer"
                               onClick={() => {
-                                const newTraitFields = [...values.traits, trait]
-                                setFieldValue('traits', newTraitFields)
-                                setTraits(newTraitFields)
+                                const newTraitFields = [
+                                  ...values.traits,
+                                  trait,
+                                ];
+                                setFieldValue("traits", newTraitFields);
+                                setTraits(newTraitFields);
                               }}
                             >
                               Add New Trait
@@ -320,7 +316,6 @@ const SingleNft = () => {
                           </div>
                         </div>
                       </div>
-                      
                     </div>
                     <div className="mt-10 flex flex-col  ">
                       <div className="mt-20 flex justify-center items-center space-x-8">
@@ -350,6 +345,8 @@ const SingleNft = () => {
           </Formik>
           {openModal && (
             <StandardModal
+              singleNFTData={singleNFTData as any}
+              contractAddress={contractAddress}
               showHeader={true}
               showCloseIcon={true}
               showfooter={true}
