@@ -24,6 +24,7 @@ import picOne from "../../../public/assets/market/one.png";
 import Link from "next/link";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import APIService from "@/app/utils/APIServices";
+
 export interface TraitsProps {
   value: string;
   trait_type: string;
@@ -42,6 +43,10 @@ const SingleNft = () => {
   const [openModal, setOpenModal] = useState(false);
   const [contractAddress, setContractAddress] = useState<string>("");
   const [singleNFTData, setSingleNFTData] = useState({});
+  const [loadingA, setLoadingA] = useState<boolean>(false);
+  const [loadingB, setLoadingB] = useState<boolean>(true);
+  const [loadingC, setLoadingC] = useState<boolean>(true);
+
   const address = useAddress();
   const validationSchema = yup.object().shape({
     logo: yup.mixed().required("Required"),
@@ -164,8 +169,19 @@ const SingleNft = () => {
                       label="Choose your collection"
                       name="select"
                       options={
-                        isCollectionLoading ? [{value: "", label:"Loading collections..."}]
-                        : collections.length === 0 ? [{value: "", label: "No collection created yet..",}]: collections.map((item) =>({value: item.contractAddress as string, label: item.name}))
+                        isCollectionLoading
+                          ? [{ value: "", label: "Loading collections..." }]
+                          : collections.length === 0
+                          ? [
+                              {
+                                value: "",
+                                label: "No collection created yet..",
+                              },
+                            ]
+                          : collections.map((item) => ({
+                              value: item.contractAddress as string,
+                              label: item.name,
+                            }))
                       }
                       value={contractAddress}
                       handleChange={(e) => {
@@ -370,15 +386,39 @@ const SingleNft = () => {
                 <div className="flex   pb-0 flex-col items-center justify-center gap-6 ">
                   {/* start */}
                   <div className="w-full flex items-center gap-4">
-                    <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
-                      <input
-                        type="checkbox"
-                        name=""
-                        id=""
-                        className="w-4 h-4 accent-blue-btn"
-                        checked
-                      />
-                    </span>
+                    {loadingA ? (
+                      <svg
+                        className="animate-spin h-8 w-8 mr-3 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          stroke-width="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                        ></path>
+                      </svg>
+                    ) : (
+                      <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id=""
+                          className="w-4 h-4 accent-blue-btn"
+                          checked
+                        />
+                      </span>
+                    )}
+
                     <div className="flex flex-col">
                       <p className="regular text-white text-sm ">
                         Uploading to decentralized server
@@ -391,15 +431,38 @@ const SingleNft = () => {
                   {/* end  */}
                   {/* start */}
                   <div className="w-full flex items-center gap-4">
-                    <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
-                      <input
-                        type="checkbox"
-                        name=""
-                        id=""
-                        className="w-4 h-4 accent-blue-btn"
-                        checked
-                      />
-                    </span>
+                    {loadingB ? (
+                      <svg
+                        className="animate-spin h-8 w-8 mr-3 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          stroke-width="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                        ></path>
+                      </svg>
+                    ) : (
+                      <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id=""
+                          className="w-4 h-4 accent-blue-btn"
+                          checked
+                        />
+                      </span>
+                    )}
                     <div className="flex flex-col">
                       <p className="regular text-white text-sm ">
                         Uploading to decentralized server
@@ -412,15 +475,38 @@ const SingleNft = () => {
                   {/* end  */}
                   {/* start */}
                   <div className="w-full flex items-center gap-4">
-                    <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
-                      <input
-                        type="checkbox"
-                        name=""
-                        id=""
-                        className="w-4 h-4 accent-blue-btn"
-                        checked
-                      />
-                    </span>
+                    {loadingC ? (
+                      <svg
+                        className="animate-spin h-8 w-8 mr-3 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          stroke-width="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                        ></path>
+                      </svg>
+                    ) : (
+                      <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id=""
+                          className="w-4 h-4 accent-blue-btn"
+                          checked
+                        />
+                      </span>
+                    )}
                     <div className="flex flex-col">
                       <p className="regular text-white text-sm ">
                         Uploading to decentralized server
