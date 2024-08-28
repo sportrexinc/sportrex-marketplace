@@ -19,6 +19,7 @@ import { CreateCollectionProps, CreateSingleNFTProps } from "@/types";
 import StandardModal from "@/app/components/modals/StandardModal";
 import APIService from "@/app/utils/APIServices";
 import MintModal from "../../components/modals/MintModal";
+import { mintModalProps } from "../../components/modals/MintModal";
 import NormalLayout from "@/app/layouts/NormalLayout";
 import Link from "next/link";
 import Image from "next/image";
@@ -29,6 +30,11 @@ export interface TraitsProps {
   value: string;
   trait_type: string;
 }
+ interface mintedNFTProps{
+  tokenURI: string;
+  metaDataURI: string;
+  transactionHash: string;
+ }
 const SingleNft = () => {
   const { mutateAsync: upload, isLoading } = useStorageUpload();
   const [modal, setModal] = useState<boolean>(false);
@@ -38,11 +44,17 @@ const SingleNft = () => {
     value: "",
     trait_type: "",
   });
+  const [mintedNFTData, setMintedNFTData] = useState<mintedNFTProps>({
+    tokenURI: "",
+    metaDataURI: "",
+    transactionHash: "",
+  });
   const [traits, setTraits] = useState<TraitsProps[]>([]);
   const [isMinted, setIsMinted] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(false);
   const [contractAddress, setContractAddress] = useState<string>("");
   const [singleNFTData, setSingleNFTData] = useState({});
+  
   const address = useAddress();
   const validationSchema = yup.object().shape({
     logo: yup.mixed().required("Required"),
@@ -321,9 +333,13 @@ const SingleNft = () => {
               contractAddress={contractAddress}
               isMinted={isMinted}
               setIsMinted={setIsMinted}
+              mintedNFTData={mintedNFTData}
+              setMintedNFTData={setMintedNFTData as any}
               showHeader={true}
               showCloseIcon={true}
               showfooter={true}
+              openModal={openModal}
+              setOpenModal={setOpenModal as any}
               closeModal={() => setOpenModal(false)}
               onConfirm={() => ""}
               showCloseButton={false}
@@ -338,7 +354,12 @@ const SingleNft = () => {
            
         </ParentLayout>
       )}
-       <MintModal isMinted={isMinted} setIsMinted={setIsMinted}/>
+       <MintModal 
+       isMinted={isMinted} 
+       setIsMinted={setIsMinted} 
+       mintedNFTData={mintedNFTData}
+        setMintedNFTData={setMintedNFTData as any}
+       />
     </>
   );
 };

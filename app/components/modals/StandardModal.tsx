@@ -9,6 +9,7 @@ import { YellowActionBtn } from "@/app/components";
 import ActionBtn from "../Button/ActionBtn";
 import { TraitsProps } from "@/app/(marketplace)/single-nft/page";
 import { CreateSingleNFTProps } from "@/types";
+import MintModal from "./MintModal"
 import NormalLayout from "@/app/layouts/NormalLayout";
 import Link from "next/link";
 import Image from "next/image";
@@ -42,9 +43,13 @@ interface modalProps {
     traits: TraitsProps[];
     collectionAddress: string;
   };
+  setOpenModal: any;
+  openModal: boolean;
   contractAddress: string;
   isMinted: boolean;
   setIsMinted: any;
+  mintedNFTData: any;
+  setMintedNFTData: any;
 }
 
 const StandardModal = ({
@@ -70,6 +75,10 @@ const StandardModal = ({
   contractAddress,
   isMinted,
   setIsMinted,
+  mintedNFTData,
+  setMintedNFTData,
+  setOpenModal,
+  openModal
 }: modalProps) => {
   const { mutateAsync: upload, isLoading } = useStorageUpload();
   const [loadingA, setLoadingA] = useState<boolean>(true);
@@ -86,7 +95,6 @@ const StandardModal = ({
 
   const onCloseModal = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
-
     return closeModal(e);
   };
   const { contract, isLoading: isContractLoading } = useContract(
@@ -102,7 +110,7 @@ const StandardModal = ({
       console.log(imageURI);
       tokenURI = imageURI[0];
       const ipfsGateway = "https://ipfs.io/ipfs/";
-      const ipfsUrl = imageURI[0];
+      const ipfsUrl = imageURI[0].replace("ipfs://", "");
       const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
       setTokenURI(httpsImageUrl);
       setLoadingA(false);
@@ -122,21 +130,28 @@ const StandardModal = ({
       setFullURI(metaDataURI[0]);
       setLoadingB(false);
       console.log(metaDataURI[0]);
-
       // RE_WRITE THE LOGIC TO MINT NFT INTO A COLLECTION
       if (contract && !isContractLoading) {
         try {
           const data = await contract?.call("mintToken", [metaDataURI[0]]);
           setLoadingC(false);
           console.log(data);
+          setMintedNFTData({
+            tokenURI: httpsImageUrl,
+            metaDataURI: metaDataURI[0],
+            transactionHash: data.receipt.transactionHash,
+          })
+          setOpenModal(false);
           setIsMinted(true);
         } catch (error) {
           console.error("Contract call failed", error);
+          setOpenModal(false);
         }
       }
       //setSingleCreatedNFT(data);
     } catch (error: any) {
       console.log(error.message);
+      setOpenModal(false);
       //alert(error.message);
     }
   };
