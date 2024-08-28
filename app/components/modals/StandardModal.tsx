@@ -1,13 +1,19 @@
-import React, { useState, useEffect, useLayoutEffect,Fragment } from "react";
+"use-client";
+import React, { useState, useEffect, useLayoutEffect, Fragment } from "react";
 import "./modal.css";
 import { CloseIcon } from "../../../public/assets/svg/index";
 import { useAddress, useContract } from "@thirdweb-dev/react";
 import SPT721Abi from "@/abi/SptERC721.json";
 import { useStorageUpload } from "@thirdweb-dev/react";
+import { YellowActionBtn } from "@/app/components";
 import ActionBtn from "../Button/ActionBtn";
 import { TraitsProps } from "@/app/(marketplace)/single-nft/page";
 import { CreateSingleNFTProps } from "@/types";
-
+import NormalLayout from "@/app/layouts/NormalLayout";
+import Link from "next/link";
+import Image from "next/image";
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
+import picOne from "../../../public/assets/market/one.png";
 // import { Button } from "../Forms/Button";
 interface modalProps {
   showHeader?: boolean;
@@ -37,6 +43,8 @@ interface modalProps {
     collectionAddress: string;
   };
   contractAddress: string;
+  isMinted: boolean;
+  setIsMinted: any;
 }
 
 const StandardModal = ({
@@ -60,6 +68,8 @@ const StandardModal = ({
   modalFooterClasses,
   singleNFTData,
   contractAddress,
+  isMinted,
+  setIsMinted,
 }: modalProps) => {
   const { mutateAsync: upload, isLoading } = useStorageUpload();
   const [loadingA, setLoadingA] = useState<boolean>(true);
@@ -91,7 +101,10 @@ const StandardModal = ({
       const imageURI = await upload({ data: imageToUpload });
       console.log(imageURI);
       tokenURI = imageURI[0];
-      setTokenURI(imageURI[0]);
+      const ipfsGateway = "https://ipfs.io/ipfs/";
+      const ipfsUrl = imageURI[0];
+      const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
+      setTokenURI(httpsImageUrl);
       setLoadingA(false);
       // Uploading MetaDATA to IPFS
       const filesToUpload = {
@@ -107,7 +120,7 @@ const StandardModal = ({
       };
       const metaDataURI = await upload({ data: [filesToUpload] });
       setFullURI(metaDataURI[0]);
-      setLoadingB(false)
+      setLoadingB(false);
       console.log(metaDataURI[0]);
 
       // RE_WRITE THE LOGIC TO MINT NFT INTO A COLLECTION
@@ -116,6 +129,7 @@ const StandardModal = ({
           const data = await contract?.call("mintToken", [metaDataURI[0]]);
           setLoadingC(false);
           console.log(data);
+          setIsMinted(true);
         } catch (error) {
           console.error("Contract call failed", error);
         }
@@ -129,44 +143,47 @@ const StandardModal = ({
   useEffect(() => {
     if (contract && !isContractLoading) {
       handleSingleNFTMint();
-    }else{
+    } else {
       console.log("Contract not loaded yet");
     }
   }, [contract, isContractLoading]);
+
   return (
-    <div className="modal-mask modal-close">
-      <div className="modal-wrapper">
-        <div
-          className="modal-container"
-          style={{
-            maxWidth: modalWidth ? modalWidth : "543px",
-            minWidth: modalWidth ? modalWidth : "543px",
-          }}
-        >
-          {showCloseIcon && (
-            <button onClick={onCloseModal} className="close-button ">
-              <CloseIcon />
-            </button>
-          )}
+    <>
+      {/* Uploading Modal */}
+      <div className="modal-mask modal-close">
+        <div className="modal-wrapper">
+          <div
+            className="modal-container"
+            style={{
+              maxWidth: modalWidth ? modalWidth : "543px",
+              minWidth: modalWidth ? modalWidth : "543px",
+            }}
+          >
+            {showCloseIcon && (
+              <button onClick={onCloseModal} className="close-button ">
+                <CloseIcon />
+              </button>
+            )}
 
-          {showHeader && (
-            <div
-              className={`modal-header ${
-                headerClassName ? headerClassName : ""
-              }`}
-            >
-               <Fragment key="header">
-                <div className="flex items-center">
-                  <h4 className="text-lg semibold text-white">
-                    Creating your item
-                  </h4>
-                </div>
-              </Fragment>
-            </div>
-          )}
+            {showHeader && (
+              <div
+                className={`modal-header ${
+                  headerClassName ? headerClassName : ""
+                }`}
+              >
+                <Fragment key="header">
+                  <div className="flex items-center">
+                    <h4 className="text-lg semibold text-white">
+                      Creating your item
+                    </h4>
+                  </div>
+                </Fragment>
+              </div>
+            )}
 
-          <div className={`modal-body ${modalBodyClasses}`}>
-          <Fragment key="body">
+            <div className={`modal-body ${modalBodyClasses}`}>
+              <Fragment key="body">
                 <div className="flex   pb-0 flex-col items-center justify-center gap-6 ">
                   {/* start */}
                   <div className="w-full flex items-center gap-4">
@@ -205,7 +222,7 @@ const StandardModal = ({
 
                     <div className="flex flex-col">
                       <p className="regular text-white text-sm ">
-                        Uploading to decentralized server
+                        Uploading to decentralized server.
                       </p>
                       <p className="light text-[#ababab] text-xs">
                         This may take a few minutes.
@@ -249,7 +266,7 @@ const StandardModal = ({
                     )}
                     <div className="flex flex-col">
                       <p className="regular text-white text-sm ">
-                        Uploading MetaData
+                        Uploading MetaData.
                       </p>
                       <p className="light text-[#ababab] text-xs">
                         This may take a few minutes.
@@ -303,36 +320,37 @@ const StandardModal = ({
                   {/* end  */}
                 </div>
               </Fragment>
-          </div>
-
-          {showfooter && (
-            <div className={`modal-footer ${modalFooterClasses}`}>
-              {showCloseButton && (
-                <ActionBtn
-                  name={closeButtonLabel ? closeButtonLabel : "Cancel"}
-                  //   className={closeButtonClassName ? closeButtonClassName : ""}
-                  action={onCloseModal}
-                />
-              )}
-
-              {showConfirmButton && (
-                <ActionBtn
-                  name={confirmButtonLabel ? confirmButtonLabel : "Confirm"}
-                  //   className={
-                  //     confirmButtonClassName ? confirmButtonClassName : ""
-                  //   }
-
-                  action={onConfirm}
-                  loading={loading}
-                  disabled={isConfirmButtonDisabled}
-                />
-              )}
-                          <Fragment key="footer"></Fragment>
             </div>
-          )}
+
+            {showfooter && (
+              <div className={`modal-footer ${modalFooterClasses}`}>
+                {showCloseButton && (
+                  <ActionBtn
+                    name={closeButtonLabel ? closeButtonLabel : "Cancel"}
+                    //   className={closeButtonClassName ? closeButtonClassName : ""}
+                    action={onCloseModal}
+                  />
+                )}
+
+                {showConfirmButton && (
+                  <ActionBtn
+                    name={confirmButtonLabel ? confirmButtonLabel : "Confirm"}
+                    //   className={
+                    //     confirmButtonClassName ? confirmButtonClassName : ""
+                    //   }
+
+                    action={onConfirm}
+                    loading={loading}
+                    disabled={isConfirmButtonDisabled}
+                  />
+                )}
+                <Fragment key="footer"></Fragment>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

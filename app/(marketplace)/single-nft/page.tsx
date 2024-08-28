@@ -17,14 +17,14 @@ import { useStorageUpload } from "@thirdweb-dev/react";
 import * as yup from "yup";
 import { CreateCollectionProps, CreateSingleNFTProps } from "@/types";
 import StandardModal from "@/app/components/modals/StandardModal";
-import NormalLayout from "@/app/layouts/NormalLayout";
-import { CloseIcon } from "@/public/assets/svg";
-import Image from "next/image";
-import picOne from "../../../public/assets/market/one.png";
-import Link from "next/link";
-import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import APIService from "@/app/utils/APIServices";
-
+import MintModal from "../../components/modals/MintModal";
+import NormalLayout from "@/app/layouts/NormalLayout";
+import Link from "next/link";
+import Image from "next/image";
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
+import picOne from "../../../public/assets/market/one.png";
+import { CloseIcon } from "../../../public/assets/svg/index";
 export interface TraitsProps {
   value: string;
   trait_type: string;
@@ -43,8 +43,6 @@ const SingleNft = () => {
   const [openModal, setOpenModal] = useState(false);
   const [contractAddress, setContractAddress] = useState<string>("");
   const [singleNFTData, setSingleNFTData] = useState({});
-
-
   const address = useAddress();
   const validationSchema = yup.object().shape({
     logo: yup.mixed().required("Required"),
@@ -73,47 +71,7 @@ const SingleNft = () => {
 
   return (
     <>
-      {isMinted && (
-        <div className="bg-blue-body w-full h-screen">
-          <NormalLayout>
-            <div className="w-full h-screen p-4 flex items-center justify-center relative">
-              <span
-                className="absolute top-4 left-4 cursor-pointer"
-                onClick={() => setIsMinted(false)}
-              >
-                <CloseIcon />
-              </span>
-              <div className="w-full lg:w-7/12 xl:w-1/2 mx-auto flex items-center justify-center flex-col">
-                <span>
-                  <Image
-                    src={picOne}
-                    alt="minted"
-                    className="w-9/12 max-w-[400px] h-auto rounded-md"
-                  />
-                </span>
-                <p className="bold text-white mt-6 text-xl sm:text-2xl lg:text-3xl  ">
-                  Your item has been minted
-                </p>
-                <div className="w-full sm:w-9/12 lg:w-1/2 mt-8 flex justify-center items-center mx-auto gap-4">
-                  <ActionBtn name={"List Item"} />
-                  <YellowActionBtn name={"View Item"} />
-                </div>
-                <div className="mx-auto mt-7">
-                  <Link
-                    href={"#"}
-                    className="text-white flex items-center gap-2"
-                  >
-                    View on Etherscan{" "}
-                    <span>
-                      <FaArrowUpRightFromSquare />
-                    </span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </NormalLayout>
-        </div>
-      )}
+      
       {!isMinted && (
         <ParentLayout>
           {/* <div className="w-full flex flex-col md:w-10/12 xl:w-6/12 mx-auto mb-32 ">
@@ -361,6 +319,8 @@ const SingleNft = () => {
             <StandardModal
               singleNFTData={singleNFTData as any}
               contractAddress={contractAddress}
+              isMinted={isMinted}
+              setIsMinted={setIsMinted}
               showHeader={true}
               showCloseIcon={true}
               showfooter={true}
@@ -375,8 +335,10 @@ const SingleNft = () => {
             >
             </StandardModal>
           )}
+           
         </ParentLayout>
       )}
+       <MintModal isMinted={isMinted} setIsMinted={setIsMinted}/>
     </>
   );
 };
