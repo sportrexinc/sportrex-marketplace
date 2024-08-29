@@ -50,6 +50,7 @@ const SingleNft = () => {
     transactionHash: "",
   });
   const [traits, setTraits] = useState<TraitsProps[]>([]);
+  //Change this to true for testing.
   const [isMinted, setIsMinted] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(false);
   const [contractAddress, setContractAddress] = useState<string>("");

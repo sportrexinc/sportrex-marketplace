@@ -53,6 +53,7 @@ const MintModal = ({
               <div className="w-full lg:w-7/12 xl:w-1/2 mx-auto flex items-center justify-center flex-col">
                 <span>
                   <Image
+                //   Daniel Change this to PicOne
                     src={mintedNFTData.tokenURI}
                     alt="minted"
                     className="w-9/12 max-w-[400px] h-auto rounded-md"
