@@ -17,18 +17,24 @@ import { useStorageUpload } from "@thirdweb-dev/react";
 import * as yup from "yup";
 import { CreateCollectionProps, CreateSingleNFTProps } from "@/types";
 import StandardModal from "@/app/components/modals/StandardModal";
-import NormalLayout from "@/app/layouts/NormalLayout";
-import { CloseIcon } from "@/public/assets/svg";
-import Image from "next/image";
-import picOne from "../../../public/assets/market/one.png";
-import Link from "next/link";
-import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import APIService from "@/app/utils/APIServices";
-
+import MintModal from "../../components/modals/MintModal";
+import { mintModalProps } from "../../components/modals/MintModal";
+import NormalLayout from "@/app/layouts/NormalLayout";
+import Link from "next/link";
+import Image from "next/image";
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
+import picOne from "../../../public/assets/market/one.png";
+import { CloseIcon } from "../../../public/assets/svg/index";
 export interface TraitsProps {
   value: string;
   trait_type: string;
 }
+ interface mintedNFTProps{
+  tokenURI: string;
+  metaDataURI: string;
+  transactionHash: string;
+ }
 const SingleNft = () => {
   const { mutateAsync: upload, isLoading } = useStorageUpload();
   const [modal, setModal] = useState<boolean>(false);
@@ -38,15 +44,18 @@ const SingleNft = () => {
     value: "",
     trait_type: "",
   });
+  const [mintedNFTData, setMintedNFTData] = useState<mintedNFTProps>({
+    tokenURI: "",
+    metaDataURI: "",
+    transactionHash: "",
+  });
   const [traits, setTraits] = useState<TraitsProps[]>([]);
+  //Change this to true for testing.
   const [isMinted, setIsMinted] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(false);
   const [contractAddress, setContractAddress] = useState<string>("");
   const [singleNFTData, setSingleNFTData] = useState({});
-  const [loadingA, setLoadingA] = useState<boolean>(false);
-  const [loadingB, setLoadingB] = useState<boolean>(true);
-  const [loadingC, setLoadingC] = useState<boolean>(true);
-
+  
   const address = useAddress();
   const validationSchema = yup.object().shape({
     logo: yup.mixed().required("Required"),
@@ -75,47 +84,7 @@ const SingleNft = () => {
 
   return (
     <>
-      {isMinted && (
-        <div className="bg-blue-body w-full h-screen">
-          <NormalLayout>
-            <div className="w-full h-screen p-4 flex items-center justify-center relative">
-              <span
-                className="absolute top-4 left-4 cursor-pointer"
-                onClick={() => setIsMinted(false)}
-              >
-                <CloseIcon />
-              </span>
-              <div className="w-full lg:w-7/12 xl:w-1/2 mx-auto flex items-center justify-center flex-col">
-                <span>
-                  <Image
-                    src={picOne}
-                    alt="minted"
-                    className="w-9/12 max-w-[400px] h-auto rounded-md"
-                  />
-                </span>
-                <p className="bold text-white mt-6 text-xl sm:text-2xl lg:text-3xl  ">
-                  Your item has been minted
-                </p>
-                <div className="w-full sm:w-9/12 lg:w-1/2 mt-8 flex justify-center items-center mx-auto gap-4">
-                  <ActionBtn name={"List Item"} />
-                  <YellowActionBtn name={"View Item"} />
-                </div>
-                <div className="mx-auto mt-7">
-                  <Link
-                    href={"#"}
-                    className="text-white flex items-center gap-2"
-                  >
-                    View on Etherscan{" "}
-                    <span>
-                      <FaArrowUpRightFromSquare />
-                    </span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </NormalLayout>
-        </div>
-      )}
+      
       {!isMinted && (
         <ParentLayout>
           {/* <div className="w-full flex flex-col md:w-10/12 xl:w-6/12 mx-auto mb-32 ">
@@ -363,9 +332,15 @@ const SingleNft = () => {
             <StandardModal
               singleNFTData={singleNFTData as any}
               contractAddress={contractAddress}
+              isMinted={isMinted}
+              setIsMinted={setIsMinted}
+              mintedNFTData={mintedNFTData}
+              setMintedNFTData={setMintedNFTData as any}
               showHeader={true}
               showCloseIcon={true}
               showfooter={true}
+              openModal={openModal}
+              setOpenModal={setOpenModal as any}
               closeModal={() => setOpenModal(false)}
               onConfirm={() => ""}
               showCloseButton={false}
@@ -375,156 +350,17 @@ const SingleNft = () => {
               confirmButtonLabel="Yes, Remove"
               closeButtonClassName="bg-transparent text-secondary-500 font-[400] rounded-[30px] border border-[#C3E69E]/50 hover:opacity-90"
             >
-              <Fragment key="header">
-                <div className="flex items-center">
-                  <h4 className="text-lg semibold text-white">
-                    Creating your item
-                  </h4>
-                </div>
-              </Fragment>
-              <Fragment key="body">
-                <div className="flex   pb-0 flex-col items-center justify-center gap-6 ">
-                  {/* start */}
-                  <div className="w-full flex items-center gap-4">
-                    {loadingA ? (
-                      <svg
-                        className="animate-spin h-8 w-8 mr-3 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          stroke-width="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                        ></path>
-                      </svg>
-                    ) : (
-                      <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
-                        <input
-                          type="checkbox"
-                          name=""
-                          id=""
-                          className="w-4 h-4 accent-blue-btn"
-                          checked
-                        />
-                      </span>
-                    )}
-
-                    <div className="flex flex-col">
-                      <p className="regular text-white text-sm ">
-                        Uploading to decentralized server
-                      </p>
-                      <p className="light text-[#ababab] text-xs">
-                        This may take a few minutes.
-                      </p>
-                    </div>
-                  </div>
-                  {/* end  */}
-                  {/* start */}
-                  <div className="w-full flex items-center gap-4">
-                    {loadingB ? (
-                      <svg
-                        className="animate-spin h-8 w-8 mr-3 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          stroke-width="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                        ></path>
-                      </svg>
-                    ) : (
-                      <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
-                        <input
-                          type="checkbox"
-                          name=""
-                          id=""
-                          className="w-4 h-4 accent-blue-btn"
-                          checked
-                        />
-                      </span>
-                    )}
-                    <div className="flex flex-col">
-                      <p className="regular text-white text-sm ">
-                        Uploading to decentralized server
-                      </p>
-                      <p className="light text-[#ababab] text-xs">
-                        This may take a few minutes.
-                      </p>
-                    </div>
-                  </div>
-                  {/* end  */}
-                  {/* start */}
-                  <div className="w-full flex items-center gap-4">
-                    {loadingC ? (
-                      <svg
-                        className="animate-spin h-8 w-8 mr-3 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          stroke-width="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                        ></path>
-                      </svg>
-                    ) : (
-                      <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
-                        <input
-                          type="checkbox"
-                          name=""
-                          id=""
-                          className="w-4 h-4 accent-blue-btn"
-                          checked
-                        />
-                      </span>
-                    )}
-                    <div className="flex flex-col">
-                      <p className="regular text-white text-sm ">
-                        Uploading to decentralized server
-                      </p>
-                      <p className="light text-[#ababab] text-xs">
-                        This may take a few minutes.
-                      </p>
-                    </div>
-                  </div>
-                  {/* end  */}
-                </div>
-              </Fragment>
-
-              <Fragment key="footer"></Fragment>
             </StandardModal>
           )}
+           
         </ParentLayout>
       )}
+       <MintModal 
+       isMinted={isMinted} 
+       setIsMinted={setIsMinted} 
+       mintedNFTData={mintedNFTData}
+        setMintedNFTData={setMintedNFTData as any}
+       />
     </>
   );
 };

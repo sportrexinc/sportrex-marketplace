@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    domains: ['ipfs.io'], // Add the IPFS gateway domain here
+  },
   async rewrites() {
     return [
       {
