@@ -17,7 +17,7 @@ import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import picOne from "../../../public/assets/market/one.png";
 
 export interface mintModalProps {
-  isMinted: boolea;
+  isMinted: boolean;
   setIsMinted: any;
   mintedNFTData: any;
   setMintedNFTData: any;
