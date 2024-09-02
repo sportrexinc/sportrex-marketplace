@@ -24,7 +24,7 @@ import picOne from "../../../public/assets/market/one.png";
 import Link from "next/link";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import APIService from "@/app/utils/APIServices";
-
+import { FaTimes } from "react-icons/fa";
 export interface TraitsProps {
   value: string;
   trait_type: string;
@@ -40,12 +40,15 @@ const SingleNft = () => {
   });
   const [traits, setTraits] = useState<TraitsProps[]>([]);
   const [isMinted, setIsMinted] = useState<boolean>(false);
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(true);
   const [contractAddress, setContractAddress] = useState<string>("");
   const [singleNFTData, setSingleNFTData] = useState({});
   const [loadingA, setLoadingA] = useState<boolean>(false);
+  const [errorA, setErrorA] = useState<boolean>(false);
   const [loadingB, setLoadingB] = useState<boolean>(true);
-  const [loadingC, setLoadingC] = useState<boolean>(true);
+  const [loadingC, setLoadingC] = useState<boolean>(false);
+  const [errorB, setErrorB] = useState<boolean>(false);
+  const [errorC, setErrorC] = useState<boolean>(true);
 
   const address = useAddress();
   const validationSchema = yup.object().shape({
@@ -90,7 +93,7 @@ const SingleNft = () => {
                   <Image
                     src={picOne}
                     alt="minted"
-                    className="w-9/12 max-w-[400px] h-auto rounded-md"
+                    className="w-full max-w-[600px] h-auto rounded-md"
                   />
                 </span>
                 <p className="bold text-white mt-6 text-xl sm:text-2xl lg:text-3xl  ">
@@ -105,7 +108,7 @@ const SingleNft = () => {
                     href={"#"}
                     className="text-white flex items-center gap-2"
                   >
-                    View on Etherscan{" "}
+                    View on BSCscan{" "}
                     <span>
                       <FaArrowUpRightFromSquare />
                     </span>
@@ -408,24 +411,42 @@ const SingleNft = () => {
                         ></path>
                       </svg>
                     ) : (
-                      <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
-                        <input
-                          type="checkbox"
-                          name=""
-                          id=""
-                          className="w-4 h-4 accent-blue-btn"
-                          checked
-                        />
-                      </span>
+                      <>
+                        {errorA ? (
+                          <span className="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center">
+                            <FaTimes />
+                          </span>
+                        ) : (
+                          <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
+                            <input
+                              type="checkbox"
+                              name=""
+                              id=""
+                              className="w-4 h-4 accent-blue-btn"
+                              checked
+                            />
+                          </span>
+                        )}
+                      </>
                     )}
 
                     <div className="flex flex-col">
-                      <p className="regular text-white text-sm ">
+                      <p
+                        className={`${
+                          errorB ? "text-red-500" : "text-white"
+                        } regular  text-sm `}
+                      >
                         Uploading to decentralized server
                       </p>
-                      <p className="light text-[#ababab] text-xs">
-                        This may take a few minutes.
-                      </p>
+                      {errorB ? (
+                        <p className="light text-red-500 text-xs">
+                          Failed to upload to server
+                        </p>
+                      ) : (
+                        <p className="light text-[#ababab] text-xs">
+                          This may take a few minutes.
+                        </p>
+                      )}
                     </div>
                   </div>
                   {/* end  */}
@@ -453,23 +474,41 @@ const SingleNft = () => {
                         ></path>
                       </svg>
                     ) : (
-                      <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
-                        <input
-                          type="checkbox"
-                          name=""
-                          id=""
-                          className="w-4 h-4 accent-blue-btn"
-                          checked
-                        />
-                      </span>
+                      <>
+                        {errorB ? (
+                          <span className="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center">
+                            <FaTimes />
+                          </span>
+                        ) : (
+                          <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
+                            <input
+                              type="checkbox"
+                              name=""
+                              id=""
+                              className="w-4 h-4 accent-blue-btn"
+                              checked
+                            />
+                          </span>
+                        )}
+                      </>
                     )}
                     <div className="flex flex-col">
-                      <p className="regular text-white text-sm ">
+                      <p
+                        className={`${
+                          errorB ? "text-red-500" : "text-white"
+                        } regular  text-sm `}
+                      >
                         Uploading to decentralized server
                       </p>
-                      <p className="light text-[#ababab] text-xs">
-                        This may take a few minutes.
-                      </p>
+                      {errorB ? (
+                        <p className="light text-red-500 text-xs">
+                          Failed to upload to server
+                        </p>
+                      ) : (
+                        <p className="light text-[#ababab] text-xs">
+                          This may take a few minutes.
+                        </p>
+                      )}
                     </div>
                   </div>
                   {/* end  */}
@@ -497,23 +536,41 @@ const SingleNft = () => {
                         ></path>
                       </svg>
                     ) : (
-                      <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
-                        <input
-                          type="checkbox"
-                          name=""
-                          id=""
-                          className="w-4 h-4 accent-blue-btn"
-                          checked
-                        />
-                      </span>
+                      <>
+                        {errorC ? (
+                          <span className="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center">
+                            <FaTimes />
+                          </span>
+                        ) : (
+                          <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
+                            <input
+                              type="checkbox"
+                              name=""
+                              id=""
+                              className="w-4 h-4 accent-blue-btn"
+                              checked
+                            />
+                          </span>
+                        )}
+                      </>
                     )}
                     <div className="flex flex-col">
-                      <p className="regular text-white text-sm ">
+                      <p
+                        className={`${
+                          errorC ? "text-red-500" : "text-white"
+                        } regular  text-sm `}
+                      >
                         Uploading to decentralized server
                       </p>
-                      <p className="light text-[#ababab] text-xs">
-                        This may take a few minutes.
-                      </p>
+                      {errorC ? (
+                        <p className="light text-red-500 text-xs">
+                          Failed to upload to server
+                        </p>
+                      ) : (
+                        <p className="light text-[#ababab] text-xs">
+                          This may take a few minutes.
+                        </p>
+                      )}
                     </div>
                   </div>
                   {/* end  */}
