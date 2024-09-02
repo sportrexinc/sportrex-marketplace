@@ -18,7 +18,7 @@ import picOne from "../../../public/assets/market/one.png";
 
 export interface mintModalProps {
   isMinted: boolean;
-  setIsMinted: any;
+  setIsMinted: an;
   mintedNFTData: any;
   setMintedNFTData: any;
 }
