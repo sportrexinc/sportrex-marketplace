@@ -15,6 +15,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import picOne from "../../../public/assets/market/one.png";
+import { BiSolidError } from "react-icons/bi";
 // import { Button } from "../Forms/Button";
 interface modalProps {
   showHeader?: boolean;
@@ -84,6 +85,9 @@ const StandardModal = ({
   const [loadingA, setLoadingA] = useState<boolean>(true);
   const [loadingB, setLoadingB] = useState<boolean>(true);
   const [loadingC, setLoadingC] = useState<boolean>(true);
+    const [errorA, setErrorA] = useState<boolean>(false);
+    const [errorB, setErrorB] = useState<boolean>(false);
+    const [errorC, setErrorC] = useState<boolean>(false);
   const [singleCreatedNFT, setSingleCreatedNFT] =
     useState<CreateSingleNFTProps | null>(null);
   const [tokenURI, setTokenURI] = useState<any>();
@@ -224,15 +228,23 @@ const StandardModal = ({
                         ></path>
                       </svg>
                     ) : (
-                      <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
-                        <input
-                          type="checkbox"
-                          name=""
-                          id=""
-                          className="w-4 h-4 accent-blue-btn"
-                          checked
-                        />
-                      </span>
+                      <>
+                        {errorA ? (
+                          <span className="text-red-500 bg-blue-btn w-10 h-10 flex items-center justify-center">
+                            <BiSolidError />
+                          </span>
+                        ) : (
+                          <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
+                            <input
+                              type="checkbox"
+                              name=""
+                              id=""
+                              className="w-4 h-4 accent-blue-btn"
+                              checked
+                            />
+                          </span>
+                        )}
+                      </>
                     )}
 
                     <div className="flex flex-col">
@@ -242,6 +254,9 @@ const StandardModal = ({
                       <p className="light text-[#ababab] text-xs">
                         This may take a few minutes.
                       </p>
+                      {errorA && (
+                        <p className="text-xs text-red-500 mt-1">failed !</p>
+                      )}
                     </div>
                   </div>
                   {/* end  */}
@@ -269,15 +284,23 @@ const StandardModal = ({
                         ></path>
                       </svg>
                     ) : (
-                      <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
-                        <input
-                          type="checkbox"
-                          name=""
-                          id=""
-                          className="w-4 h-4 accent-blue-btn"
-                          checked
-                        />
-                      </span>
+                      <>
+                        {errorB ? (
+                          <span className="text-red-500 bg-blue-btn w-10 h-10 flex items-center justify-center">
+                            <BiSolidError />
+                          </span>
+                        ) : (
+                          <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
+                            <input
+                              type="checkbox"
+                              name=""
+                              id=""
+                              className="w-4 h-4 accent-blue-btn"
+                              checked
+                            />
+                          </span>
+                        )}
+                      </>
                     )}
                     <div className="flex flex-col">
                       <p className="regular text-white text-sm ">
@@ -286,6 +309,9 @@ const StandardModal = ({
                       <p className="light text-[#ababab] text-xs">
                         This may take a few minutes.
                       </p>
+                      {errorB && (
+                        <p className="text-xs text-red-500 mt-1">failed !</p>
+                      )}
                     </div>
                   </div>
                   {/* end  */}
@@ -313,15 +339,23 @@ const StandardModal = ({
                         ></path>
                       </svg>
                     ) : (
-                      <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
-                        <input
-                          type="checkbox"
-                          name=""
-                          id=""
-                          className="w-4 h-4 accent-blue-btn"
-                          checked
-                        />
-                      </span>
+                      <>
+                        {errorC ? (
+                          <span className="text-red-500 bg-blue-btn w-10 h-10 flex items-center justify-center">
+                            <BiSolidError />
+                          </span>
+                        ) : (
+                          <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
+                            <input
+                              type="checkbox"
+                              name=""
+                              id=""
+                              className="w-4 h-4 accent-blue-btn"
+                              checked
+                            />
+                          </span>
+                        )}
+                      </>
                     )}
                     <div className="flex flex-col">
                       <p className="regular text-white text-sm ">
@@ -330,6 +364,9 @@ const StandardModal = ({
                       <p className="light text-[#ababab] text-xs">
                         This may take a few minutes.
                       </p>
+                      {errorC && (
+                        <p className="text-xs text-red-500 mt-1">failed !</p>
+                      )}
                     </div>
                   </div>
                   {/* end  */}

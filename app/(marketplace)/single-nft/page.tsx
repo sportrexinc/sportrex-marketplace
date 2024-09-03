@@ -25,14 +25,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import picOne from "../../../public/assets/market/one.png";
-import Link from "next/link";
-import { FaArrowUpRightFromSquare } from "react-icons/fa6";
-import APIService from "@/app/utils/APIServices";
+
+
+
 import { FaTimes } from "react-icons/fa";
 import { CloseIcon } from "../../../public/assets/svg/index";
 export interface TraitsProps {
   value: string;
   trait_type: string;
+  
 }
  interface mintedNFTProps{
   tokenURI: string;
@@ -44,27 +45,30 @@ const SingleNft = () => {
   const [modal, setModal] = useState<boolean>(false);
   const [isCollectionLoading, setIsCollectionLoading]= useState(true)
   const [collections, setCollections] = useState<CreateCollectionProps[]>([]);
+  const [traits, setTraits] = useState<TraitsProps[]>([]);
   const [trait, setTrait] = useState<TraitsProps>({
     value: "",
     trait_type: "",
   });
+
+  const handleDeleteTrait = (id:number) => {
+    const available = traits?.filter((item: any, index: number) => index !== id);
+    console.log(available);
+    setTraits(available);
+  }
+  console.log(traits);
   const [mintedNFTData, setMintedNFTData] = useState<mintedNFTProps>({
     tokenURI: "",
     metaDataURI: "",
     transactionHash: "",
   });
-  const [traits, setTraits] = useState<TraitsProps[]>([]);
   //Change this to true for testing.
   const [isMinted, setIsMinted] = useState<boolean>(false);
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
   const [contractAddress, setContractAddress] = useState<string>("");
   const [singleNFTData, setSingleNFTData] = useState({});
-  const [loadingA, setLoadingA] = useState<boolean>(false);
-  const [errorA, setErrorA] = useState<boolean>(false);
-  const [loadingB, setLoadingB] = useState<boolean>(true);
-  const [loadingC, setLoadingC] = useState<boolean>(false);
-  const [errorB, setErrorB] = useState<boolean>(false);
-  const [errorC, setErrorC] = useState<boolean>(true);
+
+
 
   
   const address = useAddress();
@@ -95,7 +99,7 @@ const SingleNft = () => {
 
   return (
     <>
-      {isMinted && (
+      {/* {isMinted && (
         <div className="bg-blue-body w-full h-screen">
           <NormalLayout>
             <div className="w-full h-screen p-4 flex items-center justify-center relative">
@@ -135,7 +139,7 @@ const SingleNft = () => {
             </div>
           </NormalLayout>
         </div>
-      )}
+      )} */}
       
       {!isMinted && (
         <ParentLayout>
@@ -290,20 +294,39 @@ const SingleNft = () => {
                         }
                       />
                       <div className="w-full flex flex-col">
-                        <h1 className="semibold text-base sm:text-lg text-white ">
-                          NFT Traits
-                        </h1>
-                        <p className="text-[#999] regular text-sm ">
-                          Traits describes the attributes of your NFT assets
-                        </p>
+                        <div className="w-full justify-center items-center flex">
+                          <div className="w-full flex flex-col">
+                            <h1 className="semibold text-base sm:text-lg text-white ">
+                              NFT Traits
+                            </h1>
+                            <p className="text-[#999] regular text-sm ">
+                              Traits describes the attributes of your NFT assets
+                            </p>
+                          </div>
+                          <div>
+                            <button
+                              className="bg-white regular text-sm text-[#020733] h-12 rounded-[7px] flex items-center justify-center min-w-[139px]  cursor-pointer"
+                              onClick={() => {
+                                // const newTraitFields = [
+                                //   ...values.traits,
+                                //   trait,
+                                // ];
+                                // setFieldValue("traits", newTraitFields);
+                                setTraits([...traits, {value:"",trait_type:""}]);
+                              }}
+                            >
+                              Add New Trait
+                            </button>
+                          </div>
+                        </div>
                         <div className="w-full flex lg:items-start gap-[22px] mt-4 ">
-                          <div className="w-auto flex-grow flex flex-col gap-[11px]">
+                          <div className="w-full flex-grow flex flex-col gap-[11px] ">
                             {traits?.map((item, index) => {
                               return (
                                 <>
                                   <div
                                     key={index}
-                                    className="w-full grid grid-cols-2 gap-[22px] "
+                                    className="w-full grid grid-cols-3 gap-[22px] "
                                   >
                                     <span className="w-full">
                                       <input
@@ -331,25 +354,16 @@ const SingleNft = () => {
                                         }
                                       />
                                     </span>
+                                    <span
+                                      className="text-red-500 regular text-sm flex items-center"
+                                      onClick={() => handleDeleteTrait(index)}
+                                    >
+                                      Delete 
+                                    </span>
                                   </div>
                                 </>
                               );
                             })}
-                          </div>
-                          <div>
-                            <button
-                              className="bg-white regular text-sm text-[#020733] h-12 rounded-[7px] flex items-center justify-center min-w-[139px]  cursor-pointer"
-                              onClick={() => {
-                                const newTraitFields = [
-                                  ...values.traits,
-                                  trait,
-                                ];
-                                setFieldValue("traits", newTraitFields);
-                                setTraits(newTraitFields);
-                              }}
-                            >
-                              Add New Trait
-                            </button>
                           </div>
                         </div>
                       </div>
