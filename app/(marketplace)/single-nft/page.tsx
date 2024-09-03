@@ -25,10 +25,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import picOne from "../../../public/assets/market/one.png";
+
+
+
+import { FaTimes } from "react-icons/fa";
 import { CloseIcon } from "../../../public/assets/svg/index";
 export interface TraitsProps {
   value: string;
   trait_type: string;
+  
 }
  interface mintedNFTProps{
   tokenURI: string;
@@ -40,21 +45,31 @@ const SingleNft = () => {
   const [modal, setModal] = useState<boolean>(false);
   const [isCollectionLoading, setIsCollectionLoading]= useState(true)
   const [collections, setCollections] = useState<CreateCollectionProps[]>([]);
+  const [traits, setTraits] = useState<TraitsProps[]>([]);
   const [trait, setTrait] = useState<TraitsProps>({
     value: "",
     trait_type: "",
   });
+
+  const handleDeleteTrait = (id:number) => {
+    const available = traits?.filter((item: any, index: number) => index !== id);
+    console.log(available);
+    setTraits(available);
+  }
+  console.log(traits);
   const [mintedNFTData, setMintedNFTData] = useState<mintedNFTProps>({
     tokenURI: "",
     metaDataURI: "",
     transactionHash: "",
   });
-  const [traits, setTraits] = useState<TraitsProps[]>([]);
   //Change this to true for testing.
   const [isMinted, setIsMinted] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(false);
   const [contractAddress, setContractAddress] = useState<string>("");
   const [singleNFTData, setSingleNFTData] = useState({});
+
+
+
   
   const address = useAddress();
   const validationSchema = yup.object().shape({
@@ -84,6 +99,47 @@ const SingleNft = () => {
 
   return (
     <>
+      {/* {isMinted && (
+        <div className="bg-blue-body w-full h-screen">
+          <NormalLayout>
+            <div className="w-full h-screen p-4 flex items-center justify-center relative">
+              <span
+                className="absolute top-4 left-4 cursor-pointer"
+                onClick={() => setIsMinted(false)}
+              >
+                <CloseIcon />
+              </span>
+              <div className="w-full lg:w-7/12 xl:w-1/2 mx-auto flex items-center justify-center flex-col">
+                <span>
+                  <Image
+                    src={picOne}
+                    alt="minted"
+                    className="w-full max-w-[600px] h-auto rounded-md"
+                  />
+                </span>
+                <p className="bold text-white mt-6 text-xl sm:text-2xl lg:text-3xl  ">
+                  Your item has been minted
+                </p>
+                <div className="w-full sm:w-9/12 lg:w-1/2 mt-8 flex justify-center items-center mx-auto gap-4">
+                  <ActionBtn name={"List Item"} />
+                  <YellowActionBtn name={"View Item"} />
+                </div>
+                <div className="mx-auto mt-7">
+                  <Link
+                    href={"#"}
+                    className="text-white flex items-center gap-2"
+                  >
+                    View on BSCscan{" "}
+                    <span>
+                      <FaArrowUpRightFromSquare />
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </NormalLayout>
+        </div>
+      )} */}
       
       {!isMinted && (
         <ParentLayout>
@@ -238,20 +294,39 @@ const SingleNft = () => {
                         }
                       />
                       <div className="w-full flex flex-col">
-                        <h1 className="semibold text-base sm:text-lg text-white ">
-                          NFT Traits
-                        </h1>
-                        <p className="text-[#999] regular text-sm ">
-                          Traits describes the attributes of your NFT assets
-                        </p>
+                        <div className="w-full justify-center items-center flex">
+                          <div className="w-full flex flex-col">
+                            <h1 className="semibold text-base sm:text-lg text-white ">
+                              NFT Traits
+                            </h1>
+                            <p className="text-[#999] regular text-sm ">
+                              Traits describes the attributes of your NFT assets
+                            </p>
+                          </div>
+                          <div>
+                            <button
+                              className="bg-white regular text-sm text-[#020733] h-12 rounded-[7px] flex items-center justify-center min-w-[139px]  cursor-pointer"
+                              onClick={() => {
+                                // const newTraitFields = [
+                                //   ...values.traits,
+                                //   trait,
+                                // ];
+                                // setFieldValue("traits", newTraitFields);
+                                setTraits([...traits, {value:"",trait_type:""}]);
+                              }}
+                            >
+                              Add New Trait
+                            </button>
+                          </div>
+                        </div>
                         <div className="w-full flex lg:items-start gap-[22px] mt-4 ">
-                          <div className="w-auto flex-grow flex flex-col gap-[11px]">
+                          <div className="w-full flex-grow flex flex-col gap-[11px] ">
                             {traits?.map((item, index) => {
                               return (
                                 <>
                                   <div
                                     key={index}
-                                    className="w-full grid grid-cols-2 gap-[22px] "
+                                    className="w-full grid grid-cols-3 gap-[22px] "
                                   >
                                     <span className="w-full">
                                       <input
@@ -279,25 +354,16 @@ const SingleNft = () => {
                                         }
                                       />
                                     </span>
+                                    <span
+                                      className="text-red-500 regular text-sm flex items-center"
+                                      onClick={() => handleDeleteTrait(index)}
+                                    >
+                                      Delete 
+                                    </span>
                                   </div>
                                 </>
                               );
                             })}
-                          </div>
-                          <div>
-                            <button
-                              className="bg-white regular text-sm text-[#020733] h-12 rounded-[7px] flex items-center justify-center min-w-[139px]  cursor-pointer"
-                              onClick={() => {
-                                const newTraitFields = [
-                                  ...values.traits,
-                                  trait,
-                                ];
-                                setFieldValue("traits", newTraitFields);
-                                setTraits(newTraitFields);
-                              }}
-                            >
-                              Add New Trait
-                            </button>
                           </div>
                         </div>
                       </div>
