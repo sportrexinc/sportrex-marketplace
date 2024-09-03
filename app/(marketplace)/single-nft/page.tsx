@@ -17,18 +17,28 @@ import { useStorageUpload } from "@thirdweb-dev/react";
 import * as yup from "yup";
 import { CreateCollectionProps, CreateSingleNFTProps } from "@/types";
 import StandardModal from "@/app/components/modals/StandardModal";
+import APIService from "@/app/utils/APIServices";
+import MintModal from "../../components/modals/MintModal";
+import { mintModalProps } from "../../components/modals/MintModal";
 import NormalLayout from "@/app/layouts/NormalLayout";
-import { CloseIcon } from "@/public/assets/svg";
+import Link from "next/link";
 import Image from "next/image";
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import picOne from "../../../public/assets/market/one.png";
 import Link from "next/link";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import APIService from "@/app/utils/APIServices";
 import { FaTimes } from "react-icons/fa";
+import { CloseIcon } from "../../../public/assets/svg/index";
 export interface TraitsProps {
   value: string;
   trait_type: string;
 }
+ interface mintedNFTProps{
+  tokenURI: string;
+  metaDataURI: string;
+  transactionHash: string;
+ }
 const SingleNft = () => {
   const { mutateAsync: upload, isLoading } = useStorageUpload();
   const [modal, setModal] = useState<boolean>(false);
@@ -38,7 +48,13 @@ const SingleNft = () => {
     value: "",
     trait_type: "",
   });
+  const [mintedNFTData, setMintedNFTData] = useState<mintedNFTProps>({
+    tokenURI: "",
+    metaDataURI: "",
+    transactionHash: "",
+  });
   const [traits, setTraits] = useState<TraitsProps[]>([]);
+  //Change this to true for testing.
   const [isMinted, setIsMinted] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(true);
   const [contractAddress, setContractAddress] = useState<string>("");
@@ -50,6 +66,7 @@ const SingleNft = () => {
   const [errorB, setErrorB] = useState<boolean>(false);
   const [errorC, setErrorC] = useState<boolean>(true);
 
+  
   const address = useAddress();
   const validationSchema = yup.object().shape({
     logo: yup.mixed().required("Required"),
@@ -119,6 +136,7 @@ const SingleNft = () => {
           </NormalLayout>
         </div>
       )}
+      
       {!isMinted && (
         <ParentLayout>
           {/* <div className="w-full flex flex-col md:w-10/12 xl:w-6/12 mx-auto mb-32 ">
@@ -366,9 +384,15 @@ const SingleNft = () => {
             <StandardModal
               singleNFTData={singleNFTData as any}
               contractAddress={contractAddress}
+              isMinted={isMinted}
+              setIsMinted={setIsMinted}
+              mintedNFTData={mintedNFTData}
+              setMintedNFTData={setMintedNFTData as any}
               showHeader={true}
               showCloseIcon={true}
               showfooter={true}
+              openModal={openModal}
+              setOpenModal={setOpenModal as any}
               closeModal={() => setOpenModal(false)}
               onConfirm={() => ""}
               showCloseButton={false}
@@ -378,210 +402,17 @@ const SingleNft = () => {
               confirmButtonLabel="Yes, Remove"
               closeButtonClassName="bg-transparent text-secondary-500 font-[400] rounded-[30px] border border-[#C3E69E]/50 hover:opacity-90"
             >
-              <Fragment key="header">
-                <div className="flex items-center">
-                  <h4 className="text-lg semibold text-white">
-                    Creating your item
-                  </h4>
-                </div>
-              </Fragment>
-              <Fragment key="body">
-                <div className="flex   pb-0 flex-col items-center justify-center gap-6 ">
-                  {/* start */}
-                  <div className="w-full flex items-center gap-4">
-                    {loadingA ? (
-                      <svg
-                        className="animate-spin h-8 w-8 mr-3 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          stroke-width="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                        ></path>
-                      </svg>
-                    ) : (
-                      <>
-                        {errorA ? (
-                          <span className="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center">
-                            <FaTimes />
-                          </span>
-                        ) : (
-                          <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
-                            <input
-                              type="checkbox"
-                              name=""
-                              id=""
-                              className="w-4 h-4 accent-blue-btn"
-                              checked
-                            />
-                          </span>
-                        )}
-                      </>
-                    )}
-
-                    <div className="flex flex-col">
-                      <p
-                        className={`${
-                          errorB ? "text-red-500" : "text-white"
-                        } regular  text-sm `}
-                      >
-                        Uploading to decentralized server
-                      </p>
-                      {errorB ? (
-                        <p className="light text-red-500 text-xs">
-                          Failed to upload to server
-                        </p>
-                      ) : (
-                        <p className="light text-[#ababab] text-xs">
-                          This may take a few minutes.
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  {/* end  */}
-                  {/* start */}
-                  <div className="w-full flex items-center gap-4">
-                    {loadingB ? (
-                      <svg
-                        className="animate-spin h-8 w-8 mr-3 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          stroke-width="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                        ></path>
-                      </svg>
-                    ) : (
-                      <>
-                        {errorB ? (
-                          <span className="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center">
-                            <FaTimes />
-                          </span>
-                        ) : (
-                          <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
-                            <input
-                              type="checkbox"
-                              name=""
-                              id=""
-                              className="w-4 h-4 accent-blue-btn"
-                              checked
-                            />
-                          </span>
-                        )}
-                      </>
-                    )}
-                    <div className="flex flex-col">
-                      <p
-                        className={`${
-                          errorB ? "text-red-500" : "text-white"
-                        } regular  text-sm `}
-                      >
-                        Uploading to decentralized server
-                      </p>
-                      {errorB ? (
-                        <p className="light text-red-500 text-xs">
-                          Failed to upload to server
-                        </p>
-                      ) : (
-                        <p className="light text-[#ababab] text-xs">
-                          This may take a few minutes.
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  {/* end  */}
-                  {/* start */}
-                  <div className="w-full flex items-center gap-4">
-                    {loadingC ? (
-                      <svg
-                        className="animate-spin h-8 w-8 mr-3 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          stroke-width="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                        ></path>
-                      </svg>
-                    ) : (
-                      <>
-                        {errorC ? (
-                          <span className="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center">
-                            <FaTimes />
-                          </span>
-                        ) : (
-                          <span className="w-10 h-10 rounded-full bg-blue-btn flex items-center justify-center">
-                            <input
-                              type="checkbox"
-                              name=""
-                              id=""
-                              className="w-4 h-4 accent-blue-btn"
-                              checked
-                            />
-                          </span>
-                        )}
-                      </>
-                    )}
-                    <div className="flex flex-col">
-                      <p
-                        className={`${
-                          errorC ? "text-red-500" : "text-white"
-                        } regular  text-sm `}
-                      >
-                        Uploading to decentralized server
-                      </p>
-                      {errorC ? (
-                        <p className="light text-red-500 text-xs">
-                          Failed to upload to server
-                        </p>
-                      ) : (
-                        <p className="light text-[#ababab] text-xs">
-                          This may take a few minutes.
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  {/* end  */}
-                </div>
-              </Fragment>
-
-              <Fragment key="footer"></Fragment>
             </StandardModal>
           )}
+           
         </ParentLayout>
       )}
+       <MintModal 
+       isMinted={isMinted} 
+       setIsMinted={setIsMinted} 
+       mintedNFTData={mintedNFTData}
+        setMintedNFTData={setMintedNFTData as any}
+       />
     </>
   );
 };

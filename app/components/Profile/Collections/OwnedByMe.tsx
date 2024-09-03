@@ -39,7 +39,7 @@ const OwnedByMe = () => {
   useEffect(() => {
    address && dispatch(getUserCollection({
       address,
-      chain: 'mumbai',
+      chain: 'binance-testnet',
       limit: 15
     }))
   },[address])
