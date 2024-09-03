@@ -26,6 +26,7 @@ import CollectionCard from "@/app/components/Cards/CollectionCard";
 import { AxiosResponse } from "axios";
 import { useTranslation } from "react-i18next";
 import ContractFactoryAbi from "@/abi/SptContractFactory.json";
+import CollectionMintModal from "@/app/components/modals/CollectionMintModal";
 
 const CollectionNft = () => {
   // @ts-ignore
@@ -56,12 +57,21 @@ const CollectionNft = () => {
   });
 
   return (
+    <>
+      {
+        modal && (
+          <CollectionMintModal data={collection} open={modal} setOpen={setModal} />
+        )
+      }
+      { modal === false && (
     <ParentLayout>
-      {address ? (
+
+      {address && modal === false ? (
         <div className="w-full flex flex-col md:w-10/12 xl:w-6/12 mx-auto mb-32 ">
           <ReUseModal open={modal} setOpen={() => setModal(false)}>
             <CollectionCard data={collection} />
           </ReUseModal>
+          
           <div className="flex flex-col mt-8 xl:mt-20 ">
             <Header>Collection Creation</Header>
             <p className="text-grey-800  text-sm regular">
@@ -90,28 +100,28 @@ const CollectionNft = () => {
                   values.symbol,
                 ]);
                 // const data = await createNFTCollection({
-                //   args: [values.name, values.symbol],
-                //   overrides: {
-                //     value: convertTowei(0.0005),
-                //   },
-                // });
-                console.log(data);
-                console.log(contract);
+                  //   args: [values.name, values.symbol],
+                  //   overrides: {
+                    //     value: convertTowei(0.0005),
+                    //   },
+                    // });
+                    console.log(data);
+                    console.log(contract);
 
                 const contractAddress = data.receipt.logs[0].address;
-
+                
                 const formData = new FormData();
                 formData.append("logo", values.logo);
                 formData.append("name", values.name);
                 formData.append("symbol", values.symbol);
                 formData.append("contractAddress", contractAddress);
                 values.blockChain &&
-                  formData.append("blockChain", values.blockChain);
+                formData.append("blockChain", values.blockChain);
                 values.category && formData.append("category", values.category);
                 values.banner && formData.append("banner", values.banner);
                 values.desc && formData.append("desc", values.desc);
                 values.external_link &&
-                  formData.append("external_link", values.external_link);
+                formData.append("external_link", values.external_link);
                 const response: AxiosResponse<{ data: CreateCollectionProps }> =
                   await APIService.post(
                     `/user/${address}/collection`,
@@ -126,7 +136,7 @@ const CollectionNft = () => {
               }
             }}
             validationSchema={validationSchema}
-          >
+            >
             {({
               isSubmitting,
               values,
@@ -145,12 +155,12 @@ const CollectionNft = () => {
                     setValue={handleChange("name")}
                     errMessage={
                       <ErrorMessage
-                        className="text-red-500"
-                        name="name"
-                        component={"div"}
+                      className="text-red-500"
+                      name="name"
+                      component={"div"}
                       />
                     }
-                  />
+                    />
                   <TextInput
                     placeholder={"Input your symbol here"}
                     label={"Symbol"}
@@ -159,12 +169,12 @@ const CollectionNft = () => {
                     setValue={handleChange("symbol")}
                     errMessage={
                       <ErrorMessage
-                        className="text-red-500"
-                        name="symbol"
-                        component={"div"}
+                      className="text-red-500"
+                      name="symbol"
+                      component={"div"}
                       />
                     }
-                  />
+                    />
                   <FileInput
                     name="logo"
                     onChange={(e) => {
@@ -174,12 +184,12 @@ const CollectionNft = () => {
                     label={"Upload Logo"}
                     errMessage={
                       <ErrorMessage
-                        className="text-red-500"
-                        name="logo"
-                        component={"div"}
+                      className="text-red-500"
+                      name="logo"
+                      component={"div"}
                       />
                     }
-                  />
+                    />
 
                   {/* <TextAreaInput
                     placeholder={t("nft_desc_placeholder")}
@@ -189,12 +199,12 @@ const CollectionNft = () => {
                     setValue={handleChange("desc")}
                     errMessage={
                       <ErrorMessage
-                        className="text-red-500"
-                        name="desc"
-                        component={"div"}
+                      className="text-red-500"
+                      name="desc"
+                      component={"div"}
                       />
-                    }
-                  /> */}
+                      }
+                      /> */}
                   {/* <TextInput
                     placeholder={t("external_link_placeholder")}
                     label={t("external_label")}
@@ -206,47 +216,47 @@ const CollectionNft = () => {
                         className="text-red-500"
                         name="external_link"
                         component={"div"}
-                      />
-                    }
-                  /> */}
+                        />
+                        }
+                        /> */}
                   {/* <FileInput
                     name="banner"
                     onChange={(e) => {
                       console.log(e.target.files[0]);
                       setFieldValue("banner", e.target.files[0]);
-                    }}
-                    label="Upload Background picture"
-                    errMessage={
-                      <ErrorMessage
+                      }}
+                      label="Upload Background picture"
+                      errMessage={
+                        <ErrorMessage
                         className="text-red-500"
                         name="banner"
                         component={"div"}
-                      />
-                    }
-                  /> */}
+                        />
+                        }
+                        /> */}
                   {/* 
                   <SelectInput
-                    placeholder={t("select_category")}
-                    label={t("category")}
-                    name="category"
-                    handleChange={handleChange("category")}
-                    value={values.category}
-                    options={[
-                      { value: "art", label: "Art" },
-                      { value: "gaming", label: "Gaming" },
-                      { value: "memberships", label: "Memberships" },
-                      { value: "pfps", label: "PFPs" },
-                      { value: "music", label: "Music" },
-                      { value: "photography", label: "Photography" },
+                  placeholder={t("select_category")}
+                  label={t("category")}
+                  name="category"
+                  handleChange={handleChange("category")}
+                  value={values.category}
+                  options={[
+                    { value: "art", label: "Art" },
+                    { value: "gaming", label: "Gaming" },
+                    { value: "memberships", label: "Memberships" },
+                    { value: "pfps", label: "PFPs" },
+                    { value: "music", label: "Music" },
+                    { value: "photography", label: "Photography" },
                     ]}
                     errMessage={
                       <ErrorMessage
-                        className="text-red-500"
-                        name="category"
-                        component={"div"}
+                      className="text-red-500"
+                      name="category"
+                      component={"div"}
                       />
-                    }
-                  /> */}
+                      }
+                      /> */}
                   {/* <SelectInput
                     placeholder="Select %fee"
                     label="% Fee for creator earning "
@@ -255,8 +265,8 @@ const CollectionNft = () => {
                       { value: "5%", label: "5%" },
                       { value: "10%", label: "10%" },
                       { value: "15%", label: "15%" },
-                    ]}
-                  /> */}
+                      ]}
+                      /> */}
                   <SelectInput
                     placeholder=""
                     label={"Blockchain Technology"}
@@ -268,12 +278,12 @@ const CollectionNft = () => {
                     ]}
                     errMessage={
                       <ErrorMessage
-                        className="text-red-500"
-                        name="blockChain"
-                        component={"div"}
+                      className="text-red-500"
+                      name="blockChain"
+                      component={"div"}
                       />
                     }
-                  />
+                    />
                 </div>
                 <div className="mt-10 flex flex-col  ">
                   <div className="mt-20 flex justify-center items-center space-x-8">
@@ -282,7 +292,7 @@ const CollectionNft = () => {
                         loading={isSubmitting}
                         name="Create Collection"
                         action={handleSubmit}
-                      />
+                        />
                     </div>
                   </div>
                   <div className="flex justify-center items-center mt-10">
@@ -301,10 +311,12 @@ const CollectionNft = () => {
         <div className="h-[30vh] grid place-items-center">
           {" "}
           {/* @ts-ignore */}
-          {t("connect_profile_message")} ...
+          {"connect_profile_message"} ...
         </div>
       )}
-    </ParentLayout>
+      </ParentLayout>
+      )}
+      </>
   );
 };
 

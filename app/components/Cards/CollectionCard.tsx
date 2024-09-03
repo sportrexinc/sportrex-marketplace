@@ -12,6 +12,7 @@ import Abi from "@/abi/SptNFTContract.json";
 
 const CollectionCard: FC<{
   data?: CreateCollectionProps | null;
+  
 }> = ({ data }) => {
   const { contract } = useContract(data?.contractAddress, Abi);
   const { mutateAsync: updateMetadata } = useUpdateMetadata(contract);
