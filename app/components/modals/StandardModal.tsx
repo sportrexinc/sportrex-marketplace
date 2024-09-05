@@ -9,12 +9,6 @@ import { YellowActionBtn } from "@/app/components";
 import ActionBtn from "../Button/ActionBtn";
 import { TraitsProps } from "@/app/(marketplace)/single-nft/page";
 import { CreateSingleNFTProps } from "@/types";
-import MintModal from "./MintModal"
-import NormalLayout from "@/app/layouts/NormalLayout";
-import Link from "next/link";
-import Image from "next/image";
-import { FaArrowUpRightFromSquare } from "react-icons/fa6";
-import picOne from "../../../public/assets/market/one.png";
 import { BiSolidError } from "react-icons/bi";
 // import { Button } from "../Forms/Button";
 interface modalProps {
@@ -79,15 +73,15 @@ const StandardModal = ({
   mintedNFTData,
   setMintedNFTData,
   setOpenModal,
-  openModal
+  openModal,
 }: modalProps) => {
   const { mutateAsync: upload, isLoading } = useStorageUpload();
   const [loadingA, setLoadingA] = useState<boolean>(true);
   const [loadingB, setLoadingB] = useState<boolean>(true);
   const [loadingC, setLoadingC] = useState<boolean>(true);
-    const [errorA, setErrorA] = useState<boolean>(false);
-    const [errorB, setErrorB] = useState<boolean>(false);
-    const [errorC, setErrorC] = useState<boolean>(false);
+  const [errorA, setErrorA] = useState<boolean>(false);
+  const [errorB, setErrorB] = useState<boolean>(false);
+  const [errorC, setErrorC] = useState<boolean>(false);
   const [singleCreatedNFT, setSingleCreatedNFT] =
     useState<CreateSingleNFTProps | null>(null);
   const [tokenURI, setTokenURI] = useState<any>();
@@ -102,7 +96,7 @@ const StandardModal = ({
     return closeModal(e);
   };
   const { contract, isLoading: isContractLoading } = useContract(
-    contractAddress ? contractAddress : null,
+    singleNFTData.collectionAddress ? singleNFTData.collectionAddress : null,
     SPT721Abi
   );
 
@@ -136,6 +130,8 @@ const StandardModal = ({
       console.log(metaDataURI[0]);
       // RE_WRITE THE LOGIC TO MINT NFT INTO A COLLECTION
       if (contract && !isContractLoading) {
+        console.log(contract);
+        console.log(singleNFTData.collectionAddress);
         try {
           const data = await contract?.call("mintToken", [metaDataURI[0]]);
           setLoadingC(false);
@@ -144,12 +140,13 @@ const StandardModal = ({
             tokenURI: httpsImageUrl,
             metaDataURI: metaDataURI[0],
             transactionHash: data.receipt.transactionHash,
-          })
+          });
           setOpenModal(false);
           setIsMinted(true);
         } catch (error) {
+          setLoadingC(false);
+          setErrorC(true);
           console.error("Contract call failed", error);
-          setOpenModal(false);
         }
       }
       //setSingleCreatedNFT(data);
