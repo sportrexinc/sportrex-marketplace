@@ -133,7 +133,7 @@ const StandardModal = ({
         console.log(contract);
         console.log(singleNFTData.collectionAddress);
         try {
-          const data = await contract?.call("mintToken", [metaDataURI[0]]);
+          const data = await contract?.call("safeMint", [metaDataURI[0]]);
           setLoadingC(false);
           console.log(data);
           setMintedNFTData({
