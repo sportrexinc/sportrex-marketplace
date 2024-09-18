@@ -22,20 +22,7 @@ const OwnedCard = ({ isTrending, item  }: {
   const navigate = useRouter();
   const { contract } = useContract(item.token_address)
   const { data: nft , isLoading, error } = useNFT(contract, item.token_id)
-  const getNftData = async (uri: string) => {
-      await axios.get(uri)
-      .then(res => {
-        setRetrievedNft(res.data)
-      })
-  }
   
-  useEffect(() => {
-     setLoading(isLoading)
-    if(nft?.metadata.error) {
-      const uri = nft.metadata.uri.replace('ipfs://', 'https://nftstorage.link/ipfs/').replace('{id}', nft.metadata.id);
-      getNftData(uri)
-    }
-  } , [isLoading])
 
 if(loading) return <NftLoading />
 
@@ -74,12 +61,17 @@ if(loading) return <NftLoading />
 
       </div>
     <MediaRenderer 
+    height="233px"
+    width="100%"
+    style={{
+      backgroundColor: nft?.metadata.background_color || "black"
+    }}
     className="w-full flex-[3]  rounded-[20px] object-cover "
-    src={nft?.metadata.image || retrievedNft.image}
+    src={nft?.metadata.image}
     />
       <div className="flex flex-1 overflow-hidden justify-between items-center w-full mb-2 px-2">
       <div >
-      <p className="text-[16px] semibold">{nft?.metadata.name || retrievedNft.name}</p>
+      <p className="text-[16px] semibold">{nft?.metadata.name}</p>
         <div className="text-[#FAC744]  text-[14px] semibold leading-[22px]">
           0.3 SPT
         </div>

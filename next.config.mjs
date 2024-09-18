@@ -2,6 +2,14 @@
 const nextConfig = {
   images: {
     domains: ['ipfs.io', 'res.cloudinary.com'], // Add the IPFS gateway domain here
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '*',
+      },
+    ],
   },
   async rewrites() {
     return [

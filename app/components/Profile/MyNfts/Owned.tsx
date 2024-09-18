@@ -31,7 +31,7 @@ const Owned: FC<{
     console.log(count - 2)
     address && dispatch(getUserNft({
       address,
-      chain: "mumbai",
+      chain: "binance-testnet",
       cursor: null,
       limit:15
      }))
@@ -39,7 +39,7 @@ const Owned: FC<{
   const next = () => {
     address && dispatch(getUserNft({
       address,
-      chain: "mumbai",
+      chain: "binance-testnet",
       cursor:  data?.cursor,
       limit: 15
      }))
