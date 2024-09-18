@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import soccer from "@/public/assets/profile/soccer.jpg";
 
 import ilus from "@/public/assets/profile/profile-ilus.svg";
@@ -8,16 +8,21 @@ import { MediaRenderer, useContract, useMetadata, useNFTs, useTotalCount } from 
 import { CollectionResult } from "@/types";
 import CollectionLoading from "../../Loader/CollectionLoading";
 import Image from "next/image";
+import Abi from "@/abi/SptNFTContract.json";
+
 const CollectionsCard: FC<{
   collection: CollectionResult;
 }> = ({ collection }) => {
   const [liked, setLiked] = useState(false);
   const [openOptions, setOpenOptions] = useState(false);
   const { contract } = useContract(collection.token_address)
-  const { data: totalCount } = useTotalCount(contract)
+  const { data: totalCount, error: countError } = useTotalCount(contract)
   const { data: metadata, isLoading  } = useMetadata(contract)
   // const { data: nft } = useNFTs(contract)
 // console.log(nft, 'not wokring');
+ useEffect(() => {
+  console.log(countError)
+ }, [countError])
 
 if(isLoading) return <CollectionLoading />
   
@@ -29,13 +34,13 @@ if(isLoading) return <CollectionLoading />
         
           <div className="img-container flex-1 items-center w-full flex justify-center ">
             {/* @ts-ignore */}
-            <MediaRenderer src={ metadata?.image ||  ilus} style={{ borderRadius: "20px" }} alt="life" width="100px" height="100px" />
+            <Image src={ metadata?.image ||  ilus} style={{ borderRadius: "20px" }} alt="life" width={100} height={100} />
           </div>
           <div className="flex flex-col p-4 mt-2 sm:mt-6 2xl:mt-10">
             <p className="text-[18px] leading-[30px]">{collection.name}</p>
             <div className="flex justify-between w-full">
               <div className="text-[#fff] semibold leading-[22px]">
-               {`${totalCount || '_ _'} items`}
+               {`${ !countError ?  totalCount : '_ _'} items`}
               </div>
               <div className="flex space-x-1 items-center">
                 {liked ? (
@@ -59,7 +64,10 @@ if(isLoading) return <CollectionLoading />
         // @ts-ignore
           src={metadata?.image || soccer}
           alt="fghj"
-          className="w-full object-cover rounded-[10px] bg-center  "
+          className="w-full h-full object-cover rounded-[10px] bg-center"
+          width={0}
+          height={0}
+
         />
       </div>
     </div>

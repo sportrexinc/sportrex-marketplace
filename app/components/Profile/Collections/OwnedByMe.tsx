@@ -16,7 +16,7 @@ const OwnedByMe = () => {
   const back = () => {
     address && dispatch(getUserCollection({
       address,
-      chain: "mumbai",
+      chain: "binace-testnet",
       cursor: null,
       limit: 15
      }))
@@ -24,7 +24,7 @@ const OwnedByMe = () => {
   const next = () => {
     address && dispatch(getUserCollection({
       address,
-      chain: "mumbai",
+      chain: "binace-testnet",
       cursor:  collection_data?.cursor,
       limit: 15
      }))
