@@ -51,7 +51,7 @@ const MintModal = ({
           }}
         >
           <Image
-            src={picOne} // Replace with the path to your image
+            src={mintedNFTData.tokenURI} // Replace with the path to your image
             alt="Background Image"
             layout="fill"
             objectFit="cover"
@@ -71,7 +71,7 @@ const MintModal = ({
                     <Image
                       //   Daniel Change this to PicOne
                       // src={mintedNFTData.tokenURI}
-                      src={picOne}
+                      src={mintedNFTData.tokenURI}
                       alt="minted"
                       className="w-full  max-w-[400px] lg:max-w-[400px]  h-auto rounded-md object-contain"
                       width={600}

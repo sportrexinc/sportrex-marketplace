@@ -19,17 +19,6 @@ import { CreateCollectionProps, CreateSingleNFTProps } from "@/types";
 import StandardModal from "@/app/components/modals/StandardModal";
 import APIService from "@/app/utils/APIServices";
 import MintModal from "../../components/modals/MintModal";
-import { mintModalProps } from "../../components/modals/MintModal";
-import NormalLayout from "@/app/layouts/NormalLayout";
-import Link from "next/link";
-import Image from "next/image";
-import { FaArrowUpRightFromSquare } from "react-icons/fa6";
-import picOne from "../../../public/assets/market/one.png";
-
-
-
-import { FaTimes } from "react-icons/fa";
-import { CloseIcon } from "../../../public/assets/svg/index";
 export interface TraitsProps {
   value: string;
   trait_type: string;

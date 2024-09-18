@@ -31,15 +31,12 @@ const CollectionCard: FC<{
       });
       setDisabled(true);
       setLoading(false);
-      console.log(res);
-      alert("Updated metadata successfully");
+      console.log(res)
     } catch (error: any) {
       alert(error.message);
       setLoading(false);
     }
   };
-
-  console.log(data);
 
   return (
     <div className="lg:h-[500px] w-full">

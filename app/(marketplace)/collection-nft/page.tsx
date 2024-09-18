@@ -148,7 +148,7 @@ const CollectionNft = () => {
               <div className="mt-12">
                 <div className="form space-y-8 ">
                   <TextInput
-                    placeholder={"Your Nft Name"}
+                    placeholder={"Your Collection Name"}
                     label={"Name*"}
                     name="name"
                     value={values.name}

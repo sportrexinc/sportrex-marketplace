@@ -2,21 +2,21 @@
 import React, { useState, useEffect, useLayoutEffect, Fragment } from "react";
 import "./modal.css";
 import { CloseIcon } from "../../../public/assets/svg/index";
-import { useAddress, useContract } from "@thirdweb-dev/react";
+import {
+  useAddress,
+  useContract,
+  ThirdwebSDK,
+  useSigner,
+} from "@thirdweb-dev/react";
 import SPT721Abi from "@/abi/SptERC721.json";
 import { useStorageUpload } from "@thirdweb-dev/react";
-import { YellowActionBtn } from "@/app/components";
 import ActionBtn from "../Button/ActionBtn";
 import { TraitsProps } from "@/app/(marketplace)/single-nft/page";
 import { CreateSingleNFTProps } from "@/types";
-import MintModal from "./MintModal"
-import NormalLayout from "@/app/layouts/NormalLayout";
-import Link from "next/link";
-import Image from "next/image";
-import { FaArrowUpRightFromSquare } from "react-icons/fa6";
-import picOne from "../../../public/assets/market/one.png";
+
 import { BiSolidError } from "react-icons/bi";
 // import { Button } from "../Forms/Button";
+
 interface modalProps {
   showHeader?: boolean;
   children?: any;
@@ -79,15 +79,16 @@ const StandardModal = ({
   mintedNFTData,
   setMintedNFTData,
   setOpenModal,
-  openModal
+  openModal,
 }: modalProps) => {
   const { mutateAsync: upload, isLoading } = useStorageUpload();
   const [loadingA, setLoadingA] = useState<boolean>(true);
   const [loadingB, setLoadingB] = useState<boolean>(true);
   const [loadingC, setLoadingC] = useState<boolean>(true);
-    const [errorA, setErrorA] = useState<boolean>(false);
-    const [errorB, setErrorB] = useState<boolean>(false);
-    const [errorC, setErrorC] = useState<boolean>(false);
+  const [errorA, setErrorA] = useState<boolean>(false);
+  const [errorB, setErrorB] = useState<boolean>(false);
+  const [errorC, setErrorC] = useState<boolean>(false);
+  const signer = useSigner();
   const [singleCreatedNFT, setSingleCreatedNFT] =
     useState<CreateSingleNFTProps | null>(null);
   const [tokenURI, setTokenURI] = useState<any>();
@@ -101,12 +102,18 @@ const StandardModal = ({
     e.stopPropagation();
     return closeModal(e);
   };
-  const { contract, isLoading: isContractLoading } = useContract(
-    contractAddress ? contractAddress : null,
-    SPT721Abi
-  );
 
+  //Thirdweb method
+  // const { contract, isLoading: isContractLoading } = useContract(
+  //   singleNFTData.collectionAddress,
+  //   SPT721Abi
+  // );
+  let isMinting = false;
   const handleSingleNFTMint = async () => {
+    console.log("handleSingleNFTMint called");
+
+    if (isMinting) return;
+    isMinting = true;
     try {
       let tokenURI;
       const imageToUpload = [singleNFTData.logo];
@@ -134,39 +141,51 @@ const StandardModal = ({
       setFullURI(metaDataURI[0]);
       setLoadingB(false);
       console.log(metaDataURI[0]);
-      // RE_WRITE THE LOGIC TO MINT NFT INTO A COLLECTION
-      if (contract && !isContractLoading) {
-        try {
-          const data = await contract?.call("mintToken", [metaDataURI[0]]);
-          setLoadingC(false);
-          console.log(data);
-          setMintedNFTData({
-            tokenURI: httpsImageUrl,
-            metaDataURI: metaDataURI[0],
-            transactionHash: data.receipt.transactionHash,
-          })
-          setOpenModal(false);
-          setIsMinted(true);
-        } catch (error) {
-          console.error("Contract call failed", error);
-          setOpenModal(false);
-        }
+      // Step 2: Check if signer is defined
+      if (!signer) {
+        console.error("Wallet is not connected. Signer is undefined.");
+        return;
       }
+      const sdk = new ThirdwebSDK(signer);
+      const customContract = await sdk.getContract(
+        singleNFTData.collectionAddress,
+        SPT721Abi // Pass your custom ABI here
+      );
+      console.log(singleNFTData.collectionAddress);
+      console.log(SPT721Abi);
+      try {
+        const data = await customContract.call("safeMint", [metaDataURI[0]]);
+        setLoadingC(false);
+        console.log(data);
+        setMintedNFTData({
+          tokenURI: httpsImageUrl,
+          metaDataURI: metaDataURI[0],
+          transactionHash: data.receipt.transactionHash,
+        });
+        setOpenModal(false);
+        setIsMinted(true);
+      } catch (error) {
+        setLoadingC(false);
+        setErrorC(true);
+        console.error("Contract call failed", error);
+      }
+
       //setSingleCreatedNFT(data);
     } catch (error: any) {
       console.log(error.message);
       setOpenModal(false);
       //alert(error.message);
+    } finally {
+      isMinting = false;
     }
   };
   useEffect(() => {
-    if (contract && !isContractLoading) {
+    if (contractAddress && !isMinted) {
       handleSingleNFTMint();
     } else {
-      console.log("Contract not loaded yet");
+      console.log("ContractAddress is not set or already minted");
     }
-  }, [contract, isContractLoading]);
-
+  }, [contractAddress, isMinted]);
   return (
     <>
       {/* Uploading Modal */}
