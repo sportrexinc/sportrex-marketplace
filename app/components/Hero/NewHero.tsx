@@ -1,22 +1,17 @@
-import React,{useState,useEffect} from 'react'
-import NormalLayout from '../../layouts/NormalLayout'
-import logo from "@/public/assets/sportrex-new-logo.svg"
+import { useState, useEffect } from 'react';
+import NormalLayout from '../../layouts/NormalLayout';
+import logo from "@/public/assets/sportrex-new-logo.svg";
 import { navData } from "../../constants/Navbar";
 import { useTranslation } from "react-i18next";
-
+import gifImage from "@/public/assets/gifs/hero-gif.gif";
 import ActionBtn from '../Button/ActionBtn';
 import Language from '../Language/Language';
 import Profile from '../Navbar/Profile';
 import Resources from '../Navbar/Resources';
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
-import { FaUserCircle, FaBell } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "@/app/redux/store";
 import { setAddress } from "@/app/redux/features/auth/AuthSlice";
 import Notification from "../Navbar/Notification";
-import nftA from "@/public/assets/general/nft1.png";
-import nftB from "@/public/assets/general/nft2.png";
-import nftC from "@/public/assets/general/nft3.png";
-import nftD from "@/public/assets/general/nft4.png";
 import LinkBtn from '../Button/LinkBtn';
 import YellowBtn from '../Button/YellowBtn';
 import BlockhainList from './BlockhainList';
@@ -25,13 +20,16 @@ import Image from 'next/image';
 import ConnectModal from '../modals/WalletConnectModal';
 const styles = {
   active: "text-white regular light text-[18px] border-b-[1px] border-white",
+  parentContainer: "w-full h-full px-4   ",
+  container:
+    "2xl:container 2xl:mx-auto flex flex-col  lg:flex-row space-y-6 lg:space-y-0 lg:justify-between",
   inactive: "text-white text-[18px] text-grey-800 regular",
   listItem: "flex items-center justify-center",
   left: "w-full lg:w-6/12 h-full justify-start flex items-center  element-index max-w-[451px]",
-  right: "w-full lg:w-6/12  h-full  element-index",
+  right: "w-full lg:w-6/12  h-full  element-index bg-transparent flex justify-end",
   leftContainer:
     "w-full h-full  element-index flex flex-col lg:mt-[84px] mb-[84px] lg:mb-0 ",
-  imgContainer: "w-full sm:w-9/12 lg:w-10/12 mx-auto  element-index",
+  imgContainer: "w-full flex justify-end sm:w-9/12 lg:w-10/12   element-index",
 };
 const NewHero = ({ current = 1 }: any) => {
   const { t } = useTranslation(["translation"]);
@@ -57,10 +55,10 @@ const NewHero = ({ current = 1 }: any) => {
   }, [address]);
   
   return (
-    <div className="w-full hidden xl:flex ">
+    <div className="w-full hidden xl:flex  ">
       <ConnectModal open={open} setOpen={handleClose} />
       <NormalLayout>
-        <div className="w-full new-hero-bg flex flex-col ">
+        <div className="w-full new-hero-bg flex flex-col mt-4 ">
           <div className="w-11/12 mx-auto flex flex-col">
             {/* navbar session */}
             <div className="w-full h-[82px] flex items-center bg-white bg-opacity-15 mt-8  rounded-[20px]  ">
@@ -127,84 +125,74 @@ const NewHero = ({ current = 1 }: any) => {
             </div>
             {/* end of navbar */}
             {/* start of content session */}
-            <div className="w-full flex flex-col xl:flex-row xl:justify-between xl:gap-8 mt-24  ">
-              {/* left pannel  */}
-              <div className="w-full xl:w-3/12 flex xl:flex-col">
-                <span>
-                  <Image src={nftD} alt="nft" className="w-auto h-auto" />
-                </span>
-                <span className="mt-24 flex justify-end w-full">
-                  <Image src={nftB} alt="nft" className="" />
-                </span>
-              </div>
-              {/* end of left panel */}
-              {/* CEnter pannel */}
-              <div className="w-full xl:w-6/12 xl:min-w-[637px] xl:max-w-[637px] flex flex-col items-center xl:px-4 ">
-                <div className=" flex px-4 py-2 items-center space-x-4 border-[#f1f1f1] border-[1px] rounded-[26px] semibold font-semibold semibold w-fit text-[10px] sm:text-base regular lg:text-lg regular ">
-                  <div className="no  flex justify-center items-center ">
-                    NO 1
+            <div className={styles.parentContainer}>
+              <div className={styles.container}>
+                <div className={styles.left}>
+                  <div className={styles.leftContainer}>
+                    <div className=" flex px-4 py-2 items-center space-x-4 border-[#f1f1f1] border-[1px] rounded-[26px] semibold font-semibold semibold w-fit text-[10px] sm:text-base regular lg:text-lg regular ">
+                      <div className="no  flex justify-center items-center ">
+                        NO 1
+                      </div>
+                      <div className="text">
+                        {/* <p> {t("hero_t")}</p> */}
+                        <p> VR & AR Powered Marketplace</p>
+                      </div>
+                    </div>
+                    <div className="w-full sm:w-full lg:w-full mt-5">
+                      <div className="flex text-[24px] sm:text-3xl lg:text-[42px] flex-wrap leading-7 sm:leading-[40px] lg:leading-[51px] bold font-bold bold">
+                        <span className="grad-text mr-2">
+                          {/* {t("mint")}, */}
+                          Mint
+                        </span>
+                        <span className="grad-text mr-2">
+                          {/* {t("buy")}, */}
+                          Buy,
+                        </span>
+                        <span className="text-white mr-2">
+                          {/* {t("and")} */}
+                          and
+                        </span>
+                        <span className="grad-text mr-2">
+                          {/* {t("stake")} */}
+                          Stake
+                        </span>
+                        <span className="grad-text mr-2">
+                          {/* {t("nft")} */}
+                          NFTS
+                        </span>
+                        <span className="text-white mr-2">
+                          {/* {t("with_e")} */}
+                          with Ease
+                        </span>
+                      </div>
+                      <div className="text-white mt-4 ">
+                        <p className="text-[16px] sm:text-xl lg:text-2xl leading-[25px] lg:leading-9 regular sm:w-full w-full">
+                          {/* {t("hero_header")} */}
+                          Stake and earn yield on the most liquid decentralized
+                          NFT marketplace, and view your NFTs in VR/AR Mode
+                        </p>
+                      </div>
+                      <div className="flex mt-8 space-x-8 items-center">
+                        <LinkBtn
+                          path="/market"
+                          // name={t("explore_market")}
+                          name={"Explore Market"}
+                        />
+                        <YellowBtn
+                          path="/select-nft"
+                          name={"Create"}
+                          // name={t("mint")}
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div className="text">
-                    <p>
-                      VR & AR Powered Marketplace
-                      {/* {t("hero_t")} */}
-                    </p>
+                </div>
+                <div className={styles.right}>
+                  <div className={styles.imgContainer}>
+                    <Image src={gifImage} alt="hero-gif" className="w-full mt-12" />
                   </div>
                 </div>
-                <div className=" text-[24px] sm:text-3xl lg:text-[42px]  leading-7 sm:leading-[40px] lg:leading-[51px] bold font-bold bold text-center mt-4">
-                  <span className="grad-text mr-2">
-                    {/* {t("mint")}, */}
-                    Mint,
-                  </span>
-                  <span className="grad-text mr-2">
-                    {/* {t("buy")}, */}
-                    Buy,
-                  </span>
-                  <span className="text-white mr-2">{t("and")}</span>
-                  <span className="grad-text mr-2">
-                    {/* {t("stake")} */}
-                    Stake
-                  </span>
-                  <br />
-                  <span className="grad-text mr-2">
-                    {/* {t("nft")} */}
-                    NFTS
-                  </span>
-                  <span className="text-white mr-2">
-                    {/* {t("with_e")} */}
-                    with Ease
-                  </span>
-                </div>
-                <div className="text-white mt-4 ">
-                  <p className="text-[16px] sm:text-xl lg:text-2xl leading-[25px] lg:leading-9 regular sm:w-full w-full text-center">
-                    {/* {t("hero_header")} */}
-                    Stake and earn yield on the most liquid decentralized NFT
-                    marketplace, and view your NFTs in VR/AR Mode
-                  </p>
-                </div>
-                <div className="flex mt-8 space-x-8 items-center">
-                  <LinkBtn path="/market"
-                    // name={t("explore_market")}
-                    name={"Explore Market"}
-                  />
-                  <YellowBtn path="/select-nft"
-                    // name={t("create")}
-                    name={"Create"}
-                  />
-                </div>
               </div>
-              {/* end of center pannel */}
-
-              {/* right pannel */}
-              <div className="w-full  xl:w-3/12 flex flex-row xl:flex-col">
-                <span className="flex justify-end">
-                  <Image src={nftC} alt="nft" className="w-auto h-auto" />
-                </span>
-                <span className="mt-24 flex justify-start w-full">
-                  <Image src={nftA} alt="nft" className="" />
-                </span>
-              </div>
-              {/* end of right panel */}
             </div>
 
             {/* ednd of contenet session */}

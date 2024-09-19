@@ -44,7 +44,7 @@ const ProfileTab = ({ activeTab, setActiveTab }: any) => {
               className={item.id === activeTab ? styles.active : styles.inActive}
               key={index} onClick={()=> setActiveTab(item.id)}
             >
-              {t(`proTab${index}`)}
+              {item?.name}
             </p>
           )
         })

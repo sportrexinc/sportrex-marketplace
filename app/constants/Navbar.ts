@@ -6,7 +6,7 @@ export const navData: {
 }[] = [
   {
     id: 1,
-    text: "home",
+    text: "Home",
 
     linkTo: "/",
   },

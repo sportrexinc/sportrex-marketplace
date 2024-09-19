@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { useAddress } from "@thirdweb-dev/react";
 import { useAppDispatch, useAppSelector } from "@/app/redux/store";
 import { useRouter } from "next/navigation";
+import Image from "next/image"
 import { getUserProfile, resetImageUpload, updateUserProfileAvatar, updateUserProfileBanner } from "@/app/redux/features/auth/AuthSlice";
 interface ImageUploaderProps {
   onImageUpload: (image: File) => void;
@@ -86,10 +87,10 @@ const ProfileHero = () => {
     website: "No Website",
     address: "No Address",
     avatar: {
-      url: "",
+      url: defaultPic,
     },
     banner: {
-      url:""
+      url:thumbnail
     }
   };
   const { bio, website, username, banner,avatar } = auth?.userData
@@ -111,7 +112,7 @@ const ProfileHero = () => {
   useEffect(() => {
         address && dispatch(getUserProfile({ address }));
   }, [address]);
-
+  console.log(auth?.userData);
   const thumb = banner?.url ? banner?.url : thumbnail
  
   // console.log({ avatar });
@@ -121,7 +122,7 @@ const ProfileHero = () => {
         className={styles.thumbContainer}
         style={{
           background: "no-repeat center center fixed",
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.9),rgba(0, 0, 0, 0.1)) , url(${thumb})`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.9),rgba(0, 0, 0, 0.1))`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
 
@@ -132,16 +133,20 @@ const ProfileHero = () => {
           zIndex: 0,
         }}
       >
+        <Image
+          src={thumb} // Replace with the path to your image
+          alt="Background Image"
+          layout="fill"
+          objectFit="cover"
+          className="backdrop-blur-2xl"
+        />
         <div className="flex space-x-4 absolute right-8 bottom-4">
           <FiSettings
             className="text-white text-3xl cursor-pointer"
             onClick={() => navigate.push("/edit-creator-profile")}
           />
           <div className=" cursor-pointer relative">
-            <AiFillCamera
-              className="text-white text-3xl"
-             
-            />
+            <AiFillCamera className="text-white text-3xl" />
             <input
               className="absolute inset-0 opacity-0 "
               type="file"
@@ -152,7 +157,8 @@ const ProfileHero = () => {
         </div>
         <div className={styles.imgContainer}>
           <div className="relative">
-            <img
+            <Image
+              alt="image"
               src={avatar?.url ? avatar?.url : defaultPic}
               className={styles.profileImg}
               onClick={() => {
