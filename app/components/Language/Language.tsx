@@ -83,7 +83,7 @@ const Drop = () => {
   return (
     <div className={styles.parent}>
       <div className={styles.sectionA} onClick={() => setOpen(!open)}>
-        <p className="light text-white text-[18px]">{lang}</p>
+        <p className="light text-white text-[18px]">English</p>
         <MdArrowDropDown />
       </div>
       <div className={open ? styles.listContainer : styles.close}>

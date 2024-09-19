@@ -1,7 +1,7 @@
 import  { FC, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { IoIosCopy } from "react-icons/io";
-
+import Link from "next/link"; 
 import { useDisconnect } from "@thirdweb-dev/react"
 import { useAppSelector } from "@/app/redux/store";
 import {toast} from "react-toastify"
@@ -39,7 +39,7 @@ const Profile: FC<ProfileProps> = ({
         <FaUserCircle className="text-blue-btn text-2xl mr-6 cursor-pointer" />
       </div>
       {open && (
-        <div className="absolute  top-[64px] right-0 w-[200px] h-auto flow-hide bg-blue-header p-4 flex flex-col space-y-3 ">
+        <div className="absolute  top-[64px] right-0 w-[200px] h-auto flow-hide bg-blue-header p-4 flex flex-col space-y-3 z-40 ">
           <div className="flex items-center space-x-1">
             <h4 className="bold text-white text-md">Connected </h4>
             <span className=" bg-green w-[9px] h-[9px] rounded-full  ">
@@ -54,12 +54,12 @@ const Profile: FC<ProfileProps> = ({
             <p className="text-white text-md"> {address?.substring(0, 8)}</p>
             <IoIosCopy className="text-grey-800 text-md cursor-pointer" />
           </div>
-          <p
+          <Link href="/profile"
             className="text-yellow regular text-lg regular cursor-pointer"
-            onClick={gotoProfile}
+            
           >
             My Profile
-          </p>
+          </Link>
           <p className="text-grey-800 regular cursor-pointer">
             Profile Settings
           </p>

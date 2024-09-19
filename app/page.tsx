@@ -32,14 +32,14 @@ const Home = () => {
   }, [data]);
   return (
     <div className="w-full min-h-screen h-full bg-blue-body text-white">
-      <ConnectedNav />
+      {/* <ConnectedNav />
       <MobileNavbar />
       <Divider size={78}>
         <MainHero />
-      </Divider>
+      </Divider> */}
 
-      {/* <NewHero />
-      <MobileHero/> */}
+      <NewHero />
+      <MobileHero/>
 
       {/* <Divider size={78}>
         <BlockhainList />
