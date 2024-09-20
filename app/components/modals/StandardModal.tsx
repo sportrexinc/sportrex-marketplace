@@ -15,7 +15,7 @@ import { TraitsProps } from "@/app/(marketplace)/single-nft/page";
 import { CreateSingleNFTProps } from "@/types";
 
 import { BiSolidError } from "react-icons/bi";
-// import { Button } from "../Forms/Button";
+
 
 interface modalProps {
   showHeader?: boolean;
