@@ -3,8 +3,6 @@ import React, { useState, useEffect, useLayoutEffect, Fragment } from "react";
 import "./modal.css";
 import { CloseIcon } from "../../../public/assets/svg/index";
 import {
-  useAddress,
-  useContract,
   ThirdwebSDK,
   useSigner,
 } from "@thirdweb-dev/react";
