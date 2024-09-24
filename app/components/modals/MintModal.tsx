@@ -14,7 +14,6 @@ import NormalLayout from "@/app/layouts/NormalLayout";
 import Link from "next/link";
 import Image from "next/image";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
-import picOne from "../../../public/assets/market/one.png";
 
 export interface mintModalProps {
   isMinted: boolean;
