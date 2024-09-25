@@ -38,7 +38,7 @@ const MyNfts = () => {
 
         <ProfileSelect isOpen={isOpen} setIsOpen={setIsOpen} setActive={setActive} active={active} data={data} name="Owned by me" />
       </div>
-      <div className="mt-6 ">
+      <div className="mt-6">
         {/* <div className="flex-[1]"/>
          <div className="flex-[4]"> */}
          <Owned
