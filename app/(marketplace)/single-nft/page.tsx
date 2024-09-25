@@ -149,6 +149,7 @@ const SingleNft = () => {
               traits: [] as TraitsProps[],
               collectionAddress: "",
               external_link: "",
+              amount:"",
             }}
             onSubmit={async (values, { setSubmitting, setFieldValue }) => {
               setSingleNFTData(values);
@@ -272,6 +273,20 @@ const SingleNft = () => {
                         placeholder={"external link"}
                         label={"External Link*"}
                         name="external_link"
+                        value={values.external_link}
+                        setValue={handleChange("external_link")}
+                        errMessage={
+                          <ErrorMessage
+                            className="text-red-500"
+                            name="supply"
+                            component={"div"}
+                          />
+                        }
+                      />
+                      <TextInput
+                        placeholder={"Amount"}
+                        label={"Enter Amount*"}
+                        name="amount"
                         value={values.external_link}
                         setValue={handleChange("external_link")}
                         errMessage={

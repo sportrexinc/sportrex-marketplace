@@ -8,6 +8,7 @@ import NftLoading from "../../Loader/NftLoading";
 import axios from "axios";
 import { NftResult } from "@/types";
 import { useRouter } from "next/navigation";
+import FavoriteButton from "./favourite-button"
 const OwnedCard = ({ isTrending, item  }: {
   isTrending: boolean,
   item: NftResult
@@ -78,7 +79,7 @@ if(loading) return <NftLoading />
       </div>
         <div />
         <div className="flex gap-x-2 items-center">
-          {liked ? (
+          {/* {liked ? (
             <AiFillHeart
               className="text-[24px] text-yellow"
               onClick={() => setLiked(false)}
@@ -88,8 +89,9 @@ if(loading) return <NftLoading />
               className="text-[24px] text-grey-800"
               onClick={() => setLiked(true)}
             />
-          )}
-          <span className="regular text-[#ABABAB]">0</span>
+          )} */}
+          <FavoriteButton item={item} />
+          {/* <span className="regular text-[#ABABAB]">0</span> */}
         </div>
       </div>
     </div>
