@@ -44,6 +44,7 @@ const Owned: FC<{
       limit: 15
      }))
   };
+
   return (
     <div>
       <div className="w-full md:min-h-[296px] h-full grid grid-cols-2 lg:grid-cols-5 gap-3 ">
