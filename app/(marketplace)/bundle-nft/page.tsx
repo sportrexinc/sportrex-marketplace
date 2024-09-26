@@ -48,13 +48,13 @@ const BundleNft = () => {
             <p className="text-grey-800 text-md">
               File must contain one .csv or .json file with metadata - <br /> 
               <span>
-                <Link href={"./example.csv"} download className="text-yellow">
+                <Link href={"./example-with-maps.csv"} download className="text-yellow">
                 Download example.csv
                 </Link>,
               </span>
               <span>
-                <Link href={"./example.csv"} download className="text-yellow">
-                Download example.json
+                <Link href={"./example-with-ipfs.csv"} download className="text-yellow">
+                 Download example.json
                 </Link>
               </span>
             </p>
@@ -65,7 +65,7 @@ The csv must have a name column, which defines the name of the NFT.
           </div>
           <div className="form gap-y-8 mt-4 flex flex-col ">
             <JsonFileInput name="file" />
-            <TextInput
+            {/* <TextInput
               // placeholder={t("name_placeholder")}
               placeholder=" Name"
               label={"Bundle Name"}
@@ -74,8 +74,8 @@ The csv must have a name column, which defines the name of the NFT.
               setValue={function (value: React.SetStateAction<string>): void {
                 throw new Error("Function not implemented.");
               }}
-            />
-            <TextAreaInput
+            /> */}
+            {/* <TextAreaInput
               // placeholder={t("nft_desc_placeholder")}
               placeholder={"Your NFT description"}
               // label={t("desc")}
@@ -85,15 +85,15 @@ The csv must have a name column, which defines the name of the NFT.
               setValue={function (value: React.SetStateAction<string>): void {
                 throw new Error("Function not implemented.");
               }}
-            />
+            /> */}
             <div className="flex flex-col">
-              <label className="text-white semibold text-sm md:text-lg regular">
+              {/* <label className="text-white semibold text-sm md:text-lg regular">
                 Add Nft Arrays* .
                 <span className="text-white text-xs">
                   Input a unique identifier
                 </span>
-              </label>
-              <div className="w-full">
+              </label> */}
+              {/* <div className="w-full">
                 {inputs.map((input, index) => (
                   <div key={index} className="flex items-center gap-2 w-full ">
                     <span className="bold text-white lg:text-[22px] text-base mt-2 w-auto ">
@@ -111,19 +111,19 @@ The csv must have a name column, which defines the name of the NFT.
                     </span>
                   </div>
                 ))}
-              </div>
-              <span className="w-auto max-w-[200px] mt-8">
+              </div> */}
+              {/* <span className="w-auto max-w-[200px] mt-8">
                 <ActionBtn name={"Add new field"} action={handleAddNew} />
-              </span>
+              </span> */}
             </div>
-            <TextInput
+            {/* <TextInput
               placeholder={"0 supplies"}
               label={"Input number of supplies"}
               name="link"
               value={supplies}
               setValue={setSupplies}
-            />
-            <TextAreaInput
+            /> */}
+            {/* <TextAreaInput
               placeholder={"Your nft description"}
               label={"Properties"}
               name="property  description"
@@ -132,8 +132,8 @@ The csv must have a name column, which defines the name of the NFT.
               setValue={function (value: React.SetStateAction<string>): void {
                 throw new Error("Function not implemented.");
               }}
-            />
-            <SelectInput
+            /> */}
+            {/* <SelectInput
               placeholder="Select %fee"
               label="% Fee for creator earning "
               name="fee"
@@ -142,9 +142,9 @@ The csv must have a name column, which defines the name of the NFT.
                 { value: "10%", label: "10%" },
                 { value: "15%", label: "15%" },
               ]}
-            />
+            /> */}
 
-            <SelectInput
+            {/* <SelectInput
               placeholder={t("ethereum")}
               label={t("blockchain_technology")}
               name="technology"
@@ -153,7 +153,7 @@ The csv must have a name column, which defines the name of the NFT.
                 { value: "single", label: "Single" },
                 { value: "bundle", label: "Bundle" },
               ]}
-            />
+            /> */}
           </div>
           <div className="mt-10 flex flex-col  ">
             <div className="mt-20 flex justify-center items-center space-x-8">

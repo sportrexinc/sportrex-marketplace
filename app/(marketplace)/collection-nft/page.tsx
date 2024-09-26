@@ -265,6 +265,24 @@ const CollectionNft = () => {
                       { value: "15%", label: "15%" },
                       ]}
                       /> */}
+                      <SelectInput
+                    placeholder=""
+                    label={"Erc Type"}
+                    name="erc"
+                    value={values.blockChain}
+                    handleChange={handleChange("erc")}
+                    options={[
+                      { value: "ERC1155", label: "ERC-1155" },
+                      { value: "ERC721", label: "ERC-721" },
+                    ]}
+                    errMessage={
+                      <ErrorMessage
+                      className="text-red-500"
+                      name="blockChain"
+                      component={"div"}
+                      />
+                    }
+                    />
                   <SelectInput
                     placeholder=""
                     label={"Blockchain Technology"}
@@ -282,23 +300,7 @@ const CollectionNft = () => {
                       />
                     }
                     />
-                  <SelectInput
-                    placeholder=""
-                    label={"Erc Type"}
-                    name="erc"
-                    value={values.blockChain}
-                    handleChange={handleChange("erc")}
-                    options={[
-                      { value: "erc-20", label: "erc-20" },
-                    ]}
-                    errMessage={
-                      <ErrorMessage
-                      className="text-red-500"
-                      name="blockChain"
-                      component={"div"}
-                      />
-                    }
-                    />
+                  
                 </div>
                 <div className="mt-10 flex flex-col  ">
                   <div className="mt-20 flex justify-center items-center space-x-8">

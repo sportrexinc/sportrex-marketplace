@@ -8,13 +8,13 @@ const Favourite = () => {
   const [active, setActive] = useState(1);
   const data = [
     {
-      value: "Collections",
-      label: "Collections",
+      value: "Favourite Collections",
+      label: "Favourite Collections",
       id: 1,
     },
     {
-      value: "NftAsset by me",
-      label: "NftAsset by me",
+      value: "Favourite NFTs",
+      label: "Favourite NFTs",
       id: 2,
     },
 
