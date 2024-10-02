@@ -6,6 +6,11 @@ import OwnedByMe from "./OwnedByMe";
 const CollectionsComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [active, setActive] = useState(1);
+  const [selected, setSelected] = useState({
+    value: "Owned by me",
+    label: "Owned by me",
+    id: 1,
+  });
   const data = [
     {
       value: "Owned by me",
@@ -25,6 +30,8 @@ const CollectionsComponent = () => {
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           setActive={setActive}
+          selected={selected}
+          setSelected={setSelected}
           active={active}
           data={data}
           name="Owned by me"

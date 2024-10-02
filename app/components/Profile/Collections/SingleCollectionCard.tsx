@@ -9,6 +9,7 @@ import { CollectionResult } from "@/types";
 import CollectionLoading from "../../Loader/CollectionLoading";
 import Image from "next/image";
 import Abi from "@/abi/SptNFTContract.json";
+import FavoriteButtonCollection from "./favourite-button-collection";
 
 const CollectionsCard: FC<{
   collection: CollectionResult;
@@ -43,17 +44,7 @@ if(isLoading) return <CollectionLoading />
                {`${ !countError ?  totalCount : '_ _'} items`}
               </div>
               <div className="flex space-x-1 items-center">
-                {liked ? (
-                  <AiFillHeart
-                    className="text-xl text-yellow"
-                    onClick={() => setLiked(false)}
-                  />
-                ) : (
-                  <AiOutlineHeart
-                    className="text-xl text-grey-800"
-                    onClick={() => setLiked(true)}
-                  />
-                )}
+                <FavoriteButtonCollection item={collection} />
                 <h2>0</h2>
               </div>
             </div>
