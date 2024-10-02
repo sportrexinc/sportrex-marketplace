@@ -7,6 +7,8 @@ interface Profile {
   setActive: any;
   active:  number |any;
   isOpen: boolean;
+  selected: any;
+  setSelected:any
 }
 const ProfileSelect = ({
   name,
@@ -14,9 +16,10 @@ const ProfileSelect = ({
   isOpen,
   setIsOpen,
   setActive,
+  selected,setSelected,
   active,
 } : Profile) => {
-  const [selected, setSelected] = useState<any>({});
+
   const [options, setOptions] = useState(data);
   const toggleOpen = () => {
     setIsOpen(!isOpen);
@@ -38,7 +41,7 @@ const ProfileSelect = ({
         </div>
       </div>
       {isOpen && (
-        <div className="bg-blue-header text-white rounded-md shadow-md regular text-md w-full top-12 absolute left-0 z-50">
+        <div className="bg-blue-header text-white rounded-md shadow-md regular text-md w-full top-12 absolute left-0 z-[100]">
           <div className="flex flex-col p-4">
             {options.map((option:any) => (
               <div

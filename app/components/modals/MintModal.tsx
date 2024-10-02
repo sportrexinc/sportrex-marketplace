@@ -57,7 +57,7 @@ const MintModal = ({
             objectFit="cover"
             className="backdrop-blur-2xl"
           />
-          <div className="w-full backdrop-blur-2xl">
+          <div className="w-full backdrop-blur-2xl overlay-shadow ">
             <NormalLayout>
               <div className="w-full h-screen p-4 flex items-center justify-center relative ">
                 <span

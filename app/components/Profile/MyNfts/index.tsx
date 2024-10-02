@@ -7,6 +7,11 @@ import { getUserNft } from "@/app/redux/features/auth/MyNftSlice";
 const MyNfts = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [active, setActive] = useState(1);
+  const [selected, setSelected] = useState({
+    value: "Owned by me",
+    label: "Owned by me",
+    id: 1,
+  });
   const address = useAddress()
   const dispatch = useAppDispatch()
   const { nft_data, nft_loading, nft_data_history_count, nft_data_history } = useAppSelector(state => state.userNft)
@@ -31,12 +36,14 @@ const MyNfts = () => {
       id: 3,
     },
   ];
+
+  console.log(active)
   return (
     <div className="bg-blue-body w-full h-full">
 
       <div className="mt-3 w-64">
 
-        <ProfileSelect isOpen={isOpen} setIsOpen={setIsOpen} setActive={setActive} active={active} data={data} name="Owned by me" />
+        <ProfileSelect   selected={selected} setSelected={setSelected} isOpen={isOpen} setIsOpen={setIsOpen} setActive={setActive} active={active} data={data} name="Owned by me" />
       </div>
       <div className="mt-6">
         {/* <div className="flex-[1]"/>
