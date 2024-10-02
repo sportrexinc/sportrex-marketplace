@@ -34,10 +34,7 @@ const Favourite = () => {
       label: "Favourite NFTs",
       id: 2,
     },
-
   ];
-
-  
 
   return (
     <div className="bg-blue-body w-full h-full">
@@ -55,15 +52,30 @@ const Favourite = () => {
       </div>
       <div className="mt-6">
         {active === 1 && (
-          <div className="w-full grid grid-cols-2 lg:grid-cols-5 gap-3">
-            {
+          <>
+            {favorites?.length > 0 ? (
+              favorites.map((item: CollectionResult, index: number) => (
+                <div
+                  key={index}
+                  className="w-full grid grid-cols-2 lg:grid-cols-5 gap-3"
+                >
+                  <SingleCollectionCard collection={item} key={index} />
+                </div>
+              ))
+            ) : (
+              <div className="flex justify-center">
+                <p className="text-center">
+                  You are yet to have a Favorite Collection...
+                </p>
+              </div>
+            )}
+            {/* {
               favorites?.map(
               (item: CollectionResult, index: number) => (
                 <SingleCollectionCard collection={item} key={index} />
               ))
-            }
-                
-          </div>
+            } */}
+          </>
         )}
         {active === 2 && <NftAsset />}
       </div>
