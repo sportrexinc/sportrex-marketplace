@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import ParentLayout from "@/app/layouts/ParentLayout";
 import dummy from "@/public/assets/general/edit-dummy.png";
 import nodata from "@/public/assets/general/nodata.svg";
@@ -18,12 +18,15 @@ import {
 } from "@/app/components";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { CollectionResult } from "@/types";
 
 const styles = {
   icon: "w-[32px] sm:w-[40px] h-auto  ",
 };
 
-const CollectionMintNft = () => {
+const CollectionMintNft: FC<{ collection: CollectionResult }> = ({
+  collection,
+}) => {
   const [liked, setLiked] = useState(false);
 
   const navigate = useRouter();
@@ -60,7 +63,7 @@ const CollectionMintNft = () => {
               <div className="flex flex-col  w-full ">
                 <div className="flex justify-between">
                   <p className="mt-4 text-white semibold text-lg regular">
-                    Painter #23535
+                    {collection?.name}
                   </p>
                   <div className="flex space-x-1 items-center">
                     {liked ? (
