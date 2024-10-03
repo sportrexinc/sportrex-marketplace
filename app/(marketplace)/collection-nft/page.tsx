@@ -101,7 +101,7 @@ const CollectionNft = () => {
                         ? await contract?.call("create_nft_bundle", [
                             values.name,
                             values.symbol,
-                            ""
+                            "",
                           ])
                         : await contract?.call("create_nft_collection", [
                             values.name,
@@ -136,6 +136,8 @@ const CollectionNft = () => {
                       formData.append("category", values.category);
                     values.banner && formData.append("banner", values.banner);
                     values.desc && formData.append("desc", values.desc);
+                    values.ercType &&
+                      formData.append("contract_type", values.ercType);
                     values.external_link &&
                       formData.append("external_link", values.external_link);
                     const response: AxiosResponse<{
