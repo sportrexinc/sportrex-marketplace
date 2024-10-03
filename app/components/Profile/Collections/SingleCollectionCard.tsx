@@ -8,6 +8,7 @@ import { MediaRenderer, useContract, useMetadata, useNFTs, useTotalCount } from 
 import { CollectionResult } from "@/types";
 import CollectionLoading from "../../Loader/CollectionLoading";
 import Image from "next/image";
+import Link from "next/link";
 import Abi from "@/abi/SptNFTContract.json";
 import FavoriteButtonCollection from "./favourite-button-collection";
 
@@ -28,7 +29,9 @@ const CollectionsCard: FC<{
 if(isLoading) return <CollectionLoading />
   
   return (
-    <div className="w-full md:h-[350px] relative overflow-hidden rounded-[20px] ">
+   <>
+   <Link href={`/nft/${collection.token_address}`}>
+   <div className="w-full md:h-[350px] relative overflow-hidden rounded-[20px] ">
       <div
         className=" w-full z-50 h-full flex flex-col absolute bg-opacity"
       >
@@ -62,6 +65,9 @@ if(isLoading) return <CollectionLoading />
         />
       </div>
     </div>
+   </Link>
+   
+   </>
   );
 };
 
