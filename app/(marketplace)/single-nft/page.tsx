@@ -19,6 +19,7 @@ import { CreateCollectionProps, CreateSingleNFTProps } from "@/types";
 import StandardModal from "@/app/components/modals/StandardModal";
 import APIService from "@/app/utils/APIServices";
 import MintModal from "../../components/modals/MintModal";
+import Image from "next/image";
 export interface TraitsProps {
   value: string;
   trait_type: string;
@@ -30,9 +31,6 @@ export interface TraitsProps {
   transactionHash: string;
  }
 const SingleNft = () => {
-  const { mutateAsync: upload, isLoading } = useStorageUpload();
-  const [modal, setModal] = useState<boolean>(false);
-  const [isCollectionLoading, setIsCollectionLoading]= useState(true)
   const [collections, setCollections] = useState<CreateCollectionProps[]>([]);
   const [traits, setTraits] = useState<TraitsProps[]>([]);
   const [trait, setTrait] = useState<TraitsProps>({
@@ -56,6 +54,7 @@ const SingleNft = () => {
   const [openModal, setOpenModal] = useState(false);
   const [contractAddress, setContractAddress] = useState<string>("");
   const [singleNFTData, setSingleNFTData] = useState({});
+  const [ercType, setErcType] = useState<string>("");
 
 
 
@@ -64,7 +63,8 @@ const SingleNft = () => {
   const validationSchema = yup.object().shape({
     logo: yup.mixed().required("Required"),
     name: yup.string().required("Required"),
-    collectionAddress: yup.string().required("Required"),
+    collectionAddress: yup.string().required("Required"), 
+    supply: yup.number().min(1).required("Required"),
   });
 
   const getAllUserCollections = async () => {
@@ -74,8 +74,6 @@ const SingleNft = () => {
       setCollections(res.data.data);
     } catch (error: any) {
       console.log(error.message);
-    }finally{
-      setIsCollectionLoading(false)
     }
   };
 
@@ -83,8 +81,8 @@ const SingleNft = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    getAllUserCollections();
-  }, [address]);
+    if(!collections.length) getAllUserCollections();
+  }, [address, collections]);
 
   return (
     <>
@@ -149,10 +147,10 @@ const SingleNft = () => {
               traits: [] as TraitsProps[],
               collectionAddress: "",
               external_link: "",
-              amount:"",
+              supply:"1",
             }}
             onSubmit={async (values, { setSubmitting, setFieldValue }) => {
-              setSingleNFTData(values);
+              setSingleNFTData({...values, ercType});
               console.log(contractAddress);
               setOpenModal(true);
             }}
@@ -178,40 +176,49 @@ const SingleNft = () => {
                     </p>
                   </div>
                   <div className="mt-12">
-                    <SelectInput
-                      placeholder={"Select Collection"}
-                      // label={t("blockchain_technology")}
-                      label="Choose your collection"
-                      name="select"
-                      options={
-                        isCollectionLoading
-                          ? [{ value: "", label: "Loading collections..." }]
-                          : collections.length === 0
-                          ? [
-                              {
-                                value: "",
-                                label: "No collection created yet..",
-                              },
-                            ]
-                          : collections.map((item) => ({
-                              value: item.contractAddress as string,
-                              label: item.name,
-                            }))
-                      }
-                      value={contractAddress}
-                      handleChange={(e) => {
-                        setFieldValue("collectionAddress", e.target.value);
-                        setContractAddress(e.target.value);
-                        console.log(e.target.value);
-                      }}
-                      errMessage={
-                        <ErrorMessage
-                          className="text-red-500"
-                          name="collectionName"
-                          component={"div"}
-                        />
-                      }
-                    />
+                  {
+                    collections.length > 0 ?  <SelectInput
+                    placeholder={"Select Collection"}
+                    // label={t("blockchain_technology")}
+                    label="Choose your collection"
+                    name="select"
+                    optionRender={(_, { index }) =>  (
+                      <div onClick={() =>  setErcType(collections[index].contractType)} className="flex items-center gap-4">
+                           <Image alt="collection" src={collections[index].logoImage?.url as string} width={45} height={45} className="rounded-[10px]"/> 
+                        <div>
+                          <div className="capitalize text-[14px] text-gray-400">{collections[index].name}</div>
+                          <div className="uppercase text-[11px]  text-gray-600">{collections[index].contractType}</div>
+                        </div>
+                      </div>
+                    )}
+                    options={ collections.length === 0
+                        ? [
+                            {
+                              value: "",
+                              label: "Select a collection",
+                            },
+                          ]
+                        : collections.map((item) => ({
+                            value: item.contractAddress as string,
+                            label: item.name,
+                          }))
+                    }
+                    value={contractAddress}
+                    handleChange={(e) => {
+                      console.log(e)
+                      setFieldValue("collectionAddress", e);
+                      setContractAddress(e);
+                      console.log(e);
+                    }}
+                    errMessage={
+                      <ErrorMessage
+                        className="text-red-500"
+                        name="collectionName"
+                        component={"div"}
+                      />
+                    }
+                  /> : "Create a new collection"
+                  }
                     <div className="flex-col mt-8">
                       <h1 className="semibold text-white text-md md:text-xl">
                         {/* {t("upload")} (s)* */}
@@ -253,6 +260,21 @@ const SingleNft = () => {
                           />
                         }
                       />
+                     {ercType === 'erc 1155' &&
+                       <TextInput
+                        placeholder={"Enter supply"}
+                        label={"Supply*"}
+                        name="supply"
+                        value={values.supply}
+                        setValue={handleChange("supply")}
+                        errMessage={
+                          <ErrorMessage
+                            className="text-red-500"
+                            name="supply"
+                            component={"div"}
+                          />
+                        }
+                      />}
                       <TextAreaInput
                         placeholder={" Your Nft Description"}
                         // label={t("desc")}
@@ -283,20 +305,7 @@ const SingleNft = () => {
                           />
                         }
                       />
-                      <TextInput
-                        placeholder={"Amount"}
-                        label={"Enter Amount*"}
-                        name="amount"
-                        value={values.external_link}
-                        setValue={handleChange("external_link")}
-                        errMessage={
-                          <ErrorMessage
-                            className="text-red-500"
-                            name="supply"
-                            component={"div"}
-                          />
-                        }
-                      />
+                     
                       <div className="w-full flex flex-col">
                         <div className="w-full justify-center items-center flex">
                           <div className="w-full flex flex-col">

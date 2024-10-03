@@ -14,10 +14,9 @@ import { Formik, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { CreateCollectionProps } from "@/types";
 import {
+  contractType,
   useAddress,
   useContract,
-  useContractWrite,
-  useUpdateMetadata,
 } from "@thirdweb-dev/react";
 import APIService from "@/app/utils/APIServices";
 import { baseUrl, url } from "@/app/utils/endpoints";
@@ -35,10 +34,7 @@ const CollectionNft = () => {
     process.env.NEXT_PUBLIC_SPT_MASTER_CONTRACT_FACTORY,
     ContractFactoryAbi
   );
-  const { mutateAsync: createNFTCollection } = useContractWrite(
-    contract,
-    "createNFTCollection"
-  );
+ 
   const address = useAddress();
   const [collection, setCollection] = useState<CreateCollectionProps | null>(
     null
@@ -54,6 +50,7 @@ const CollectionNft = () => {
     name: yup.string().required("Required"),
     symbol: yup.string().required("Required"),
     blockChain: yup.string().required("Required"),
+    contractType: yup.string().required("Required"),
   });
 
   return (
@@ -90,21 +87,29 @@ const CollectionNft = () => {
                 external_link: "",
                 feature: null,
                 symbol: "",
+                contractType: ""
               } as CreateCollectionProps
             }
             onSubmit={async (values, { setSubmitting }) => {
+              console.log(values);
+              
+              let data: any 
               try {
                 setSubmitting(true);
-                const data = await contract?.call("create_nft_collection", [
+               if(values.contractType === 'erc 721') {
+                 data = await contract?.call("create_nft_collection", [
                   values.name,
                   values.symbol,
                 ]);
-                // const data = await createNFTCollection({
-                  //   args: [values.name, values.symbol],
-                  //   overrides: {
-                    //     value: convertTowei(0.0005),
-                    //   },
-                    // });
+               }
+
+               if(values.contractType === 'erc 1155') {
+                data = await contract?.call("create_nft_bundle", [
+                  values.name,
+                  values.symbol,
+                  ""
+                ]);
+               }
                     console.log(data);
                     console.log(contract);
 
@@ -122,6 +127,7 @@ const CollectionNft = () => {
                 values.desc && formData.append("desc", values.desc);
                 values.external_link &&
                 formData.append("external_link", values.external_link);
+                formData.append("contractType", values.contractType)
                 const response: AxiosResponse<{ data: CreateCollectionProps }> =
                   await APIService.post(
                     `/user/${address}/collection`,
@@ -191,82 +197,6 @@ const CollectionNft = () => {
                     }
                     />
 
-                  {/* <TextAreaInput
-                    placeholder={t("nft_desc_placeholder")}
-                    label={t("description")}
-                    name="desc"
-                    value={values.desc}
-                    setValue={handleChange("desc")}
-                    errMessage={
-                      <ErrorMessage
-                      className="text-red-500"
-                      name="desc"
-                      component={"div"}
-                      />
-                      }
-                      /> */}
-                  {/* <TextInput
-                    placeholder={t("external_link_placeholder")}
-                    label={t("external_label")}
-                    name="external_link"
-                    value={values.external_link}
-                    setValue={handleChange("external_link")}
-                    errMessage={
-                      <ErrorMessage
-                        className="text-red-500"
-                        name="external_link"
-                        component={"div"}
-                        />
-                        }
-                        /> */}
-                  {/* <FileInput
-                    name="banner"
-                    onChange={(e) => {
-                      console.log(e.target.files[0]);
-                      setFieldValue("banner", e.target.files[0]);
-                      }}
-                      label="Upload Background picture"
-                      errMessage={
-                        <ErrorMessage
-                        className="text-red-500"
-                        name="banner"
-                        component={"div"}
-                        />
-                        }
-                        /> */}
-                  {/* 
-                  <SelectInput
-                  placeholder={t("select_category")}
-                  label={t("category")}
-                  name="category"
-                  handleChange={handleChange("category")}
-                  value={values.category}
-                  options={[
-                    { value: "art", label: "Art" },
-                    { value: "gaming", label: "Gaming" },
-                    { value: "memberships", label: "Memberships" },
-                    { value: "pfps", label: "PFPs" },
-                    { value: "music", label: "Music" },
-                    { value: "photography", label: "Photography" },
-                    ]}
-                    errMessage={
-                      <ErrorMessage
-                      className="text-red-500"
-                      name="category"
-                      component={"div"}
-                      />
-                      }
-                      /> */}
-                  {/* <SelectInput
-                    placeholder="Select %fee"
-                    label="% Fee for creator earning "
-                    name="fee"
-                    options={[
-                      { value: "5%", label: "5%" },
-                      { value: "10%", label: "10%" },
-                      { value: "15%", label: "15%" },
-                      ]}
-                      /> */}
                   <SelectInput
                     placeholder=""
                     label={"Blockchain Technology"}
@@ -286,17 +216,18 @@ const CollectionNft = () => {
                     />
                   <SelectInput
                     placeholder=""
-                    label={"Erc Type"}
-                    name="erc"
-                    value={values.blockChain}
-                    handleChange={handleChange("erc")}
+                    label={"Collection Type"}
+                    name="contractType"
+                    value={values.contractType}
+                    handleChange={handleChange("contractType")}
                     options={[
-                      { value: "erc-20", label: "erc-20" },
+                      { value: "erc 721", label: "Single collection" },
+                      { value: "erc 1155", label: "Bundle collection" },
                     ]}
                     errMessage={
                       <ErrorMessage
                       className="text-red-500"
-                      name="blockChain"
+                      name="contractType"
                       component={"div"}
                       />
                     }

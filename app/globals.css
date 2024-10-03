@@ -2,6 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
+.ant-select-selector {
+  background-color: #0E1648 !important; /* Set your desired background color */
+  outline: none;
+  color: white !important;
+  
+}
+
+.ant-select-selector::placeholder {
+  color: white !important;
+}
+
+
+/* Optional: Change the background color when the Select input is focused */
+.ant-select-focused .ant-select-selector {
+  background-color:  #0E1648 !important;
+  outline: none;
+  color: white !important;
+}
+
+.ant-select-item-option {
+  background-color: #0E1648 !important;  /* Default background color */
+  color: white !important;             /* Default text color */
+}
+
+.ant-select-item-option-active {
+  background-color: #0b102f !important;
+  color: white !important;
+}
+
+.ant-select-item-option-selected {
+  background-color: #0b102f !important;
+  color: white !important;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
