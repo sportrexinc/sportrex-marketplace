@@ -5,8 +5,10 @@ import { CloseIcon } from "../../../public/assets/svg/index";
 import {
   ThirdwebSDK,
   useSigner,
+  useAddress
 } from "@thirdweb-dev/react";
 import SPT721Abi from "@/abi/SptERC721.json";
+import SPT1155ABI from "@/abi/SptERC1155.json"
 import { useStorageUpload } from "@thirdweb-dev/react";
 import ActionBtn from "../Button/ActionBtn";
 import { TraitsProps } from "@/app/(marketplace)/single-nft/page";
@@ -41,6 +43,8 @@ interface modalProps {
     external_link: string;
     traits: TraitsProps[];
     collectionAddress: string;
+    supply?: number,
+    ercType?: 'erc 1155' | 'erc 721'
   };
   setOpenModal: any;
   openModal: boolean;
@@ -91,6 +95,7 @@ const StandardModal = ({
     useState<CreateSingleNFTProps | null>(null);
   const [tokenURI, setTokenURI] = useState<any>();
   const [fullURI, setFullURI] = useState<any>();
+  const address = useAddress();
   const findByKey = (name: string) =>
     children.map((child: { key: any }) => {
       if (child.key === name) return child;
@@ -147,12 +152,19 @@ const StandardModal = ({
       const sdk = new ThirdwebSDK(signer);
       const customContract = await sdk.getContract(
         singleNFTData.collectionAddress,
-        SPT721Abi // Pass your custom ABI here
+        singleNFTData.ercType === 'erc 721' ?  SPT721Abi : SPT1155ABI // Pass your custom ABI here
       );
       console.log(singleNFTData.collectionAddress);
       console.log(SPT721Abi);
       try {
-        const data = await customContract.call("safeMint", [metaDataURI[0]]);
+        let data: any
+        if(singleNFTData.ercType === 'erc 721') {
+          data = await customContract.call("safeMint", [metaDataURI[0]])
+        }
+        if(singleNFTData.ercType === 'erc 1155') {
+          data = await customContract.call("mintToken",
+             [ address, metaDataURI[0], singleNFTData.supply])
+        }
         setLoadingC(false);
         console.log(data);
         setMintedNFTData({

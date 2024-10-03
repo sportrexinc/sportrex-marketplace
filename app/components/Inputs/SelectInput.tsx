@@ -1,5 +1,6 @@
 import React from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { Select, SelectProps } from "antd"
 interface SelectInput {
   options: {
     value: string;
@@ -11,6 +12,7 @@ interface SelectInput {
   value?: string;
   handleChange?: (e: any) => void;
   errMessage?: React.ReactNode | string;
+  optionRender?: SelectProps['optionRender']
 }
 
 const SelectInput = ({ 
@@ -20,30 +22,37 @@ const SelectInput = ({
   label,
   handleChange,
   value,
-  errMessage 
+  errMessage,
+  optionRender
 }: SelectInput) => {
   return (
-    <div>
-      <div className="flex flex-col space-y-4">
+      <div className="flex flex-col">
         <label className="text-white semibold text-sm md:text-lg regular rounded-[10px]">
           {label}
         </label>
-        <select
+        <Select
+        placeholder={placeholder}
         value={value}
         onChange={handleChange}
-          className="w-full py-2 px-4 bg-blue-card  rounded-lg placeholder:text-grey-800 border-r-[16px] border-r-[transparent] outline-none "
-          name={name}
+        optionRender={optionRender}
+        className="h-[48px] placeholder:text-grey-800"
+        dropdownStyle={{
+          backgroundColor: "#0E1648",
+          color: "white"
+        }}
+        rootClassName="placeholder:text-grey-800 text-white"
+        variant="borderless"
+        // bordered={false}
+          // className="w-full bg-blue-card  rounded-lg placeholder:text-grey-800 border-r-[16px] border-r-[transparent] outline-none "
         >
-          <option value="">{placeholder}</option>
           {options.map((option) => (
-            <option key={option.value} value={option.value}>
+            <Select.Option key={option.value}  value={option.value}>
               {option.label}
-            </option>
+            </Select.Option>
           ))}
-        </select>
+        </Select>
         { errMessage }
       </div>
-    </div>
   );
 };
 

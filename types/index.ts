@@ -62,6 +62,7 @@ export interface CreateCollectionProps {
   logoImage?: ImageProps;
   creator?: string;
   contractAddress?: string;
+  contractType: string;
 }
 
 export interface CreateSingleNFTProps {

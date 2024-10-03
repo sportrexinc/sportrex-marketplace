@@ -38,28 +38,7 @@ if(loading) return <NftLoading />
     // <div className="w-full box-border  lg:min-w-[300px] md:h-[350px] sm:w-[280px] lg:w-[304px] h-full bg-no-repeat bg-cover bg-blue-header rounded-[10px] md:rounded-[20px] p-3 flex flex-col items-start space-y-[12px] justify-between relative">
     <div className="w-full overflow-hidden box-border md:h-[350px] h-full bg-blue-header rounded-[10px] p-1 md:rounded-[20px] flex flex-col  relative">
       <div className="absolute left-2 top-2">
-        {/* <BsThreeDotsVertical
-          className="text-white text-2xl self-end"
-          onClick={() => setOpenOptions(!openOptions)}
-        /> */}
-       { Number(item.amount) > 1 && <span className="bg-black text-[14px] rounded-full p-1"> {`x${item.amount}`} </span>}
-        {/* {openOptions && (
-          <div className="mt-2 w-40 bg-blue-body rounded-[15px] flex flex-col space-y-1 p-4">
-            <p
-              className="w-full hover:bg-blue-btn text-white text-lg regular regular cursor-pointer"
-              onClick={handleEdit}
-            >
-              Edit
-            </p>
-            <p
-              className="w-full text-lg regular  hover:bg-blue-btn text-white regular cursor-pointer"
-              onClick={handleMint}
-            >
-              mint
-            </p>
-          </div>
-        )} */}
-
+       { Number(item.amount) > 1 && <span className="bg-black text-[14px] rounded-full p-1 text-green"> {`x${item.amount}`} </span>}
       </div>
     <MediaRenderer 
     height="233px"
