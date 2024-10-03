@@ -3,10 +3,9 @@ import React, { useState, useEffect, useLayoutEffect, Fragment } from "react";
 import "./modal.css";
 import { CloseIcon } from "../../../public/assets/svg/index";
 import {
-  useAddress,
-  useContract,
   ThirdwebSDK,
   useSigner,
+  useAddress
 } from "@thirdweb-dev/react";
 import SPT721Abi from "@/abi/SptERC721.json";
 import SPT1155ABI from "@/abi/SptERC1155.json"
@@ -16,7 +15,7 @@ import { TraitsProps } from "@/app/(marketplace)/single-nft/page";
 import { CreateSingleNFTProps } from "@/types";
 
 import { BiSolidError } from "react-icons/bi";
-// import { Button } from "../Forms/Button";
+
 
 interface modalProps {
   showHeader?: boolean;
@@ -96,7 +95,7 @@ const StandardModal = ({
     useState<CreateSingleNFTProps | null>(null);
   const [tokenURI, setTokenURI] = useState<any>();
   const [fullURI, setFullURI] = useState<any>();
-  const address = useAddress()
+  const address = useAddress();
   const findByKey = (name: string) =>
     children.map((child: { key: any }) => {
       if (child.key === name) return child;

@@ -49,6 +49,7 @@ interface ImageProps {
 export interface CreateCollectionProps {
   name: string;
   desc: string;
+  ercType: string;
   external_link?: string;
   category?: string;
   blockChain?: string;
@@ -81,5 +82,5 @@ export interface CreateSingleNFTProps {
   creator?: string;
   contractAddress?: string;
   tokenURI: string;
-  collectionName:string,
+  collectionName: string;
 }
