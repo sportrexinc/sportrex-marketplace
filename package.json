@@ -14,6 +14,7 @@
     "@reduxjs/toolkit": "^2.2.6",
     "@thirdweb-dev/react": "^4.9.4",
     "@thirdweb-dev/sdk": "^4.0.99",
+    "antd": "^5.21.2",
     "axios": "^1.7.2",
     "ethers": "^5.7.2",
     "flag-icon-css": "^4.1.7",
