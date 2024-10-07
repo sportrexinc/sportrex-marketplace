@@ -1,5 +1,4 @@
-
-"use client"
+"use client";
 import ParentLayout from "@/app/layouts/ParentLayout";
 import {
   FileInput,
@@ -13,19 +12,21 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import JsonFileInput from "@/app/components/Inputs/JsonFileInput";
+
 const BundleNft = () => {
   const { t } = useTranslation("translation");
-    const [inputs, setInputs] = useState<string[]>(["", "", ""]);
-      const [supplies, setSupplies] = useState("")
-    const handleInputChange = (index: number, value: string) => {
-      const newInputs = [...inputs];
-      newInputs[index] = value;
-      setInputs(newInputs);
-    };
 
-    const handleAddNew = () => {
-      setInputs([...inputs, ""]);
-    };
+  const [inputs, setInputs] = useState<string[]>(["", "", ""]);
+  const [supplies, setSupplies] = useState("");
+  const handleInputChange = (index: number, value: string) => {
+    const newInputs = [...inputs];
+    newInputs[index] = value;
+    setInputs(newInputs);
+  };
+
+  const handleAddNew = () => {
+    setInputs([...inputs, ""]);
+  };
   return (
     <ParentLayout>
       <div className="w-full flex flex-col md:w-10/12 xl:w-6/12 mx-auto mb-32 ">
@@ -46,22 +47,31 @@ const BundleNft = () => {
               Upload multiple digital File (s)*
             </h1>
             <p className="text-grey-800 text-md">
-              File must contain one .csv or .json file with metadata - <br /> 
+              File must contain one .csv or .json file with metadata - <br />
               <span>
-                <Link href={"./example-with-maps.csv"} download className="text-yellow">
-                Download example.csv
-                </Link>,
+                <Link
+                  href={"./example-with-maps.csv"}
+                  download
+                  className="text-yellow"
+                >
+                  Download example.csv
+                </Link>
+                ,
               </span>
               <span>
-                <Link href={"./example-with-ipfs.csv"} download className="text-yellow">
-                 Download example.json
+                <Link
+                  href={"./example-with-ipfs.csv"}
+                  download
+                  className="text-yellow"
+                >
+                  Download example.json
                 </Link>
               </span>
             </p>
             <p className="text-grey-800 text-md">
-The csv must have a name column, which defines the name of the NFT.
+              The csv must have a name column, which defines the name of the
+              NFT.
             </p>
-           
           </div>
           <div className="form gap-y-8 mt-4 flex flex-col ">
             <JsonFileInput name="file" />
