@@ -164,7 +164,38 @@ const SingleNft = () => {
               setFieldValue,
             }) => {
               return (
-                <div className="w-full flex flex-col md:w-10/12 xl:w-6/12 mx-auto mb-32 ">
+                <div className="w-full flex flex-col xl:flex-row  mx-auto mb-32 gap-12">
+                  <div className="xl:w-1/2 w-full ">
+                   <div className="flex-col mt-8 lg:mt-20">
+                      <h1 className="semibold text-white text-md md:text-xl">
+                        {/* {t("upload")} (s)* */}
+                        Upload digital File (s)*
+                      </h1>
+                      <p className="text-grey-800 text-md">
+                        {/* {t("upload_inst")} */}
+                        Add your image / video / audio file / 3D Assets
+                      </p>
+                    </div>
+                    <div className="form space-y-8 mt-4">
+                      <FileInput
+                        name="logo"
+                        onChange={(e) => {
+                          console.log(e.target.files[0]);
+                          setFieldValue("logo", e.target.files[0]);
+                        }}
+                        errMessage={
+                          <ErrorMessage
+                            className="text-red-500"
+                            name="logo"
+                            component={"div"}
+                          />
+                        }
+                      />
+                  </div>
+                  </div>
+                  <div className="xl:w-1/2 w-full ">
+                  
+                
                   <div className="flex flex-col mt-8 xl:mt-20 ">
                     <Header>
                       {/* {t("nft_creation")} */}
@@ -219,31 +250,9 @@ const SingleNft = () => {
                     }
                   /> : "Create a new collection"
                   }
-                    <div className="flex-col mt-8">
-                      <h1 className="semibold text-white text-md md:text-xl">
-                        {/* {t("upload")} (s)* */}
-                        Upload digital File (s)*
-                      </h1>
-                      <p className="text-grey-800 text-md">
-                        {/* {t("upload_inst")} */}
-                        Add your image / video / audio file / 3D Assets
-                      </p>
-                    </div>
+                   
                     <div className="form space-y-8 mt-4">
-                      <FileInput
-                        name="logo"
-                        onChange={(e) => {
-                          console.log(e.target.files[0]);
-                          setFieldValue("logo", e.target.files[0]);
-                        }}
-                        errMessage={
-                          <ErrorMessage
-                            className="text-red-500"
-                            name="logo"
-                            component={"div"}
-                          />
-                        }
-                      />
+                    
                       <TextInput
                         // placeholder={t("name_placeholder")}
                         placeholder="Your Nft name"
@@ -403,6 +412,7 @@ const SingleNft = () => {
                       </div>
                     </div>
                   </div>
+                </div>
                 </div>
               );
             }}

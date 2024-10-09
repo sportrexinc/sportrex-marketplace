@@ -36,10 +36,11 @@ const CollectionsCard: FC<{
 
   return (
     <>
-      <Link href={`/nft/${collection.token_address}`}>
+     
         <div className="w-full md:h-[350px] relative overflow-hidden rounded-[20px] ">
           <div className=" w-full z-50 h-full flex flex-col absolute bg-opacity">
-            <div className="img-container flex-1 items-center w-full flex justify-center ">
+             <Link href={`/nft/${collection.token_address}`} className="img-container flex-1 items-center w-full flex justify-center ">
+            
               
               <Image
               /* @ts-ignore */
@@ -49,9 +50,10 @@ const CollectionsCard: FC<{
                 width={100}
                 height={100}
               />
-            </div>
-            <div className="flex flex-col p-4 mt-2 sm:mt-6 2xl:mt-10">
-              <p className="text-[18px] leading-[30px]">{collection.name}</p>
+            </Link>
+          <div className="flex flex-col p-4 mt-2 sm:mt-6 2xl:mt-10">
+            
+            <Link href={`/nft/${collection.token_address}`} className="text-[18px] leading-[30px]" >{collection.name}</Link>
               <div className="flex justify-between w-full">
                 <div className="text-[#fff] semibold leading-[22px]">
                   {`${!countError ? totalCount : "_ _"} items`}
@@ -63,7 +65,7 @@ const CollectionsCard: FC<{
               </div>
             </div>
           </div>
-          <div className="w-full h-full blur-sm absolute z-0 flex  ">
+          <div className="w-full h-full blur-sm absolute z-0 flex ">
             <Image
               // @ts-ignore
               src={metadata?.image || soccer}
@@ -74,7 +76,7 @@ const CollectionsCard: FC<{
             />
           </div>
         </div>
-      </Link>
+    
     </>
   );
 };

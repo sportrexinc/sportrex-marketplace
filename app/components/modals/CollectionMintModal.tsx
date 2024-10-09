@@ -43,10 +43,11 @@ const CollectionMintModal = ({
              <NormalLayout>
                <div className="w-full h-screen p-4 flex items-center justify-center relative ">
                  <span
-                   className="absolute top-4 left-4 cursor-pointer"
+                   className="absolute top-4 left-4 cursor-pointer bg-white"
                    onClick={() => setOpen(false)}
                  >
                    <CloseIcon />
+                   cancel
                  </span>
                  <div className="w-full lg:w-9/12 xl:w-7/12 mx-auto flex items-center justify-center flex-col max-w-[600px]">
                    <CollectionCard data={data} />

@@ -28,7 +28,7 @@ const FileInput = ({ onChange, name, label, errMessage }: FileInput) => {
       <label className="text-white semibold text-sm md:text-lg regular">
         {label}
       </label>
-      <div className="bg-blue-card h-16 lg:h-[145px] w-full flex justify-center items-center rounded-[10px] relative">
+      <div className="bg-blue-card h-screen lg:h-[80vh] w-full flex justify-center items-center rounded-[10px] relative">
         <input
           type="file"
           className="absolute left-0 opacity-0 cursor-pointer top-0 w-full h-full"
