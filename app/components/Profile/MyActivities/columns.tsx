@@ -1,33 +1,67 @@
-import { Space, Tag } from 'antd';
-import { TableProps } from 'antd/es/table'; 
-import {ActivitiesTableProps} from "@/types"
+import { Space, Tag } from "antd";
+import { TableProps } from "antd/es/table";
+import { ActivitiesTableProps } from "@/types";
 
-export const columns: TableProps<ActivitiesTableProps>['columns'] = [
+const truncateMiddle = (text: string, length: number) => {
+  if (typeof text !== "string") return text;
+  if (text.length <= length) return text;
+  const halfLength = Math.floor((length - 3) / 2);
+  if (halfLength < 0) return text;
+
+  return `${text.slice(0, halfLength)}...${text.slice(-halfLength)}`;
+};
+
+export const columns: TableProps<ActivitiesTableProps>["columns"] = [
   {
-    title: 'Events',
-    dataIndex: 'event_type',
-    key: 'event_type',
+    title: "Transaction Hash",
+    dataIndex: "hash",
+    key: "hash",
+    render: (text) => {
+      return (
+        <a
+          className="text-blue-500"
+          href={`https://testnet.bscscan.com/tx/${text}`}
+          rel="noopener noreferrer"
+        >
+          {truncateMiddle(text as string, 20)}
+        </a>
+      );
+    },
+  },
+  {
+    title: "Events",
+    dataIndex: "event_type",
+    key: "event_type",
     render: (text) => <a>{text}</a>,
   },
   {
-    title: 'Price',
-    dataIndex: 'value',
-    key: 'value',
+    title: "Price",
+    dataIndex: "value",
+    key: "value",
   },
   {
-    title: 'From',
-    dataIndex: 'from',
-    key: 'from',
+    title: "From",
+    dataIndex: "from",
+    key: "from",
+    render: (text) => <p>{truncateMiddle(text as string, 20)}</p>,
   },
   {
-    title: 'To',
-    key: 'to',
-    dataIndex: 'to',
-    render: (text) => <a className="text-blue-500" target="_blank" href={`https://testnet.bscscan.com/address/${text}`}>{text}</a>,
+    title: "To",
+    key: "to",
+    dataIndex: "to",
+    render: (text) => (
+      <a
+        className="text-blue-500"
+        target="_blank"
+        href={`https://testnet.bscscan.com/address/${text}`}
+      >
+        {truncateMiddle(text as string, 20)}
+      </a>
+    ),
   },
   {
-    title: 'Transaction Date',
-    key: 'timestamp',
-    dataIndex: 'timestamp'
+    title: "Transaction Date",
+    key: "timestamp",
+    dataIndex: "timestamp",
   },
 ];

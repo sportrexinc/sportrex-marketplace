@@ -92,4 +92,5 @@ export interface ActivitiesTableProps {
   from: string;
   to: string;
   timestamp: string;
+  hash: string;
 }

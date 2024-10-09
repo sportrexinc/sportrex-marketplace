@@ -6,6 +6,7 @@ const MyActivitiesTable = () => {
   const data: ActivitiesTableProps[] = [
     {
       key: "1",
+      hash: "0xbb0267a3cbe5ca43c122dc8e582559306d83d8ba47c6d141962973a5a38b3e7b",
       event_type: "Transaction",
       value: "3 TBNB",
       from: "0x0000000000000000000000000000000000000000",
@@ -14,6 +15,7 @@ const MyActivitiesTable = () => {
     },
     {
       key: "2",
+      hash: "0xbb0267a3cbe5ca43c122dc8e582559306d83d8ba47c6d141962973a5a38b3e7b",
       event_type: "Transaction",
       value: "3 BNB",
       from: "0x0000000000000000000000000000000000000000",
@@ -22,6 +24,7 @@ const MyActivitiesTable = () => {
     },
     {
       key: "3",
+      hash: "0xbb0267a3cbe5ca43c122dc8e582559306d83d8ba47c6d141962973a5a38b3e7b",
       event_type: "Transaction",
       value: "3 BNB",
       from: "0x0000000000000000000000000000000000000000",
