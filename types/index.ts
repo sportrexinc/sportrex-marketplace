@@ -84,3 +84,12 @@ export interface CreateSingleNFTProps {
   tokenURI: string;
   collectionName: string;
 }
+
+export interface ActivitiesTableProps {
+  key: string;
+  event_type: string;
+  value: string;
+  from: string;
+  to: string;
+  timestamp: string;
+}
