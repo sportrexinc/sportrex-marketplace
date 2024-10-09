@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ActivitiesTableProps } from "@/types";
 import { Table } from "antd";
 import { columns } from "./columns";
+import APIService from "@/app/utils/APIServices";
+import { AxiosResponse } from "axios";
+import { useAddress } from "@thirdweb-dev/react";
 const MyActivitiesTable = () => {
+  const address = useAddress();
+  const [activities, setActivities] = React.useState<ActivitiesTableProps | []>(
+    []
+  );
+
   const data: ActivitiesTableProps[] = [
     {
       key: "1",
       hash: "0xbb0267a3cbe5ca43c122dc8e582559306d83d8ba47c6d141962973a5a38b3e7b",
+      erc_type: "ERC1155",
       event_type: "Transaction",
       value: "3 TBNB",
       from: "0x0000000000000000000000000000000000000000",
@@ -16,6 +25,7 @@ const MyActivitiesTable = () => {
     {
       key: "2",
       hash: "0xbb0267a3cbe5ca43c122dc8e582559306d83d8ba47c6d141962973a5a38b3e7b",
+      erc_type: "ERC721",
       event_type: "Transaction",
       value: "3 BNB",
       from: "0x0000000000000000000000000000000000000000",
@@ -25,6 +35,7 @@ const MyActivitiesTable = () => {
     {
       key: "3",
       hash: "0xbb0267a3cbe5ca43c122dc8e582559306d83d8ba47c6d141962973a5a38b3e7b",
+      erc_type: "ERC1155",
       event_type: "Transaction",
       value: "3 BNB",
       from: "0x0000000000000000000000000000000000000000",
@@ -32,45 +43,40 @@ const MyActivitiesTable = () => {
       timestamp: "2024-10-07T15:02:15.000Z",
     },
   ];
+  useEffect(() => {
+    const handleGetWalletActivities = async () => {
+      if (!address) return;
+      try {
+        const response: AxiosResponse<{
+          data: ActivitiesTableProps;
+        }> = await APIService.get(
+          `/user/${address}/activity?chain=binance-testnet`
+        );
+        console.log("API Response:", response); // Log the full API response
+
+        //@ts-ignore
+        if (response?.data?.data?.content) {
+          //@ts-ignore
+          setActivities(response?.data?.data?.content); 
+        } else {
+          console.warn("No content returned from the API.");
+        }
+      } catch (error) {
+        console.error("Error fetching wallet activities:", error);
+      }
+    };
+    handleGetWalletActivities();
+  }, [address]);
   return (
     <div>
       <div className="h-auto flow-hide mt-20">
-        {/* <table className="table-auto min-w-[400px] w-full flow-hide-x md:w-full "> */}
-        {/* <thead>
-            <tr className="w-full grid grid-cols-5 reglar text-lg regular text-grey-800 py-2 regular">
-              <th className="text-md md:text-lg regular ">Events</th>
-              <th className="text-md md:text-lg regular">Price</th>
-              <th className="text-md  md:text-lg regular ">From</th>
-              <th className="text-md md:text-lg regular ">To</th>
-              <th className="text-md  md:text-lg regular ">Transaction date</th>
-            </tr>
-          </thead> */}
-        {/* <tbody>
-            {[1, 2, 3, 4, 5, 6, 7, 8]?.map((item, index) => (
-              <tr
-                className=" w-full grid grid-cols-5 md:grid-cols-5 py-2 "
-                key={index}
-              >
-                <td className="flex justify-center items-center text-md text-white  md:text-xl">
-                  Offer
-                </td>
-                <td className="flex justify-center      items-center text-md text-white  md:text-xl">
-                  5 SPT
-                </td>
-                <td className="flex justify-center   items-center text-md text-white  md:text-xl">
-                  5453443
-                </td>
-                <td className="flex justify-center items-center text-md text-white  md:text-xl">
-                  2324353
-                </td>
-                <td className="flex justify-center itrmd-center md:justify-center   items-center text-md text-white  md:text-xl">
-                  3 Hours ago
-                </td>
-              </tr>
-            ))}
-          </tbody> */}
-        {/* </table> */}
-        <Table<ActivitiesTableProps> columns={columns} dataSource={data} />
+        <Table<ActivitiesTableProps>
+          columns={columns}
+          //@ts-ignore
+          dataSource={activities}
+          className="activities-table"
+          rowKey={(record) => record.hash}
+        />
       </div>
     </div>
   );

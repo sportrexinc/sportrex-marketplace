@@ -546,8 +546,7 @@
   height: 100%;
 }
 
-/* ################################### END OF TRENDING NFT SIDE */ 
-
+/* ################################### END OF TRENDING NFT SIDE */
 
 .box-bordery:hover {
   /* border-radius: 25px; */
@@ -620,4 +619,21 @@ input {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #0e1648;
+}
+
+.activities-table .ant-table {
+  border-radius: 10px !important;
+  background: #020833 !important;
+}
+
+.activities-table .ant-table-tbody > tr > td {
+  border-bottom: none !important;
+  color: #FFF !important;
+}
+.activities-table .ant-table-tbody .ant-table-cell-row-hover{
+  background: #192468 !important;
+  cursor: pointer;
+}
+.activities-table .ant-table-thead tr>th{
+  color: #020833 !important;
 }

@@ -32,7 +32,29 @@ export const columns: TableProps<ActivitiesTableProps>["columns"] = [
     title: "Events",
     dataIndex: "event_type",
     key: "event_type",
-    render: (text) => <a>{text}</a>,
+    render: (_, { event_type }) => (
+      <>
+        <Tag color={`green`} key={event_type}>
+          {event_type.toUpperCase()}
+        </Tag>
+      </>
+    ),
+  },
+
+  {
+    title: "Erc_type",
+    dataIndex: "erc_type",
+    key: "erc_type",
+    render: (_, { erc_type }) => (
+      <>
+        <Tag
+          color={erc_type === "ERC1155" ? "yellow" : "orange"}
+          key={erc_type}
+        >
+          {erc_type.toUpperCase()}
+        </Tag>
+      </>
+    ),
   },
   {
     title: "Price",
