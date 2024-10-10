@@ -62,6 +62,22 @@ export const columns: TableProps<ActivitiesTableProps>["columns"] = [
     key: "value",
   },
   {
+    title: "Item",
+    dataIndex: "token_address",
+    key: "token_address",
+    render: (text) => {
+        return (
+          <a
+            className="text-blue-500"
+            href={`https://testnet.bscscan.com/address/${text}`}
+            rel="noopener noreferrer"
+          >
+            {truncateMiddle(text as string, 20)}
+          </a>
+        );
+      },
+  },
+  {
     title: "From",
     dataIndex: "from",
     key: "from",

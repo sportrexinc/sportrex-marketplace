@@ -95,4 +95,5 @@ export interface ActivitiesTableProps {
   hash: string;
   erc_type: string;
   content?: [];
+  token_address: string;
 }

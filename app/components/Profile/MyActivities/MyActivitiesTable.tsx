@@ -10,39 +10,6 @@ const MyActivitiesTable = () => {
   const [activities, setActivities] = React.useState<ActivitiesTableProps | []>(
     []
   );
-
-  const data: ActivitiesTableProps[] = [
-    {
-      key: "1",
-      hash: "0xbb0267a3cbe5ca43c122dc8e582559306d83d8ba47c6d141962973a5a38b3e7b",
-      erc_type: "ERC1155",
-      event_type: "Transaction",
-      value: "3 TBNB",
-      from: "0x0000000000000000000000000000000000000000",
-      to: "0x61b3ab3e68cada76ed4808e3d712e1f2d42b046f",
-      timestamp: "2024-10-07T15:02:15.000Z",
-    },
-    {
-      key: "2",
-      hash: "0xbb0267a3cbe5ca43c122dc8e582559306d83d8ba47c6d141962973a5a38b3e7b",
-      erc_type: "ERC721",
-      event_type: "Transaction",
-      value: "3 BNB",
-      from: "0x0000000000000000000000000000000000000000",
-      to: "0x61b3ab3e68cada76ed4808e3d712e1f2d42b046f",
-      timestamp: "2024-10-07T15:02:15.000Z",
-    },
-    {
-      key: "3",
-      hash: "0xbb0267a3cbe5ca43c122dc8e582559306d83d8ba47c6d141962973a5a38b3e7b",
-      erc_type: "ERC1155",
-      event_type: "Transaction",
-      value: "3 BNB",
-      from: "0x0000000000000000000000000000000000000000",
-      to: "0x61b3ab3e68cada76ed4808e3d712e1f2d42b046f",
-      timestamp: "2024-10-07T15:02:15.000Z",
-    },
-  ];
   useEffect(() => {
     const handleGetWalletActivities = async () => {
       if (!address) return;
@@ -57,7 +24,7 @@ const MyActivitiesTable = () => {
         //@ts-ignore
         if (response?.data?.data?.content) {
           //@ts-ignore
-          setActivities(response?.data?.data?.content); 
+          setActivities(response?.data?.data?.content);
         } else {
           console.warn("No content returned from the API.");
         }

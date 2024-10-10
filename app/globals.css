@@ -628,12 +628,31 @@ input {
 
 .activities-table .ant-table-tbody > tr > td {
   border-bottom: none !important;
-  color: #FFF !important;
+  color: #fff !important;
 }
-.activities-table .ant-table-tbody .ant-table-cell-row-hover{
+
+.activities-table .ant-table-tbody .ant-table-cell-row-hover {
   background: #192468 !important;
   cursor: pointer;
 }
-.activities-table .ant-table-thead tr>th{
+
+.activities-table .ant-table-thead tr > th {
   color: #020833 !important;
+}
+
+.activities-table .ant-pagination .ant-pagination-next button {
+  color: #fff !important;
+}
+
+.activities-table .ant-pagination-options .ant-select .ant-select-arrow {
+  color: #fff !important;
+}
+
+.activities-table .ant-pagination-options .ant-select,
+.activities-table .ant-pagination-options .ant-select .ant-select-selector span{
+  color: #fff !important;
+}
+
+.activities-table .ant-pagination-options .ant-select-dropdown {
+  background-color: none !important;
 }
