@@ -2,6 +2,7 @@ import { Space, Tag } from "antd";
 import { TableProps } from "antd/es/table";
 import moment from "moment";
 import { ActivitiesTableProps } from "@/types";
+import { AiOutlineLink } from "react-icons/ai";
 
 const truncateMiddle = (text: string, length: number) => {
   if (typeof text !== "string") return text;
@@ -20,11 +21,12 @@ export const columns: TableProps<ActivitiesTableProps>["columns"] = [
     render: (text) => {
       return (
         <a
+          target="_blank"
           className="text-blue-500"
           href={`https://testnet.bscscan.com/tx/${text}`}
           rel="noopener noreferrer"
         >
-          {truncateMiddle(text as string, 20)}
+          {truncateMiddle(text as string, 18)}
         </a>
       );
     },
@@ -45,17 +47,27 @@ export const columns: TableProps<ActivitiesTableProps>["columns"] = [
     ),
   },
   {
+    title: "Price",
+    dataIndex: "value",
+    key: "value",
+    render: (text) => {
+      return <p>{text === "0" ? "--" : text}</p>;
+    },
+  },
+
+  {
     title: "Item",
     dataIndex: "token_address",
     key: "token_address",
     render: (text) => {
       return (
         <a
+          target="_blank"
           className="text-blue-500"
           href={`https://testnet.bscscan.com/address/${text}`}
           rel="noopener noreferrer"
         >
-          {truncateMiddle(text as string, 20)}
+          {truncateMiddle(text as string, 18)}
         </a>
       );
     },
@@ -64,7 +76,7 @@ export const columns: TableProps<ActivitiesTableProps>["columns"] = [
     title: "From",
     dataIndex: "from",
     key: "from",
-    render: (text) => <p>{truncateMiddle(text as string, 20)}</p>,
+    render: (text) => <p>{truncateMiddle(text as string, 18)}</p>,
   },
   {
     title: "To",
@@ -75,8 +87,9 @@ export const columns: TableProps<ActivitiesTableProps>["columns"] = [
         className="text-blue-500"
         target="_blank"
         href={`https://testnet.bscscan.com/address/${text}`}
+        rel="noopener noreferrer"
       >
-        {truncateMiddle(text as string, 20)}
+        {truncateMiddle(text as string, 18)}
       </a>
     ),
   },
@@ -84,13 +97,14 @@ export const columns: TableProps<ActivitiesTableProps>["columns"] = [
     title: "Transaction Date",
     key: "timestamp",
     dataIndex: "timestamp",
-    render: (text) => (
+    render: (text, record) => (
       <a
-        className="text-blue-500"
+        className="text-blue-500 flex items-center justify-center gap-2"
         target="_blank"
-        href={`https://testnet.bscscan.com/tx/${text}`}
+        href={`https://testnet.bscscan.com/tx/${record.hash}`}
+        rel="noopener noreferrer"
       >
-        {moment(text).fromNow()}
+        {moment(text).fromNow()} <AiOutlineLink />
       </a>
     ),
   },

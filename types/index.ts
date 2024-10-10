@@ -89,6 +89,7 @@ export interface ActivitiesTableProps {
   key: string;
   from: string;
   to: string;
+  value: string;
   timestamp: string;
   hash: string;
   erc_type: string;

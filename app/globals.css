@@ -669,3 +669,12 @@ input {
 .activities-table .ant-table-thead .ant-table-cell::before {
   background-color: transparent !important;
 }
+.activities-table .ant-pagination-prev >button{
+  color: #FFF !important;
+}
+.activities-table .ant-pagination .ant-pagination-item-active{
+border-color: #192468 !important;
+}
+.activities-table .ant-pagination a{
+  color: #192468 !important;
+}
