@@ -87,8 +87,6 @@ export interface CreateSingleNFTProps {
 
 export interface ActivitiesTableProps {
   key: string;
-  event_type: string;
-  value: string;
   from: string;
   to: string;
   timestamp: string;

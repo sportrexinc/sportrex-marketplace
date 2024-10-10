@@ -637,7 +637,12 @@ input {
 }
 
 .activities-table .ant-table-thead tr > th {
-  color: #020833 !important;
+  color: #fff !important;
+  background: #192468 !important;
+}
+
+.activities-table .ant-table-thead tr{
+  border-bottom: 1px red solid !important;
 }
 
 .activities-table .ant-pagination .ant-pagination-next button {
@@ -649,10 +654,18 @@ input {
 }
 
 .activities-table .ant-pagination-options .ant-select,
-.activities-table .ant-pagination-options .ant-select .ant-select-selector span{
+.activities-table
+  .ant-pagination-options
+  .ant-select
+  .ant-select-selector
+  span {
   color: #fff !important;
 }
 
 .activities-table .ant-pagination-options .ant-select-dropdown {
   background-color: none !important;
+}
+
+.activities-table .ant-table-thead .ant-table-cell::before {
+  background-color: transparent !important;
 }

@@ -1,5 +1,6 @@
 import { Space, Tag } from "antd";
 import { TableProps } from "antd/es/table";
+import moment from "moment";
 import { ActivitiesTableProps } from "@/types";
 
 const truncateMiddle = (text: string, length: number) => {
@@ -29,19 +30,6 @@ export const columns: TableProps<ActivitiesTableProps>["columns"] = [
     },
   },
   {
-    title: "Events",
-    dataIndex: "event_type",
-    key: "event_type",
-    render: (_, { event_type }) => (
-      <>
-        <Tag color={`green`} key={event_type}>
-          {event_type.toUpperCase()}
-        </Tag>
-      </>
-    ),
-  },
-
-  {
     title: "Erc_type",
     dataIndex: "erc_type",
     key: "erc_type",
@@ -57,25 +45,20 @@ export const columns: TableProps<ActivitiesTableProps>["columns"] = [
     ),
   },
   {
-    title: "Price",
-    dataIndex: "value",
-    key: "value",
-  },
-  {
     title: "Item",
     dataIndex: "token_address",
     key: "token_address",
     render: (text) => {
-        return (
-          <a
-            className="text-blue-500"
-            href={`https://testnet.bscscan.com/address/${text}`}
-            rel="noopener noreferrer"
-          >
-            {truncateMiddle(text as string, 20)}
-          </a>
-        );
-      },
+      return (
+        <a
+          className="text-blue-500"
+          href={`https://testnet.bscscan.com/address/${text}`}
+          rel="noopener noreferrer"
+        >
+          {truncateMiddle(text as string, 20)}
+        </a>
+      );
+    },
   },
   {
     title: "From",
@@ -101,5 +84,14 @@ export const columns: TableProps<ActivitiesTableProps>["columns"] = [
     title: "Transaction Date",
     key: "timestamp",
     dataIndex: "timestamp",
+    render: (text) => (
+      <a
+        className="text-blue-500"
+        target="_blank"
+        href={`https://testnet.bscscan.com/tx/${text}`}
+      >
+        {moment(text).fromNow()}
+      </a>
+    ),
   },
 ];
