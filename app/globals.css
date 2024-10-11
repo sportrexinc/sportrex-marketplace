@@ -546,8 +546,7 @@
   height: 100%;
 }
 
-/* ################################### END OF TRENDING NFT SIDE */ 
-
+/* ################################### END OF TRENDING NFT SIDE */
 
 .box-bordery:hover {
   /* border-radius: 25px; */
@@ -620,4 +619,62 @@ input {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #0e1648;
+}
+
+.activities-table .ant-table {
+  border-radius: 10px !important;
+  background: #020833 !important;
+}
+
+.activities-table .ant-table-tbody > tr > td {
+  border-bottom: none !important;
+  color: #fff !important;
+}
+
+.activities-table .ant-table-tbody .ant-table-cell-row-hover {
+  background: #192468 !important;
+  cursor: pointer;
+}
+
+.activities-table .ant-table-thead tr > th {
+  color: #fff !important;
+  background: #192468 !important;
+}
+
+.activities-table .ant-table-thead tr{
+  border-bottom: 1px red solid !important;
+}
+
+.activities-table .ant-pagination .ant-pagination-next button {
+  color: #fff !important;
+}
+
+.activities-table .ant-pagination-options .ant-select .ant-select-arrow {
+  color: #fff !important;
+}
+
+.activities-table .ant-pagination-options .ant-select,
+.activities-table
+  .ant-pagination-options
+  .ant-select
+  .ant-select-selector
+  span {
+  color: #fff !important;
+}
+
+.activities-table .ant-pagination-options .ant-select-dropdown {
+  background-color: none !important;
+}
+
+.activities-table .ant-table-thead .ant-table-cell::before {
+  background-color: transparent !important;
+}
+.activities-table .ant-pagination-prev >button{
+  color: #FFF !important;
+}
+.activities-table .ant-pagination .ant-pagination-item-active{
+border-color: #192468 !important;
+}
+.activities-table .ant-pagination a{
+  color: #192468 !important;
 }

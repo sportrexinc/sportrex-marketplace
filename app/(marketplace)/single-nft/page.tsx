@@ -165,7 +165,7 @@ const SingleNft = () => {
             }) => {
               return (
                 <div className="w-full flex flex-col xl:flex-row  mx-auto mb-32 gap-12">
-                  <div className="xl:w-1/2 w-full ">
+                  <div className="xl:w-1/2 w-full h-max">
                    <div className="flex-col mt-8 lg:mt-20">
                       <h1 className="semibold text-white text-md md:text-xl">
                         {/* {t("upload")} (s)* */}
