@@ -18,8 +18,7 @@ const truncateMiddle = (text: string, length: number) => {
   return `${text.slice(0, halfLength)}...${text.slice(-halfLength)}`;
 };
 //@ts-ignore
-const MyActivitiesTable: React.FC<{ dataSource: ActivitiesTableProps[] }> = ({
-  dataSource,
+const MyActivitiesTable = ({
 }) => {
   const [activities, setActivities] = React.useState<ActivitiesTableProps | []>(
     []
