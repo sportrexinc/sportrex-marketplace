@@ -8,6 +8,7 @@ import { AiOutlineLink } from "react-icons/ai";
 import APIService from "@/app/utils/APIServices";
 import { AxiosResponse } from "axios";
 import { useAddress } from "@thirdweb-dev/react";
+import Image from "next/image";
 const truncateMiddle = (text: string, length: number) => {
   if (typeof text !== "string") return text;
   if (text.length <= length) return text;
@@ -26,6 +27,7 @@ const MyActivitiesTable: React.FC<{ dataSource: ActivitiesTableProps[] }> = ({
   const [collectionMetaData, setCollectionMetaData] = useState<
     Record<string, any>
   >({});
+  const [tokenImageURI, setTokenImageURI] = useState("");
 
   const requestedAddressesRef = useRef(new Set<string>());
 
@@ -38,13 +40,13 @@ const MyActivitiesTable: React.FC<{ dataSource: ActivitiesTableProps[] }> = ({
       const response = await APIService.get(
         `/collections/nfts?address=${collectionAddress}&limit=100`
       );
-      
+
       if (response?.data?.data?.result) {
-         //console.log(response)
-        //  setCollectionMetaData((prevMetaData) => ({
-        //   ...prevMetaData,
-        //   [collectionAddress]: response.data.data.result,
-        // }));
+        //console.log(response)
+        setCollectionMetaData((prevMetaData) => ({
+          ...prevMetaData,
+          [collectionAddress]: response.data.data.result,
+        }));
       }
     } catch (error) {
       console.error("Error fetching Collection MetaData:", error);
@@ -66,23 +68,6 @@ const MyActivitiesTable: React.FC<{ dataSource: ActivitiesTableProps[] }> = ({
 
   const columns: TableProps<ActivitiesTableProps>["columns"] = [
     {
-      title: "Transaction Hash",
-      dataIndex: "hash",
-      key: "hash",
-      render: (text) => {
-        return (
-          <a
-            target="_blank"
-            className="text-blue-500"
-            href={`https://testnet.bscscan.com/tx/${text}`}
-            rel="noopener noreferrer"
-          >
-            {truncateMiddle(text as string, 18)}
-          </a>
-        );
-      },
-    },
-    {
       title: "Erc_type",
       dataIndex: "erc_type",
       key: "erc_type",
@@ -98,38 +83,84 @@ const MyActivitiesTable: React.FC<{ dataSource: ActivitiesTableProps[] }> = ({
       ),
     },
     {
-      title: "Price",
-      dataIndex: "value",
-      key: "value",
-      render: (text) => {
-        return <p>{text === "0" ? "--" : text}</p>;
-      },
-    },
-    {
       title: "Item",
       dataIndex: "token_address",
       key: "token_address",
       render: (text) => {
         const currentMetaData = collectionMetaData[text];
+
+        // Check if currentMetaData is defined and has the expected array structure
+        if (
+          currentMetaData &&
+          Array.isArray(currentMetaData) &&
+          currentMetaData.length > 0
+        ) {
+          const tokenURI = currentMetaData[0]?.normalized_metadata?.image;
+
+          // Check if tokenURI exists and starts with "ipfs://"
+          if (tokenURI && tokenURI.startsWith("ipfs://")) {
+            const ipfsGateway = "https://ipfs.io/ipfs/";
+            const ipfsUrl = tokenURI.replace("ipfs://", "");
+            const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
+            // console.log(currentMetaData); // For debugging
+            setTokenImageURI(httpsImageUrl);
+          } else {
+            console.warn(
+              "Token URI is missing or does not start with 'ipfs://'"
+            );
+          }
+        } else {
+          console.warn("Current metadata is not an array or is undefined.");
+        }
+
         return (
-          <div>
-            <a
+          <div className="flex ">
+            {/* <a
               target="_blank"
               className="text-blue-500"
               href={`https://testnet.bscscan.com/token/${text}`}
               rel="noopener noreferrer"
             >
               {truncateMiddle(text as string, 18)}
-            </a>
-            {currentMetaData && (
-              <div>
-                {/* Optionally display more information */}
-                <p>Token Name: {currentMetaData.name}</p>
-                <p>Symbol: {currentMetaData.symbol}</p>
+            </a> */}
+            {currentMetaData &&
+            currentMetaData[0].name &&
+            currentMetaData[0].symbol ? (
+              <div className="flex justify-center items-center gap-5">
+                <div>
+                  <Image
+                    alt="collection"
+                    src={tokenImageURI}
+                    width={45}
+                    height={45}
+                    className="rounded-[10px]"
+                  />
+                </div>
+                <div>
+                  <p>{currentMetaData[0].name}</p>
+                  <a
+                    target="_blank"
+                    className="text-[#FFF]"
+                    href={`https://testnet.bscscan.com/token/${text}`}
+                    rel="noopener noreferrer"
+                  >
+                    <p>{currentMetaData[0].symbol}</p>
+                  </a>
+                </div>
               </div>
+            ) : (
+              <p>Loading metadata...</p> // You can show a loading state until the metadata is available
             )}
           </div>
         );
+      },
+    },
+    {
+      title: "Price",
+      dataIndex: "value",
+      key: "value",
+      render: (text) => {
+        return <p>{text === "0" ? "--" : text}</p>;
       },
     },
     {
