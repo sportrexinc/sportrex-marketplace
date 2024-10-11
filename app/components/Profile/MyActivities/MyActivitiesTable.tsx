@@ -160,7 +160,7 @@ const MyActivitiesTable: React.FC<{ dataSource: ActivitiesTableProps[] }> = ({
       dataIndex: "value",
       key: "value",
       render: (text) => {
-        return <p>{text === "0" ? "--" : text}</p>;
+        return <p>{text === "0" ? "---" : text}</p>;
       },
     },
     {
@@ -173,16 +173,18 @@ const MyActivitiesTable: React.FC<{ dataSource: ActivitiesTableProps[] }> = ({
       title: "To",
       key: "to",
       dataIndex: "to",
-      render: (text) => (
-        <a
-          className="text-blue-500"
-          target="_blank"
-          href={`https://testnet.bscscan.com/address/${text}`}
-          rel="noopener noreferrer"
-        >
-          {truncateMiddle(text as string, 18)}
-        </a>
-      ),
+      render: (text) => {
+        return (
+          <a
+            className="text-blue-500"
+            target="_blank"
+            href={`https://testnet.bscscan.com/address/${text}`}
+            rel="noopener noreferrer"
+          >
+            {text.toLowerCase() === address?.toLowerCase() ? "You" : truncateMiddle(text as string, 18)}
+          </a>
+        );
+      },
     },
     {
       title: "Transaction Date",
