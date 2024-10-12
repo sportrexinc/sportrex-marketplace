@@ -19,46 +19,48 @@ import {
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { CollectionResult } from "@/types";
-import { getSingleCollectionDetail } from "@/app/redux/features/auth/MyNftSlice";
+import { getSingleCollectionDetail, getSingleNftDetail } from "@/app/redux/features/auth/MyNftSlice";
 import { useAppDispatch } from "@/app/redux/store";
 
 const styles = {
   icon: "w-[32px] sm:w-[40px] h-auto  ",
 };
 
-const CollectionMintNft = ({
-  //collection,
-}) => {
+const SingleMintNft = (
+  {
+    //collection,
+  }
+) => {
   const [liked, setLiked] = useState(false);
 
- const dispatch = useAppDispatch();
- const [data, setData] = useState<any>({});
- const [isLoading, setIsLoading] = useState(false);
- const navigate = useRouter();
+  const navigate = useRouter();
 
- const params = useParams();
- const address = params.contractId;
- const tokenId = params.nftId;
-
- const fetchData = useCallback(async () => {
-   setIsLoading(true);
-   const { payload } = await dispatch(
-     getSingleCollectionDetail({ address: address, limit: "100" })
-   );
-
-   if (payload) {
-     setData(payload?.data?.result?.[0]);
-   }
-
-   setIsLoading(false);
- }, []);
-
- useEffect(() => {
-   fetchData();
- }, []);
- console.log(data);
+   const dispatch = useAppDispatch();
+   const [data, setData] = useState<any>({});
+   const [isLoading, setIsLoading] = useState(false);
 
 
+   const params = useParams();
+   const address = params.contractId;
+   const tokenId = params.nftId;
+
+   const fetchData = useCallback(async () => {
+     setIsLoading(true);
+     const { payload } = await dispatch(
+       getSingleNftDetail({ address: address, tokenId: tokenId })
+     );
+
+     if (payload) {
+       setData(payload?.data);
+     }
+
+     setIsLoading(false);
+   }, []);
+
+   useEffect(() => {
+     fetchData();
+   }, []);
+   console.log(data);
   const handleMintModal = () => {
     console.log("hey");
   };
@@ -81,11 +83,10 @@ const CollectionMintNft = ({
           <div className="flex flex-col md:flex-row md:space-x-8 ">
             <div className="w-full md:w-6/12  lg:w-4/12 flex flex-col">
               <Image src={dummy} alt="use" className="w-full h-auto" />
-              <div className="flex justify-between items-center w-full mt-4 space-x-4">
-                <Image src={one} alt="sd" className="w-20 h-auto" />
-                <Image src={two} alt="sd" className="w-20 h-auto" />
-                <Image src={three} alt="sd" className="w-20 h-auto" />
-                <Image src={four} alt="sd" className="w-20 h-auto" />
+              <div className="flex  items-center w-full mt-4 gap-4">
+                <Image src={one} alt="sd" className="w-24 h-auto" />
+                <Image src={two} alt="sd" className="w-24 h-auto" />
+                <Image src={three} alt="sd" className="w-24 h-auto" />
               </div>
             </div>
             <div className="w-full md:w-6/12  lg:w-7/12 flex items-start">
@@ -113,15 +114,15 @@ const CollectionMintNft = ({
                   <p className="text-grey-800 text-base regular regular">
                     Owned by
                   </p>
-                  <p className="text-yellow capitalize opacity-80 text-base regular regular">
+                  <p className="text-yellow opacity-80 text-base regular regular">
                     {data?.name}
                   </p>
                 </div>
                 <div className="flex space-x-1 mt-4">
                   <p className="text-grey-800 text-base regular regular">
-                    Collection Name
+                    Nft Name
                   </p>
-                  <p className="text-yellow opacity-80 text-base regular regular">
+                  <p className="text-yellow capitalize opacity-80 text-base regular regular">
                     {data?.normalized_metadata?.name}
                   </p>
                 </div>
@@ -296,4 +297,4 @@ const CollectionMintNft = ({
   );
 };
 
-export default CollectionMintNft;
+export default SingleMintNft;

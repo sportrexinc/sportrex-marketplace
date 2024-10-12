@@ -1,10 +1,10 @@
-import CollectionMintNft from '@/app/components/CollectionMintNft/CollectionMintNft'
+import SingleMintNft from '@/app/components/SingleNftComponent/SingleMintNft'
 import React from 'react'
 
 const page = () => {
   return (
     <div>
-      <CollectionMintNft 
+      <SingleMintNft
       
       />
     </div>

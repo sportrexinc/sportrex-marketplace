@@ -8,7 +8,7 @@ const ParentLayout = ({ children, current }: { children?: any; current?: number 
   }, [])
   
   return (
-    <div className="w-full min-h-screen h-full bg-blue-body text-white">
+    <div className="w-full min-h-screen h-full bg-blue-body text-white overflow-x-hidden">
       <ConnectedNav current={current} /> 
           <MobileNavbar />
           <NormalLayout>
