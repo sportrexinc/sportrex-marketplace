@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, useState,useEffect,useCallback } from "react";
 import ParentLayout from "@/app/layouts/ParentLayout";
 import dummy from "@/public/assets/general/edit-dummy.png";
 import nodata from "@/public/assets/general/nodata.svg";
@@ -16,9 +16,11 @@ import {
   Tables,
   MarketList,
 } from "@/app/components";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { CollectionResult } from "@/types";
+import { getSingleCollectionDetail, getSingleNftDetail } from "@/app/redux/features/auth/MyNftSlice";
+import { useAppDispatch } from "@/app/redux/store";
 
 const styles = {
   icon: "w-[32px] sm:w-[40px] h-auto  ",
@@ -29,7 +31,32 @@ const CollectionMintNft: FC<{ collection: CollectionResult }> = ({
 }) => {
   const [liked, setLiked] = useState(false);
 
-  const navigate = useRouter();
+   const dispatch = useAppDispatch();
+   const [data, setData] = useState<any>({});
+  const [isLoading, setIsLoading] = useState(false);
+   const navigate = useRouter();
+
+   const params = useParams();
+   const address = params.contractId;
+   const tokenId = params.nftId;
+
+   const fetchData = useCallback(async () => {
+     setIsLoading(true);
+     const { payload } = await dispatch(
+       getSingleCollectionDetail({ address: address, limit:"100" })
+     );
+
+     if (payload) {
+       setData(payload?.data?.result?.[0]);
+     }
+
+     setIsLoading(false);
+   }, []);
+
+   useEffect(() => {
+     fetchData();
+   }, []);
+  console.log(data);
   const handleMintModal = () => {
     console.log("hey");
   };
@@ -44,6 +71,7 @@ const CollectionMintNft: FC<{ collection: CollectionResult }> = ({
   const [listing, setListing] = useState(true);
   const [events, setEvents] = useState(true);
 
+  
   return (
     <div>
       <ParentLayout current={2}>
@@ -51,7 +79,16 @@ const CollectionMintNft: FC<{ collection: CollectionResult }> = ({
           {/* Header */}
           <div className="flex flex-col md:flex-row md:space-x-8 ">
             <div className="w-full md:w-6/12  lg:w-4/12 flex flex-col">
-              <Image src={dummy} alt="use" className="w-full h-auto" />
+              <Image
+                src={
+                  // data?.normalized_metadata?.image ??
+                  dummy
+                }
+                alt="use"
+                className="w-full h-auto"
+                width={400}
+                height={400}
+              />
               <div className="flex justify-between items-center w-full mt-4 space-x-4">
                 <Image src={one} alt="sd" className="w-24 h-auto" />
                 <Image src={two} alt="sd" className="w-24 h-auto" />
@@ -62,8 +99,8 @@ const CollectionMintNft: FC<{ collection: CollectionResult }> = ({
             <div className="w-full md:w-6/12  lg:w-7/12 flex items-start">
               <div className="flex flex-col  w-full ">
                 <div className="flex justify-between">
-                  <p className="mt-4 text-white semibold text-lg regular">
-                    {collection?.name}
+                  <p className="mt-4 text-white semibold capitalize text-lg regular">
+                    {data?.normalized_metadata?.name}
                   </p>
                   <div className="flex space-x-1 items-center">
                     {liked ? (
@@ -84,8 +121,8 @@ const CollectionMintNft: FC<{ collection: CollectionResult }> = ({
                   <p className="text-grey-800 text-base regular regular">
                     Owned by
                   </p>
-                  <p className="text-yellow opacity-80 text-base regular regular">
-                    Daniekeys
+                  <p className="text-yellow opacity-80 text-base regular regular capitalize">
+                    {data?.name}
                   </p>
                 </div>
                 <p className="text-md text-grey-800 regular  mt-2">

@@ -5,6 +5,7 @@ export const baseUrl =
 
 export const url = {
   profile: "user",
+  collections:"collections"
  
 };
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useCallback, useEffect } from "react";
 import ParentLayout from "@/app/layouts/ParentLayout";
 import dummy from "@/public/assets/general/edit-dummy.png";
 import nodata from "@/public/assets/general/nodata.svg";
@@ -16,17 +16,45 @@ import {
   Tables,
   MarketList,
 } from "@/app/components";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
+
 import Image from "next/image";
+import { getSingleNftDetail } from "@/app/redux/features/auth/MyNftSlice";
+import { useAppDispatch } from "@/app/redux/store";
 
 const styles = {
   icon: "w-[32px] sm:w-[40px] h-auto  ",
 };
 
 const CollectionMintNft = () => {
+  const dispatch = useAppDispatch();
   const [liked, setLiked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState({});
 
   const navigate = useRouter();
+
+   const params = useParams();
+   const address = params.contractId;
+  const tokenId = params.nftId; 
+  
+  const fetchData = useCallback(async () => {
+    setIsLoading(true);
+    const { payload } = await dispatch(getSingleNftDetail({address:address, tokenId:tokenId}));
+
+    if (payload) {
+      setData(payload?.data);
+    }
+
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  
+  console.log(data);
+
   const handleMintModal = () => {
     console.log("hey");
   };

@@ -12,7 +12,8 @@ interface MyNftSliceProps {
         page: MoralisNftResponse['page']
     }[];
     nft_data_history_count: number;
-    collection_data: MoralisCollectionResponse | null
+    collection_data: MoralisCollectionResponse | null;
+    loading: boolean;
 }
 
 const initialState: MyNftSliceProps = {
@@ -20,7 +21,8 @@ const initialState: MyNftSliceProps = {
     nft_loading: false,
     nft_data_history: [],
     nft_data_history_count: 0,
-    collection_data: null
+    collection_data: null,
+    loading:false,
 
 }
 export const userNft = createSlice({
@@ -38,44 +40,88 @@ export const userNft = createSlice({
 
     extraReducers: (builder) => {
         builder
-        .addCase(getUserNft.pending, (state) => {
-           state.nft_loading = true
-        })
-        .addCase(getUserNft.fulfilled, (state, action: PayloadAction<{data: MoralisNftResponse}>) => {
-            const historyExist = state.nft_data_history.find(item => item.page === action.payload.data.page)
-            if(!historyExist) {
-              state.nft_data_history_count = action.payload.data.page
-                state.nft_data_history = [...state.nft_data_history,{
+          .addCase(getUserNft.pending, (state) => {
+            state.nft_loading = true;
+          })
+          .addCase(
+            getUserNft.fulfilled,
+            (state, action: PayloadAction<{ data: MoralisNftResponse }>) => {
+              const historyExist = state.nft_data_history.find(
+                (item) => item.page === action.payload.data.page
+              );
+              if (!historyExist) {
+                state.nft_data_history_count = action.payload.data.page;
+                state.nft_data_history = [
+                  ...state.nft_data_history,
+                  {
                     cursor: action.payload.data.cursor,
-                    page: action.payload.data.page
-                }]
+                    page: action.payload.data.page,
+                  },
+                ];
+              }
+
+              state.nft_data = action.payload.data;
+              state.nft_loading = false;
             }
+          )
+          .addCase(getUserNft.rejected, (state) => {
+            state.nft_loading = false;
+          })
+          // start
+          .addCase(getSingleNftDetail.pending, (state) => {
+            state.loading = true;
+         
+          })
+          .addCase(getSingleNftDetail.fulfilled, (state, { payload }) => {
+            state.loading = false;
+          
+          })
+          .addCase(getSingleNftDetail.rejected, (state, { payload }) => {
+            state.loading = false;
+          
+          })
+            // end
+          // start
+          .addCase(getSingleCollectionDetail.pending, (state) => {
+            state.loading = true;
+         
+          })
+          .addCase(getSingleCollectionDetail.fulfilled, (state, { payload }) => {
+            state.loading = false;
+          
+          })
+          .addCase(getSingleCollectionDetail.rejected, (state, { payload }) => {
+            state.loading = false;
+          
+          })
+
+            // end
             
-            state.nft_data = action.payload.data
-            state.nft_loading = false
-        })
-        .addCase(getUserNft.rejected, (state) => {
-            state.nft_loading = false
-        })
-        // GET USER NFT COLLECTIONS 
-        .addCase(getUserCollection.pending, (state) => {
-            state.nft_loading = true
-         })
-         .addCase(getUserCollection.fulfilled, (state, action: PayloadAction<{data: MoralisCollectionResponse}>) => {
-            //  const historyExist = state.nft_data_history.find(item => item.page === action.payload.data.page)
-            //  if(!historyExist) {
-            //    state.nft_data_history_count = action.payload.data.page
-            //      state.nft_data_history = [...state.nft_data_history,{
-            //          cursor: action.payload.data.cursor,
-            //          page: action.payload.data.page
-            //      }]
-            //  }
-             state.collection_data = action.payload.data
-             state.nft_loading = false
-         })
-         .addCase(getUserCollection.rejected, (state) => {
-             state.nft_loading = false
-         })
+          // GET USER NFT COLLECTIONS
+          .addCase(getUserCollection.pending, (state) => {
+            state.nft_loading = true;
+          })
+          .addCase(
+            getUserCollection.fulfilled,
+            (
+              state,
+              action: PayloadAction<{ data: MoralisCollectionResponse }>
+            ) => {
+              //  const historyExist = state.nft_data_history.find(item => item.page === action.payload.data.page)
+              //  if(!historyExist) {
+              //    state.nft_data_history_count = action.payload.data.page
+              //      state.nft_data_history = [...state.nft_data_history,{
+              //          cursor: action.payload.data.cursor,
+              //          page: action.payload.data.page
+              //      }]
+              //  }
+              state.collection_data = action.payload.data;
+              state.nft_loading = false;
+            }
+          )
+          .addCase(getUserCollection.rejected, (state) => {
+            state.nft_loading = false;
+          });
     }
 })
 
@@ -108,3 +154,29 @@ export const getUserCollection = createAsyncThunk(
            }
     }
 )
+export const getSingleNftDetail = createAsyncThunk(
+    "getSingleNftDetail",
+    async (payload: {  address: string | any, tokenId: string |  any, chain?: string | null }, action) => {
+        try {
+            const { data } = await APIService.get(`${url.collections}/nft?address=${payload.address}&&tokenId=${payload.tokenId}`)
+            return data
+           } catch (error) {
+            let newError = getSimplifiedError(error);
+             return action.rejectWithValue(newError)
+           }
+    }
+)
+export const getSingleCollectionDetail = createAsyncThunk(
+    "getSingleCollectionDetail",
+    async (payload: {  address: string | any, limit: string |  null, chain?: string | null }, action) => {
+        try {
+            const { data } = await APIService.get(`${url.collections}/nfts?address=${payload.address}&&limit=${payload.limit}`)
+            return data
+           } catch (error) {
+            let newError = getSimplifiedError(error);
+             return action.rejectWithValue(newError)
+           }
+    }
+)
+
+
