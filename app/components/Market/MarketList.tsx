@@ -8,7 +8,7 @@ const MarketList = ({title} : {title:string}) => {
         <h1 className="grad-text text-[22px] leading-[28px]  md:text-[30px]  md:text-start mb-[32px] md:mb-[64px]">
           {title}
         </h1>
-        <div>
+        <div className="w-full ">
           <Carousel />
         </div>
       </div>

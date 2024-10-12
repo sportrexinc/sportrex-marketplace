@@ -14,7 +14,7 @@ const NftCard = ({ isTrending } : {isTrending:boolean} ) => {
   const numbers = getRandomNumberBetween10And60();
   return (
     <div
-      className="bg-blue-header w-full max-w-[256px] xl:min-w-[260px] 2xl:min-w-[304px] xl:max-w-max flex flex-col px-3 pt-3 pb-6 rounded-[20px] cursor-pointer "
+      className="bg-blue-header w-full max-w-[256px] xl:min-w-[260px] 2xl:min-w-[304px] max-h-[300px] xl:max-w-max flex flex-col px-3 pt-3 pb-6 rounded-[20px] cursor-pointer "
       onClick={() => navigate.push("/mint-nft")}
     >
       <Image src={heart} alt="" className="rounded-[20px]" />

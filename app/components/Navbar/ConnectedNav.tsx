@@ -135,7 +135,7 @@ const ConnectedNav = ({ current }: any) => {
           <Image src={logo} alt="logo" className="w-48" />
         </div>
         <div className="right w-9/12 flex ">
-          <ul className="w-full flex items-center justify-around space-x-5">
+          <ul className="w-full flex items-center justify-around gap-x-4">
             {navData.map((item, index) => {
               return (
                 <li key={index} className={styles.listItem}>
@@ -158,7 +158,7 @@ const ConnectedNav = ({ current }: any) => {
             </li>
             <li className={styles.listItem}>
               {/* <ActionBtn action={handleOpen} name="Connect Wallet" /> */}
-              <div className="flex items-center ml-4">
+              <div className="flex items-center ">
                 {address && (
                   <>
                     <Notification />
