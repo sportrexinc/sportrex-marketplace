@@ -114,14 +114,6 @@ const MyActivitiesTable = ({
 
         return (
           <div className="flex ">
-            {/* <a
-              target="_blank"
-              className="text-blue-500"
-              href={`https://testnet.bscscan.com/token/${text}`}
-              rel="noopener noreferrer"
-            >
-              {truncateMiddle(text as string, 18)}
-            </a> */}
             {currentMetaData &&
             currentMetaData[0].name &&
             currentMetaData[0].symbol ? (

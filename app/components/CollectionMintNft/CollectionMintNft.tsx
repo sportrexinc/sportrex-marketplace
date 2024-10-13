@@ -30,6 +30,7 @@ const CollectionMintNft = ({
   //collection,
 }) => {
   const [liked, setLiked] = useState(false);
+  const [collectionImage, setCollectionImage] = useState("")
 
  const dispatch = useAppDispatch();
  const [data, setData] = useState<any>({});
@@ -48,6 +49,11 @@ const CollectionMintNft = ({
 
    if (payload) {
      setData(payload?.data?.result?.[0]);
+     const ipfsGateway = "https://ipfs.io/ipfs/";
+      const ipfsUrl = payload?.data?.result?.[0]?.normalized_metadata?.image.replace("ipfs://", "");
+      const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
+      setCollectionImage(httpsImageUrl);
+     
    }
 
    setIsLoading(false);
@@ -80,7 +86,8 @@ const CollectionMintNft = ({
           {/* Header */}
           <div className="flex flex-col md:flex-row md:space-x-8 ">
             <div className="w-full md:w-6/12  lg:w-4/12 flex flex-col">
-              <Image src={dummy} alt="use" className="w-full h-auto" />
+            
+              <Image src={collectionImage} alt="use" className="w-full h-auto" width={100} height={100}/>
               <div className="flex justify-between items-center w-full mt-4 space-x-4">
                 <Image src={one} alt="sd" className="w-20 h-auto" />
                 <Image src={two} alt="sd" className="w-20 h-auto" />
@@ -114,7 +121,7 @@ const CollectionMintNft = ({
                     Owned by
                   </p>
                   <p className="text-yellow capitalize opacity-80 text-base regular regular">
-                    {data?.name}
+                    {data?.owner_of}
                   </p>
                 </div>
                 <div className="flex space-x-1 mt-4">
@@ -122,7 +129,7 @@ const CollectionMintNft = ({
                     Collection Name
                   </p>
                   <p className="text-yellow opacity-80 text-base regular regular">
-                    {data?.normalized_metadata?.name}
+                    {data?.name}
                   </p>
                 </div>
                 <p className="text-md text-grey-800 regular  mt-2">
