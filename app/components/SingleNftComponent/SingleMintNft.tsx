@@ -281,8 +281,13 @@ const SingleMintNft = (
                     <p className="text-base regular text-white w-6/12">
                       Metadata
                     </p>
-                    <a href={`https://ipfs.moralis.io:2053/ipfs/${data?.token_uri}`} className=" text-grey-800 text-md w-4/12 truncate text-end ">
-                     {data?.token_uri}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`${data?.token_uri}`}
+                      className=" text-grey-800 text-md w-4/12 truncate text-end "
+                    >
+                      {data?.token_uri}
                     </a>
                   </div>
                 </div>
