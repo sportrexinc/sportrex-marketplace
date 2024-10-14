@@ -107,11 +107,12 @@ const SingleMintNft = (
                 width={100}
                 height={100}
               />
-              <div className="flex  items-center w-full mt-4 gap-4">
+              {/* Commented Out the Flex */}
+              {/* <div className="flex  items-center w-full mt-4 gap-4">
                 <Image src={one} alt="sd" className="w-24 h-auto" />
                 <Image src={two} alt="sd" className="w-24 h-auto" />
                 <Image src={three} alt="sd" className="w-24 h-auto" />
-              </div>
+              </div> */}
             </div>
             <div className="w-full md:w-6/12  lg:w-7/12 flex items-start">
               <div className="flex flex-col  w-full ">

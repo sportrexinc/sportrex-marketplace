@@ -87,7 +87,7 @@ const CollectionMintNft = ({
           <div className="flex flex-col md:flex-row md:space-x-8 ">
             <div className="w-full md:w-6/12  lg:w-4/12 flex flex-col">
             
-              <Image src={collectionImage} alt="use" className="w-full h-auto" width={100} height={100}/>
+              <Image src={collectionImage} alt="use" className="w-full h-auto rounded-[16px]" width={100} height={100}/>
               <div className="flex justify-between items-center w-full mt-4 space-x-4">
                 <Image src={one} alt="sd" className="w-20 h-auto" />
                 <Image src={two} alt="sd" className="w-20 h-auto" />
