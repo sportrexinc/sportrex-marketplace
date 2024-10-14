@@ -5,6 +5,7 @@ import dummy from "@/public/assets/general/edit-dummy.png";
 import nodata from "@/public/assets/general/nodata.svg";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { linksArrayA } from "@/app/constants/IconsData";
+import { Skeleton } from "antd";
 import one from "@/public/assets/market/one.png";
 import two from "@/public/assets/market/two.png";
 import three from "@/public/assets/market/three.png";
@@ -100,13 +101,26 @@ const SingleMintNft = (
           {/* Header */}
           <div className="flex flex-col md:flex-row md:space-x-8 ">
             <div className="w-full md:w-6/12  lg:w-4/12 flex flex-col ">
-              <Image
-                src={nftImage}
-                alt="NFT Image"
-                className="w-full h-auto rounded-[16px]"
-                width={100}
-                height={100}
-              />
+              {isLoading ? (
+                <Skeleton.Image
+                  active={true}
+                  className="w-full h-auto rounded-[16px]"
+                  style={{
+                    width: "100%",
+                    height: "400px",
+                    borderRadius: "16px",
+                  }}
+                />
+              ) : (
+                <Image
+                  src={nftImage}
+                  alt="NFT Image"
+                  className="w-full h-auto rounded-[16px]"
+                  width={100}
+                  height={100}
+                />
+              )}
+
               {/* Commented Out the Flex */}
               {/* <div className="flex  items-center w-full mt-4 gap-4">
                 <Image src={one} alt="sd" className="w-24 h-auto" />
