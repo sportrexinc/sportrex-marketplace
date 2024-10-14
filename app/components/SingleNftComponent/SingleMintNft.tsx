@@ -231,7 +231,7 @@ const SingleMintNft = (
               </GeneralAccordion>
               <GeneralAccordion
                 open={details}
-                title={`Details ${data?.name}`}
+                title={`Details ${data?.normalized_metadata?.name}`}
                 setOpen={setDetails}
               >
                 <div className="flex flex-col space-y-4">
