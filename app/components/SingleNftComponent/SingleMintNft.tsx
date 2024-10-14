@@ -99,11 +99,11 @@ const SingleMintNft = (
         <div className="w-full flex flex-col my-4">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:space-x-8 ">
-            <div className="w-full md:w-6/12  lg:w-4/12 flex flex-col">
+            <div className="w-full md:w-6/12  lg:w-4/12 flex flex-col ">
               <Image
                 src={nftImage}
                 alt="NFT Image"
-                className="w-full h-auto"
+                className="w-full h-auto rounded-[16px]"
                 width={100}
                 height={100}
               />
@@ -136,7 +136,7 @@ const SingleMintNft = (
                 </div>
                 <div className="flex space-x-5 mt-4">
                   <p className="text-grey-800 text-base regular regular">
-                    Owned by: 
+                    Owned by:
                   </p>
                   <p className="text-yellow opacity-80 text-base regular regular">
                     {truncateMiddle(data?.owner_of, 18)}
@@ -144,7 +144,7 @@ const SingleMintNft = (
                 </div>
                 <div className="flex space-x-5 mt-4">
                   <p className="text-grey-800 text-base regular regular">
-                   Collection Name:
+                    Collection Name:
                   </p>
                   <p className="text-yellow capitalize opacity-80 text-base regular regular">
                     {data?.name}
@@ -152,7 +152,7 @@ const SingleMintNft = (
                 </div>
                 <div className="flex space-x-5 mt-4">
                   <p className="text-grey-800 text-base regular regular">
-                   NFT Name:
+                    NFT Name:
                   </p>
                   <p className="text-yellow capitalize opacity-80 text-base regular regular">
                     {data?.normalized_metadata?.name}
@@ -218,7 +218,11 @@ const SingleMintNft = (
                   </p>
                 </div>
               </GeneralAccordion>
-              <GeneralAccordion open={aP} title={`About ${data?.name}`}  setOpen={setaP}>
+              <GeneralAccordion
+                open={aP}
+                title={`About ${data?.name}`}
+                setOpen={setaP}
+              >
                 <div className="flex">
                   <p className="text-white regular">
                     Lorem ipsum dolor sit amet, consectetur adi Lorem ipsum
@@ -239,16 +243,21 @@ const SingleMintNft = (
                     <p className="text-base regular text-white w-6/12">
                       Contract Address
                     </p>
-                    <p className=" text-grey-800 text-md w-4/12 truncate">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`https://testnet.bscscan.com/token/${data?.token_address}`}
+                      className=" text-grey-800 text-md w-4/12 truncate"
+                    >
                       {data?.token_address}
-                    </p>
+                    </a>
                   </div>
                   <div className="flex justify-between regular">
                     <p className="text-base regular text-white w-6/12">
                       Token Id
                     </p>
                     <p className=" text-grey-800 text-md w-4/12 truncate text-end">
-                      45sds5d
+                      {data?.token_id}
                     </p>
                   </div>
                   <div className="flex justify-between">
@@ -256,7 +265,7 @@ const SingleMintNft = (
                       Token Standard
                     </p>
                     <p className=" text-grey-800 text-md w-4/12 truncate text-end">
-                      45sds53
+                      {data?.contract_type}
                     </p>
                   </div>
                   <div className="flex justify-between">
@@ -264,16 +273,16 @@ const SingleMintNft = (
                       Blockchain
                     </p>
                     <p className=" text-grey-800 text-md w-4/12 truncate text-end">
-                      Sportrex
+                      BSC-Testnet
                     </p>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-base regular text-white w-6/12">
                       Metadata
                     </p>
-                    <p className=" text-grey-800 text-md w-4/12 truncate text-end ">
-                      Editable
-                    </p>
+                    <a href={`https://ipfs.moralis.io:2053/ipfs/${data?.token_uri}`} className=" text-grey-800 text-md w-4/12 truncate text-end ">
+                     {data?.token_uri}
+                    </a>
                   </div>
                 </div>
               </GeneralAccordion>
