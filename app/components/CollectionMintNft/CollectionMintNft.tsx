@@ -21,6 +21,7 @@ import Image from "next/image";
 import { CollectionResult } from "@/types";
 import { getSingleCollectionDetail } from "@/app/redux/features/auth/MyNftSlice";
 import { useAppDispatch } from "@/app/redux/store";
+import { Skeleton } from "antd";
 
 const styles = {
   icon: "w-[32px] sm:w-[40px] h-auto  ",
