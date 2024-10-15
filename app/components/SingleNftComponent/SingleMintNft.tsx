@@ -5,6 +5,7 @@ import dummy from "@/public/assets/general/edit-dummy.png";
 import nodata from "@/public/assets/general/nodata.svg";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { linksArrayA } from "@/app/constants/IconsData";
+import { Skeleton } from "antd";
 import one from "@/public/assets/market/one.png";
 import two from "@/public/assets/market/two.png";
 import three from "@/public/assets/market/three.png";
@@ -19,7 +20,10 @@ import {
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { CollectionResult } from "@/types";
-import { getSingleCollectionDetail, getSingleNftDetail } from "@/app/redux/features/auth/MyNftSlice";
+import {
+  getSingleCollectionDetail,
+  getSingleNftDetail,
+} from "@/app/redux/features/auth/MyNftSlice";
 import { useAppDispatch } from "@/app/redux/store";
 
 const styles = {
@@ -35,32 +39,39 @@ const SingleMintNft = (
 
   const navigate = useRouter();
 
-   const dispatch = useAppDispatch();
-   const [data, setData] = useState<any>({});
-   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const [data, setData] = useState<any>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [nftImage, setNftImage] = useState("");
 
+  const params = useParams();
+  const address = params.contractId;
+  const tokenId = params.nftId;
 
-   const params = useParams();
-   const address = params.contractId;
-   const tokenId = params.nftId;
+  const fetchData = useCallback(async () => {
+    setIsLoading(true);
+    const { payload } = await dispatch(
+      getSingleNftDetail({ address: address, tokenId: tokenId })
+    );
 
-   const fetchData = useCallback(async () => {
-     setIsLoading(true);
-     const { payload } = await dispatch(
-       getSingleNftDetail({ address: address, tokenId: tokenId })
-     );
+    if (payload) {
+      setData(payload?.data);
+      const ipfsGateway = "https://ipfs.io/ipfs/";
+      const ipfsUrl = payload?.data?.normalized_metadata?.image.replace(
+        "ipfs://",
+        ""
+      );
+      const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
+      setNftImage(httpsImageUrl);
+    }
 
-     if (payload) {
-       setData(payload?.data);
-     }
+    setIsLoading(false);
+  }, [address, tokenId, dispatch]);
 
-     setIsLoading(false);
-   }, []);
-
-   useEffect(() => {
-     fetchData();
-   }, []);
-   console.log(data);
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+  console.log(data);
   const handleMintModal = () => {
     console.log("hey");
   };
@@ -74,6 +85,14 @@ const SingleMintNft = (
   const [offers, setOffers] = useState(true);
   const [listing, setListing] = useState(true);
   const [events, setEvents] = useState(true);
+  const truncateMiddle = (text: string, length: number) => {
+    if (typeof text !== "string") return text;
+    if (text.length <= length) return text;
+    const halfLength = Math.floor((length - 3) / 2);
+    if (halfLength < 0) return text;
+
+    return `${text.slice(0, halfLength)}...${text.slice(-halfLength)}`;
+  };
 
   return (
     <div>
@@ -81,13 +100,33 @@ const SingleMintNft = (
         <div className="w-full flex flex-col my-4">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:space-x-8 ">
-            <div className="w-full md:w-6/12  lg:w-4/12 flex flex-col">
-              <Image src={dummy} alt="use" className="w-full h-auto" />
-              <div className="flex  items-center w-full mt-4 gap-4">
+            <div className="w-full md:w-6/12  lg:w-4/12 flex flex-col ">
+              {isLoading ? (
+                <Skeleton.Image
+                  active={true}
+                  className="w-full h-auto rounded-[16px]"
+                  style={{
+                    width: "100%",
+                    height: "400px",
+                    borderRadius: "16px",
+                  }}
+                />
+              ) : (
+                <Image
+                  src={nftImage}
+                  alt="NFT Image"
+                  className="w-full h-auto rounded-[16px]"
+                  width={100}
+                  height={100}
+                />
+              )}
+
+              {/* Commented Out the Flex */}
+              {/* <div className="flex  items-center w-full mt-4 gap-4">
                 <Image src={one} alt="sd" className="w-24 h-auto" />
                 <Image src={two} alt="sd" className="w-24 h-auto" />
                 <Image src={three} alt="sd" className="w-24 h-auto" />
-              </div>
+              </div> */}
             </div>
             <div className="w-full md:w-6/12  lg:w-7/12 flex items-start">
               <div className="flex flex-col  w-full ">
@@ -110,17 +149,25 @@ const SingleMintNft = (
                     <p className="regular text-grey-800">23</p>
                   </div>
                 </div>
-                <div className="flex space-x-1 mt-4">
+                <div className="flex space-x-5 mt-4">
                   <p className="text-grey-800 text-base regular regular">
-                    Owned by
+                    Owned by:
                   </p>
                   <p className="text-yellow opacity-80 text-base regular regular">
+                    {truncateMiddle(data?.owner_of, 18)}
+                  </p>
+                </div>
+                <div className="flex space-x-5 mt-4">
+                  <p className="text-grey-800 text-base regular regular">
+                    Collection Name:
+                  </p>
+                  <p className="text-yellow capitalize opacity-80 text-base regular regular">
                     {data?.name}
                   </p>
                 </div>
-                <div className="flex space-x-1 mt-4">
+                <div className="flex space-x-5 mt-4">
                   <p className="text-grey-800 text-base regular regular">
-                    Nft Name
+                    NFT Name:
                   </p>
                   <p className="text-yellow capitalize opacity-80 text-base regular regular">
                     {data?.normalized_metadata?.name}
@@ -177,7 +224,7 @@ const SingleMintNft = (
             <div className="left w-full flex flex-col space-y-8 lg:space-y-12 md:w-6/12  lg:w-4/12">
               <GeneralAccordion
                 open={pD}
-                title="Product Description"
+                title="NFT Description"
                 setOpen={setPd}
               >
                 <div className="flex">
@@ -186,7 +233,11 @@ const SingleMintNft = (
                   </p>
                 </div>
               </GeneralAccordion>
-              <GeneralAccordion open={aP} title="About Painter" setOpen={setaP}>
+              <GeneralAccordion
+                open={aP}
+                title={`About ${data?.name}`}
+                setOpen={setaP}
+              >
                 <div className="flex">
                   <p className="text-white regular">
                     Lorem ipsum dolor sit amet, consectetur adi Lorem ipsum
@@ -199,7 +250,7 @@ const SingleMintNft = (
               </GeneralAccordion>
               <GeneralAccordion
                 open={details}
-                title="Details"
+                title={`Details ${data?.normalized_metadata?.name}`}
                 setOpen={setDetails}
               >
                 <div className="flex flex-col space-y-4">
@@ -207,16 +258,21 @@ const SingleMintNft = (
                     <p className="text-base regular text-white w-6/12">
                       Contract Address
                     </p>
-                    <p className=" text-grey-800 text-md w-4/12 truncate">
-                      45sds5d5ww5dsd5s45yeyrehfhkfhdif
-                    </p>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`https://testnet.bscscan.com/token/${data?.token_address}`}
+                      className=" text-grey-800 text-md w-4/12 truncate"
+                    >
+                      {data?.token_address}
+                    </a>
                   </div>
                   <div className="flex justify-between regular">
                     <p className="text-base regular text-white w-6/12">
                       Token Id
                     </p>
                     <p className=" text-grey-800 text-md w-4/12 truncate text-end">
-                      45sds5d
+                      {data?.token_id}
                     </p>
                   </div>
                   <div className="flex justify-between">
@@ -224,7 +280,7 @@ const SingleMintNft = (
                       Token Standard
                     </p>
                     <p className=" text-grey-800 text-md w-4/12 truncate text-end">
-                      45sds53
+                      {data?.contract_type}
                     </p>
                   </div>
                   <div className="flex justify-between">
@@ -232,16 +288,21 @@ const SingleMintNft = (
                       Blockchain
                     </p>
                     <p className=" text-grey-800 text-md w-4/12 truncate text-end">
-                      Sportrex
+                      BSC-Testnet
                     </p>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-base regular text-white w-6/12">
                       Metadata
                     </p>
-                    <p className=" text-grey-800 text-md w-4/12 truncate text-end ">
-                      Editable
-                    </p>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`${data?.token_uri}`}
+                      className=" text-grey-800 text-md w-4/12 truncate text-end "
+                    >
+                      {data?.token_uri}
+                    </a>
                   </div>
                 </div>
               </GeneralAccordion>

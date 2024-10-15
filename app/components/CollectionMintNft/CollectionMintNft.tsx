@@ -21,43 +21,54 @@ import Image from "next/image";
 import { CollectionResult } from "@/types";
 import { getSingleCollectionDetail } from "@/app/redux/features/auth/MyNftSlice";
 import { useAppDispatch } from "@/app/redux/store";
+import { Skeleton } from "antd";
 
 const styles = {
   icon: "w-[32px] sm:w-[40px] h-auto  ",
 };
 
-const CollectionMintNft = ({
-  //collection,
-}) => {
+const CollectionMintNft = (
+  {
+    //collection,
+  }
+) => {
   const [liked, setLiked] = useState(false);
+  const [collectionImage, setCollectionImage] = useState("");
 
- const dispatch = useAppDispatch();
- const [data, setData] = useState<any>({});
- const [isLoading, setIsLoading] = useState(false);
- const navigate = useRouter();
+  const dispatch = useAppDispatch();
+  const [data, setData] = useState<any>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useRouter();
 
- const params = useParams();
- const address = params.contractId;
- const tokenId = params.nftId;
+  const params = useParams();
+  const address = params.contractId;
+  const tokenId = params.nftId;
 
- const fetchData = useCallback(async () => {
-   setIsLoading(true);
-   const { payload } = await dispatch(
-     getSingleCollectionDetail({ address: address, limit: "100" })
-   );
+  const fetchData = useCallback(async () => {
+    setIsLoading(true);
+    const { payload } = await dispatch(
+      getSingleCollectionDetail({ address: address, limit: "100" })
+    );
 
-   if (payload) {
-     setData(payload?.data?.result?.[0]);
-   }
+    if (payload) {
+      setData(payload?.data?.result?.[0]);
+      const ipfsGateway = "https://ipfs.io/ipfs/";
+      const ipfsUrl =
+        payload?.data?.result?.[0]?.normalized_metadata?.image.replace(
+          "ipfs://",
+          ""
+        );
+      const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
+      setCollectionImage(httpsImageUrl);
+    }
 
-   setIsLoading(false);
- }, []);
+    setIsLoading(false);
+  }, []);
 
- useEffect(() => {
-   fetchData();
- }, []);
- console.log(data);
-
+  useEffect(() => {
+    fetchData();
+  }, []);
+  console.log(data);
 
   const handleMintModal = () => {
     console.log("hey");
@@ -73,6 +84,15 @@ const CollectionMintNft = ({
   const [listing, setListing] = useState(true);
   const [events, setEvents] = useState(true);
 
+  const truncateMiddle = (text: string, length: number) => {
+    if (typeof text !== "string") return text;
+    if (text.length <= length) return text;
+    const halfLength = Math.floor((length - 3) / 2);
+    if (halfLength < 0) return text;
+
+    return `${text.slice(0, halfLength)}...${text.slice(-halfLength)}`;
+  };
+
   return (
     <div>
       <ParentLayout current={2}>
@@ -80,7 +100,25 @@ const CollectionMintNft = ({
           {/* Header */}
           <div className="flex flex-col md:flex-row md:space-x-8 ">
             <div className="w-full md:w-6/12  lg:w-4/12 flex flex-col">
-              <Image src={dummy} alt="use" className="w-full h-auto" />
+            {isLoading ? (
+                <Skeleton.Image
+                  active={true}
+                  className="w-full h-auto rounded-[16px]"
+                  style={{
+                    width: "100%",
+                    height: "400px",
+                    borderRadius: "16px",
+                  }}
+                />
+              ) : (
+                <Image
+                  src={collectionImage}
+                  alt="NFT Image"
+                  className="w-full h-auto rounded-[16px]"
+                  width={100}
+                  height={100}
+                />
+              )}
               <div className="flex justify-between items-center w-full mt-4 space-x-4">
                 <Image src={one} alt="sd" className="w-20 h-auto" />
                 <Image src={two} alt="sd" className="w-20 h-auto" />
@@ -109,20 +147,20 @@ const CollectionMintNft = ({
                     <p className="regular text-grey-800">23</p>
                   </div>
                 </div>
-                <div className="flex space-x-1 mt-4">
+                <div className="flex space-x-5 mt-4">
                   <p className="text-grey-800 text-base regular regular">
                     Owned by
                   </p>
                   <p className="text-yellow capitalize opacity-80 text-base regular regular">
-                    {data?.name}
+                    {truncateMiddle(data?.owner_of, 18)}
                   </p>
                 </div>
-                <div className="flex space-x-1 mt-4">
+                <div className="flex space-x-5 mt-4">
                   <p className="text-grey-800 text-base regular regular">
                     Collection Name
                   </p>
                   <p className="text-yellow opacity-80 text-base regular regular">
-                    {data?.normalized_metadata?.name}
+                    {data?.name}
                   </p>
                 </div>
                 <p className="text-md text-grey-800 regular  mt-2">
@@ -145,7 +183,7 @@ const CollectionMintNft = ({
                   Sale ends April 12, 2022 at 6:50pm WAT
                 </p>
                 <div className="mt-12 flex flex-col ">
-                  <p className="text-white regular">share on social media</p>
+                  <p className="text-white regular">Share on social media</p>
                   <div className="w-full lg:w-full flex mt-4  mb-4 sm:space-x-8  lg:space-x-4">
                     {linksArrayA.map((item, index) => {
                       return (
@@ -176,7 +214,7 @@ const CollectionMintNft = ({
             <div className="left w-full flex flex-col space-y-8 lg:space-y-12 md:w-6/12  lg:w-4/12">
               <GeneralAccordion
                 open={pD}
-                title="Product Description"
+                title="Collection Description"
                 setOpen={setPd}
               >
                 <div className="flex">
@@ -185,7 +223,11 @@ const CollectionMintNft = ({
                   </p>
                 </div>
               </GeneralAccordion>
-              <GeneralAccordion open={aP} title="About Painter" setOpen={setaP}>
+              <GeneralAccordion
+                open={aP}
+                title={`About ${data?.name}`}
+                setOpen={setaP}
+              >
                 <div className="flex">
                   <p className="text-white regular">
                     Lorem ipsum dolor sit amet, consectetur adi Lorem ipsum
@@ -206,24 +248,21 @@ const CollectionMintNft = ({
                     <p className="text-base regular text-white w-6/12">
                       Contract Address
                     </p>
-                    <p className=" text-grey-800 text-md w-4/12 truncate">
-                      45sds5d5ww5dsd5s45yeyrehfhkfhdif
-                    </p>
-                  </div>
-                  <div className="flex justify-between regular">
-                    <p className="text-base regular text-white w-6/12">
-                      Token Id
-                    </p>
-                    <p className=" text-grey-800 text-md w-4/12 truncate text-end">
-                      45sds5d
-                    </p>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`https://testnet.bscscan.com/token/${data?.token_address}`}
+                      className=" text-grey-800 text-md w-4/12 truncate"
+                    >
+                      {data?.token_address}
+                    </a>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-base regular text-white w-6/12">
                       Token Standard
                     </p>
                     <p className=" text-grey-800 text-md w-4/12 truncate text-end">
-                      45sds53
+                      {data?.contract_type}
                     </p>
                   </div>
                   <div className="flex justify-between">
@@ -231,16 +270,21 @@ const CollectionMintNft = ({
                       Blockchain
                     </p>
                     <p className=" text-grey-800 text-md w-4/12 truncate text-end">
-                      Sportrex
+                      BSC-Testnet
                     </p>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-base regular text-white w-6/12">
                       Metadata
                     </p>
-                    <p className=" text-grey-800 text-md w-4/12 truncate text-end ">
-                      Editable
-                    </p>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`${data?.token_uri}`}
+                      className=" text-grey-800 text-md w-4/12 truncate text-end "
+                    >
+                      {data?.token_uri}
+                    </a>
                   </div>
                 </div>
               </GeneralAccordion>
