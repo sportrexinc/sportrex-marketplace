@@ -73,7 +73,7 @@ const CollectionHero = ({ data, loading, address }: any) => {
             </p>
           </div>
           <div className="mt-6 regular text-white text-lg regular text-center">
-            <p>{userAddress}</p>
+            <p>{truncateMiddle(userAddress as string, 23)}</p>
           </div>
           <div className="text-lg regular mt-4 ">
             {/* <p className="text-center regular text-lg regular leading-8">
