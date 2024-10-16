@@ -28,7 +28,7 @@ const Owned: FC<{
   const dispatch = useAppDispatch()
 
   const back = () => {
-    console.log(count - 2)
+   
     address && dispatch(getUserNft({
       address,
       chain: "binance-testnet",

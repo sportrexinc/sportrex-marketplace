@@ -593,6 +593,17 @@ input {
   z-index: 999;
   /* Ensures it's on top of other elements */
 }
+.overlay-shadow-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Adjust the opacity (0.5 here) */
+  z-index: 1;
+  /* Ensures it's on top of other elements */
+}
 
 /* Scrollbar Customizer */
 

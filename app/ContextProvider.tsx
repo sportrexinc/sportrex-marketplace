@@ -5,7 +5,7 @@ import { persistor, store } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { ToastContainer } from "react-toastify";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
-
+import "react-toastify/dist/ReactToastify.css";
 const ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <Provider store={store}>
