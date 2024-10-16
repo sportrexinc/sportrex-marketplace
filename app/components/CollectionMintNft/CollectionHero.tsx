@@ -1,7 +1,6 @@
-
 import defaultPic from "@/public/assets/png/default-profile-pic.jpg";
 import Image from "next/image";
-
+import { useAddress } from "@thirdweb-dev/react";
 
 const styles = {
   parentContainer: "w-full flex flex-col",
@@ -15,8 +14,10 @@ const styles = {
   nameContainer: " flex items-center space-x-4   w-full justify-center",
 };
 
-const CollectionHero = () => {
- 
+const CollectionHero = ({ data, loading, address }: any) => {
+  const userAddress = useAddress();
+
+  console.log(data)
 
   return (
     <div className={styles.parentContainer}>
@@ -60,56 +61,40 @@ const CollectionHero = () => {
             <p className="text-2xl  text-yellow semibold ">Daniel Ayeni</p>
           </div>
           <div className="mt-6 regular text-white text-lg regular text-center">
-            <p>0xD3D6D58eE063f8880a80536AfcBd5364b20dAfD3</p>
+            <p>{userAddress}</p>
           </div>
           <div className="text-lg regular mt-4 ">
             {/* <p className="text-center regular text-lg regular leading-8">
               description
             </p> */}
-                  </div>
-                  {/*  */}
-                  <div className="w-full flex items-center gap-6 justify-center flex-wrap mt-6">
-                      {/* start */}
-                      <div className="flex flex-col bg-blue-dropHeader rounded-[8px] min-h-[72px] h-auto px-3 semibold text-sm text-white max-w-[127px] w-[127px] justify-center ">
-                          <p>
-                              4
-                          </p>
-                          <p>
-                              Item
-                          </p>
-                      </div>
-                      {/* end of a session */}
-                      {/* start */}
-                      <div className="flex flex-col bg-blue-dropHeader rounded-[8px] min-h-[72px] h-auto px-3 semibold text-sm text-white max-w-[127px] w-[127px] justify-center ">
-                          <p>
-                              4
-                          </p>
-                          <p>
-                              Item
-                          </p>
-                      </div>
-                      {/* end of a session */}
-                      {/* start */}
-                      <div className="flex flex-col bg-blue-dropHeader rounded-[8px] min-h-[72px] h-auto px-3 semibold text-sm text-white max-w-[127px] w-[127px] justify-center ">
-                          <p>
-                              4
-                          </p>
-                          <p>
-                              Item
-                          </p>
-                      </div>
-                      {/* end of a session */}
-                      {/* start */}
-                      <div className="flex flex-col bg-blue-dropHeader rounded-[8px] min-h-[72px] h-auto px-3 semibold text-sm text-white max-w-[127px] w-[127px] justify-center ">
-                          <p>
-                              4
-                          </p>
-                          <p>
-                              Item
-                          </p>
-                      </div>
-                      {/* end of a session */}
-                  </div>
+          </div>
+          {/*  */}
+          <div className="w-full flex items-center gap-6 justify-center flex-wrap mt-6">
+            {/* start */}
+            <div className="flex flex-col bg-blue-dropHeader rounded-[8px] min-h-[72px] h-auto px-3 semibold text-sm text-white max-w-[127px] w-[127px] justify-center ">
+              <p>{data.data?.result.length}</p>
+              <p>Items</p>
+            </div>
+            {/* end of a session */}
+            {/* start */}
+            <div className="flex flex-col bg-blue-dropHeader rounded-[8px] min-h-[72px] h-auto px-3 semibold text-sm text-white max-w-[127px] w-[127px] justify-center ">
+              <p>4</p>
+              <p>Item</p>
+            </div>
+            {/* end of a session */}
+            {/* start */}
+            <div className="flex flex-col bg-blue-dropHeader rounded-[8px] min-h-[72px] h-auto px-3 semibold text-sm text-white max-w-[127px] w-[127px] justify-center ">
+              <p>4</p>
+              <p>Item</p>
+            </div>
+            {/* end of a session */}
+            {/* start */}
+            <div className="flex flex-col bg-blue-dropHeader rounded-[8px] min-h-[72px] h-auto px-3 semibold text-sm text-white max-w-[127px] w-[127px] justify-center ">
+              <p>4</p>
+              <p>Item</p>
+            </div>
+            {/* end of a session */}
+          </div>
         </div>
       </div>
     </div>

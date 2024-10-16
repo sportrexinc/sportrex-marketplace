@@ -170,7 +170,7 @@ export const getSingleCollectionDetail = createAsyncThunk(
     "getSingleCollectionDetail",
     async (payload: {  address: string | any, limit: string |  null, chain?: string | null }, action) => {
         try {
-            const { data } = await APIService.get(`${url.collections}/nfts?address=${payload.address}&&limit=${payload.limit}`)
+            const { data } = await APIService.get(`${url.collections}/nfts?address=${payload.address}&limit=${payload.limit}`)
             return data
            } catch (error) {
             let newError = getSimplifiedError(error);
