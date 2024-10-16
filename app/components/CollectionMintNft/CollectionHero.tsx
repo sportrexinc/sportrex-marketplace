@@ -25,8 +25,6 @@ const truncateMiddle = (text: string, length: number) => {
 const CollectionHero = ({ data, loading, address }: any) => {
   const userAddress = useAddress();
 
-  console.log(data)
-
   return (
     <div className={styles.parentContainer}>
       <div
