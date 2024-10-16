@@ -131,7 +131,7 @@ export default userNft.reducer
 
 export const getUserNft = createAsyncThunk(
     "getUserNft",
-    async (payload: { chain?: string; address: string, cursor?: string |  null, limit?: string | number }, action) => {
+    async (payload: { chain?: string; address: string | any, cursor?: string |  null, limit?: string | number }, action) => {
        try {
         const { data } = await APIService.post(`${url.profile}/${payload.address}/nft`, payload)
         return data
