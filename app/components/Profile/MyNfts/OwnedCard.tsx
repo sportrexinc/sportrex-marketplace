@@ -32,7 +32,7 @@ const OwnedCard = ({
     router.push(`/nft/${item.token_address}/${item.token_id}`);
   };
 
-  console.log(nft?.metadata.image);
+  // console.log(nft?.metadata.image);
   if (loading) return <NftLoading />;
 
   return (

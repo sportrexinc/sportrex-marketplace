@@ -38,7 +38,7 @@ const CollectionItems = ({ data, loading, address }: any) => {
   //console.log(data.data?.result)
 
   return (
-    <div className="w-full flex flex-col justify-center items-center">
+    <div className="w-full flex flex-col justify-center items-center mt-8">
       <div className="w-full md:min-h-[296px] h-full grid grid-cols-2 lg:grid-cols-5 gap-3 ">
         {!loading && data && data.data?.result
           ? data.data?.result.map((item: any, index: number) => {

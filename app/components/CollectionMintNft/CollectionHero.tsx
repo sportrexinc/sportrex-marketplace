@@ -13,6 +13,14 @@ const styles = {
   content: "w-11/12 sm:9/12 lg:w-7/12 2xl:5/12 mx-auto flex flex-col w-full",
   nameContainer: " flex items-center space-x-4   w-full justify-center",
 };
+const truncateMiddle = (text: string, length: number) => {
+  if (typeof text !== "string") return text;
+  if (text.length <= length) return text;
+  const halfLength = Math.floor((length - 3) / 2);
+  if (halfLength < 0) return text;
+
+  return `${text.slice(0, halfLength)}...${text.slice(-halfLength)}`;
+};
 
 const CollectionHero = ({ data, loading, address }: any) => {
   const userAddress = useAddress();
@@ -54,11 +62,15 @@ const CollectionHero = ({ data, loading, address }: any) => {
       <div className={styles.contentContainer}>
         <div className={styles.content}>
           <p className="grad-text semibold text-center mx-auto text-lg md:text-2xl ">
-            Libracerw Collection
+            {data?.data?.result[0]?.name}
           </p>
           <div className="flex items-center gap-1   w-full justify-center">
             <p className="text-xl regular text-white ">Created By</p>
-            <p className="text-2xl  text-yellow semibold ">Daniel Ayeni</p>
+            <p className="text-2xl  text-yellow semibold ">
+            {data?.data?.result[0]?.owner_of.toLowerCase() === userAddress?.toLowerCase()
+              ? "You"
+              : truncateMiddle(data?.data?.result[0]?.owner_of as string, 18)}
+            </p>
           </div>
           <div className="mt-6 regular text-white text-lg regular text-center">
             <p>{userAddress}</p>
