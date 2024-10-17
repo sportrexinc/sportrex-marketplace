@@ -31,7 +31,7 @@ const CollectionHero = ({ data, loading, address }: any) => {
         className={styles.thumbContainer}
         style={{
           height: "40vh",
-          width: "100%",
+          width: "100vh",
           zIndex: 0,
         }}
       >
