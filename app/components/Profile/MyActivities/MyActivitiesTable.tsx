@@ -18,8 +18,7 @@ const truncateMiddle = (text: string, length: number) => {
   return `${text.slice(0, halfLength)}...${text.slice(-halfLength)}`;
 };
 //@ts-ignore
-const MyActivitiesTable = ({
-}) => {
+const MyActivitiesTable = ({}) => {
   const [activities, setActivities] = React.useState<ActivitiesTableProps | []>(
     []
   );
@@ -87,7 +86,7 @@ const MyActivitiesTable = ({
       key: "token_address",
       render: (text) => {
         const currentMetaData = collectionMetaData[text];
-
+        let httpsImageUrl = "";
         // Check if currentMetaData is defined and has the expected array structure
         if (
           currentMetaData &&
@@ -100,9 +99,9 @@ const MyActivitiesTable = ({
           if (tokenURI && tokenURI.startsWith("ipfs://")) {
             const ipfsGateway = "https://ipfs.io/ipfs/";
             const ipfsUrl = tokenURI.replace("ipfs://", "");
-            const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
+            httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
             // console.log(currentMetaData); // For debugging
-            setTokenImageURI(httpsImageUrl);
+            //setTokenImageURI(httpsImageUrl);
           } else {
             console.warn(
               "Token URI is missing or does not start with 'ipfs://'"
@@ -121,7 +120,7 @@ const MyActivitiesTable = ({
                 <div>
                   <Image
                     alt="collection"
-                    src={tokenImageURI}
+                    src={httpsImageUrl}
                     width={45}
                     height={45}
                     className="rounded-[10px]"
@@ -172,7 +171,9 @@ const MyActivitiesTable = ({
             href={`https://testnet.bscscan.com/address/${text}`}
             rel="noopener noreferrer"
           >
-            {text.toLowerCase() === address?.toLowerCase() ? "You" : truncateMiddle(text as string, 18)}
+            {text.toLowerCase() === address?.toLowerCase()
+              ? "You"
+              : truncateMiddle(text as string, 18)}
           </a>
         );
       },
@@ -205,7 +206,7 @@ const MyActivitiesTable = ({
         }> = await APIService.get(
           `/user/${address}/activity?chain=binance-testnet`
         );
-        console.log("API Response:", response); // Log the full API response
+        //console.log("API Response:", response); // Log the full API response
 
         //@ts-ignore
         if (response?.data?.data?.content) {
