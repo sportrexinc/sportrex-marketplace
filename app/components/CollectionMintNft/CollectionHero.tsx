@@ -11,7 +11,7 @@ const styles = {
     "bg-gradient rounded-full w-[197px] md:w-[230px] h-[197px] md:h-[230px] cursor-pointer object-cover ",
   contentContainer: "mt-40 w-full flex justify-center ",
   content: "w-11/12 sm:9/12 lg:w-7/12 2xl:5/12 mx-auto flex flex-col w-full",
-  nameContainer: " flex items-center space-x-4   w-full justify-center",
+  nameContainer: " flex items-center space-x-4  w-full justify-center",
 };
 const truncateMiddle = (text: string, length: number) => {
   if (typeof text !== "string") return text;
@@ -65,9 +65,10 @@ const CollectionHero = ({ data, loading, address }: any) => {
           <div className="flex items-center gap-1   w-full justify-center">
             <p className="text-xl regular text-white ">Created By</p>
             <p className="text-2xl  text-yellow semibold ">
-            {data?.data?.result[0]?.owner_of.toLowerCase() === userAddress?.toLowerCase()
-              ? "You"
-              : truncateMiddle(data?.data?.result[0]?.owner_of as string, 18)}
+              {data?.data?.result[0]?.owner_of.toLowerCase() ===
+              userAddress?.toLowerCase()
+                ? "You"
+                : truncateMiddle(data?.data?.result[0]?.owner_of as string, 18)}
             </p>
           </div>
           <div className="mt-6 regular text-white text-lg regular text-center">
