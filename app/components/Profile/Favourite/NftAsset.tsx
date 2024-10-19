@@ -2,6 +2,8 @@ import React from "react";
 import NftAssetCard from "./NftAssetCard";
 import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
 import OwnedCard from "../MyNfts/OwnedCard";
+import Image from "next/image";
+import emptyStateIllustration from "@/public/assets/empty-state-illustration.png";
 const getFavorites = () => {
   if (typeof window !== "undefined") {
     // Check if 'favorites' exists in localStorage
@@ -42,9 +44,22 @@ const Owned = () => {
           </div>
         </>
       ) : (
-        <>
-          <p className="text-center">You are yet to have a Favorite NFT...</p>
-        </>
+        <div className="flex justify-center flex-col items-center">
+          <div>
+            <Image
+              height={100}
+              width={100}
+              src={emptyStateIllustration}
+              alt=""
+            />
+          </div>
+
+          <div>
+            <p className="text-center mt-5">
+              You are yet to have a Favorite Collection...
+            </p>
+          </div>
+        </div>
       )}
     </div>
   );
