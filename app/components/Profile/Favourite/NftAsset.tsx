@@ -56,7 +56,7 @@ const Owned = () => {
 
           <div>
             <p className="text-center mt-5">
-              You are yet to have a Favorite Collection...
+              You are yet to have a Favorite NFT...
             </p>
           </div>
         </div>
