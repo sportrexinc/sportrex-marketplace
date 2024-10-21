@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import ProfileSelect from "../../Select/ProfileSelect";
 import Collections from "./Collections";
 import NftAsset from "./NftAsset";
+import Image from "next/image"
 import OwnedByMe from "../Collections/OwnedByMe";
 import { CollectionResult } from "@/types";
+import emptyStateIllustration from "@/public/assets/empty-state-illustration.png"
 import SingleCollectionCard from "../Collections/SingleCollectionCard";
 const getFavoritesCollection = () => {
   if (typeof window !== "undefined") {
@@ -64,6 +66,7 @@ const Favourite = () => {
               ))
             ) : (
               <div className="flex justify-center">
+                <Image height={100} width={100} src={emptyStateIllustration} alt="" />
                 <p className="text-center">
                   You are yet to have a Favorite Collection...
                 </p>
