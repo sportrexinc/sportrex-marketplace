@@ -89,20 +89,20 @@ const CollectionHero = ({ data, loading, address }: any) => {
             {/* end of a session */}
             {/* start */}
             <div className="flex flex-col bg-blue-dropHeader rounded-[8px] min-h-[72px] h-auto px-3 semibold text-sm text-white max-w-[127px] w-[127px] justify-center ">
-              <p>4</p>
-              <p>Item</p>
+              <p>0</p>
+              <p>Owners</p>
             </div>
             {/* end of a session */}
             {/* start */}
             <div className="flex flex-col bg-blue-dropHeader rounded-[8px] min-h-[72px] h-auto px-3 semibold text-sm text-white max-w-[127px] w-[127px] justify-center ">
-              <p>4</p>
-              <p>Item</p>
+              <p>0.4 BNB</p>
+              <p>Floor Price</p>
             </div>
             {/* end of a session */}
             {/* start */}
             <div className="flex flex-col bg-blue-dropHeader rounded-[8px] min-h-[72px] h-auto px-3 semibold text-sm text-white max-w-[127px] w-[127px] justify-center ">
-              <p>4</p>
-              <p>Item</p>
+              <p>10 BNB</p>
+              <p>Volume</p>
             </div>
             {/* end of a session */}
           </div>
