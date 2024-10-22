@@ -73,6 +73,7 @@
   }
 }
 
+
 .rotate-spin {
   width: 200px;
   /* Adjust the size of the image as needed */
@@ -256,22 +257,12 @@
   width: 100%;
 }
 
-.new-hero-bg {
-  background: url("../public/assets/backgrounds/new-hero-bg.png");
-  width: 100%;
-  height: 100%;
-  min-height: 100vh;
-  background-repeat: no-repeat;
-  background-size: contain;
-  /* border: 2px solid; */
-  border-image-source: linear-gradient(
-    91.02deg,
-    #fac744 8.95%,
-    #8b14ef 58.82%,
-    #3333ff 107.66%
-  );
-}
 
+
+.new-hero-bg-grad{
+  background: linear-gradient(91.02deg, #FAC744 8.95%, #8B14EF 58.82%, #3333FF 107.66%);
+
+}
 .mob-hero-border {
   border: 2px solid rgba(139, 20, 239, 0.3);
   border-radius: 30px;

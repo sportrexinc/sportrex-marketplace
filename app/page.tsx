@@ -28,7 +28,7 @@ const Home = () => {
   const { data } = useMetadata(contract);
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log(data);
+   
   }, [data]);
   return (
     <div className="w-full min-h-screen h-full bg-blue-body text-white">

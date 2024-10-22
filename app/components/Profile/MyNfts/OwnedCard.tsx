@@ -9,13 +9,16 @@ import { NftResult } from "@/types";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import FavoriteButton from "./favourite-button";
+import Options from "../../options/options";
 
 const OwnedCard = ({
   isTrending,
   item,
+  cardType
 }: {
   isTrending: boolean;
-  item: NftResult;
+    item: NftResult;
+    cardType: string;
 }) => {
   const [liked, setLiked] = useState(false);
   const [openOptions, setOpenOptions] = useState(false);
@@ -38,7 +41,7 @@ const OwnedCard = ({
   return (
     // <div className="w-full box-border  lg:min-w-[300px] md:h-[350px] sm:w-[280px] lg:w-[304px] h-full bg-no-repeat bg-cover bg-blue-header rounded-[10px] md:rounded-[20px] p-3 flex flex-col items-start space-y-[12px] justify-between relative">
     <>
-      <div className="w-full overflow-hidden box-border md:h-[350px] h-full bg-blue-header rounded-[10px] p-1 md:rounded-[20px] flex flex-col  relative">
+      <div className="w-full overflow-hidden box-border md:h-[350px] h-full bg-blue-header rounded-[10px] p-2 lg:p-4 md:rounded-[20px] flex flex-col  relative">
         <div className="absolute left-2 top-2">
           {Number(item.amount) > 1 && (
             <span className="bg-black text-[14px] rounded-full p-1 text-green">
@@ -46,6 +49,36 @@ const OwnedCard = ({
               {`x${item.amount}`}{" "}
             </span>
           )}
+        </div>
+        <div className="absolute right-7 top-7">
+          <Options>
+            {cardType === "owned" && (
+              <div className="w-full flex flex-col  py-6 px-4 gap-4">
+                <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                  List
+                </p>
+                <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                  Share
+                </p>
+                <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                  Edit
+                </p>
+              </div>
+            )}
+            {cardType === "general" && (
+              <div className="w-full flex flex-col  py-6 px-4 gap-4">
+                <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                  Sell
+                </p>
+                <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                  Change Collection
+                </p>
+                <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                  Share
+                </p>
+              </div>
+            )}
+          </Options>
         </div>
         <Link
           href={`/nft/${item.token_address}/${item.token_id}`}
@@ -62,9 +95,7 @@ const OwnedCard = ({
           />
         </Link>
         <div className="flex flex-1 overflow-hidden justify-between items-center w-full mb-2 px-2">
-                  <Link 
-            href={`/nft/${item.token_address}/${item.token_id}`}>
-            
+          <Link href={`/nft/${item.token_address}/${item.token_id}`}>
             <p className="text-[16px] semibold" onClick={handleNavigate}>
               {nft?.metadata.name}
             </p>
@@ -72,7 +103,7 @@ const OwnedCard = ({
               0.3 SPT
             </div>
           </Link>
-          
+
           <div />
           <div className="flex gap-x-2 items-center">
             {/* {liked ? (
