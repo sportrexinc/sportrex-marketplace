@@ -11,7 +11,7 @@ import { useAddress } from "@thirdweb-dev/react";
 
 const CollectionItems = ({data,loading,address} : any) => {
   
-     
+  console.log(data); 
   const dispatch = useAppDispatch();
 
   const back = () => {

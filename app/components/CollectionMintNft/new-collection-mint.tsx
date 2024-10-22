@@ -25,7 +25,8 @@ const NewCollectionMint = () => {
     const navigate = useRouter();
     const params = useParams();
     const address = params.contractId;
-    const tokenId = params.nftId;
+  const tokenId = params.nftId;
+    const userAddress = useAddress();
       const dispatch = useAppDispatch();
       const {
         nft_data,
@@ -35,11 +36,11 @@ const NewCollectionMint = () => {
       } = useAppSelector((state) => state.userNft);
 
       useEffect(() => {
-        if (address)
+        if (userAddress)
           dispatch(
             getUserNft({ address, chain: "binance-testnet", limit: 15 })
           );
-      }, [address]);
+      }, [userAddress]);
       const [collectionImage, setCollectionImage] = useState("");
 
     
