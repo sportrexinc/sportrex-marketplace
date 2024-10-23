@@ -224,7 +224,7 @@ const SingleMintNft = (
             <div className="left w-full flex flex-col space-y-8 lg:space-y-12 md:w-6/12  lg:w-4/12">
               <GeneralAccordion
                 open={pD}
-                title="NFT Description"
+                title="Description"
                 setOpen={setPd}
               >
                 <div className="flex">
@@ -235,7 +235,7 @@ const SingleMintNft = (
               </GeneralAccordion>
               <GeneralAccordion
                 open={aP}
-                title={`About ${data?.name}`}
+                title={`${data?.normalized_metadata?.name} Traits`}
                 setOpen={setaP}
               >
                 <div className="flex">
