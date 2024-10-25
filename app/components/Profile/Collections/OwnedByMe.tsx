@@ -56,8 +56,6 @@ const OwnedByMe = () => {
          ))
         }
       </div>
-
-
       <div className="my-10 w-full justify-center space-x-12 flex">
         <button
           className="bg-grey-800 rounded-full text-black cursor-pointer  text-lg regular  p-4"
