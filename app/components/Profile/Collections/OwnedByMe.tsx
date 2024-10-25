@@ -52,12 +52,10 @@ const OwnedByMe = () => {
           <CollectionLoading key={index} />
         )) : 
          collection_data?.result.map((item: CollectionResult, index: number) => (
-          <SingleCollectionCard  collection={item} key={index} />
+          <SingleCollectionCard  collection={item} key={index} cardType="owned" />
          ))
         }
       </div>
-
-
       <div className="my-10 w-full justify-center space-x-12 flex">
         <button
           className="bg-grey-800 rounded-full text-black cursor-pointer  text-lg regular  p-4"
