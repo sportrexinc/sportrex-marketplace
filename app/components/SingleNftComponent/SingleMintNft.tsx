@@ -222,11 +222,7 @@ const SingleMintNft = (
           <div className="flex flex-col md:flex-row md:space-x-8 mt-10">
             {/* left */}
             <div className="left w-full flex flex-col space-y-8 lg:space-y-12 md:w-6/12  lg:w-4/12">
-              <GeneralAccordion
-                open={pD}
-                title="Description"
-                setOpen={setPd}
-              >
+              <GeneralAccordion open={pD} title="Description" setOpen={setPd}>
                 <div className="flex">
                   <p className="text-white regular">
                     {data?.normalized_metadata?.description}
@@ -239,13 +235,9 @@ const SingleMintNft = (
                 setOpen={setaP}
               >
                 <div className="flex">
-                  <p className="text-white regular">
-                    Lorem ipsum dolor sit amet, consectetur adi Lorem ipsum
-                    dolor sit amet, consectetur adi Lorem ipsum dolor sit amet,
-                    consectetur adi Lorem ipsum dolor sit amet, consectetur adi
-                    Lorem ipsum dolor sit amet, consectetur adi Lorem ipsum
-                    dolor sit amet, consectetur adi
-                  </p>
+                  {data?.normalized_metadata?.attributes?.length > 0
+                    ? data.normalized_metadata.attributes
+                    : "No Traits Uploaded"}
                 </div>
               </GeneralAccordion>
               <GeneralAccordion
