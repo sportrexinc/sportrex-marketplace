@@ -42,7 +42,7 @@ const CollectionItems = ({ data, loading, address }: any) => {
       <div className="w-full md:min-h-[296px] h-full grid grid-cols-2 lg:grid-cols-5 gap-3 ">
         {!loading && data && data.data?.result
           ? data.data?.result.map((item: any, index: number) => {
-              return <OwnedCard item={item} isTrending={true} key={index} />;
+              return <OwnedCard item={item} isTrending={true} key={index} cardType="general" />;
             })
           : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((_, index: number) => (
               <NftLoading key={index} />
