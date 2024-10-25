@@ -26,8 +26,8 @@ const MyNfts = () => {
       id: 1,
     },
     {
-      value: "Created by me",
-      label: "Created by me",
+      value: "Unlisted by me",
+      label: "Unlisted by me",
       id: 2,
     },
     {
@@ -37,7 +37,7 @@ const MyNfts = () => {
     },
   ];
 
-  console.log(active)
+
   return (
     <div className="bg-blue-body w-full h-full">
 

@@ -52,7 +52,7 @@ const OwnedByMe = () => {
           <CollectionLoading key={index} />
         )) : 
          collection_data?.result.map((item: CollectionResult, index: number) => (
-          <SingleCollectionCard  collection={item} key={index} />
+          <SingleCollectionCard  collection={item} key={index} cardType="owned" />
          ))
         }
       </div>

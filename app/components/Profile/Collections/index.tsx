@@ -22,6 +22,11 @@ const CollectionsComponent = () => {
       label: "Listed by me",
       id: 2,
     },
+    {
+      value: "Unlisted by me",
+      label: "Unlisted by me",
+      id: 3,
+    },
   ];
   return (
     <div className="bg-blue-body w-full h-full">

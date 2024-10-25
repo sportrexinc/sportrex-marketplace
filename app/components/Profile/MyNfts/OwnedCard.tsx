@@ -50,7 +50,7 @@ const OwnedCard = ({
             </span>
           )}
         </div>
-        <div className="absolute right-7 top-7">
+        <div className="absolute right-7 top-7 z-10">
           <Options>
             {cardType === "owned" && (
               <div className="w-full flex flex-col  py-6 px-4 gap-4">
@@ -63,6 +63,26 @@ const OwnedCard = ({
                 <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
                   Edit
                 </p>
+              </div>
+            )}
+            {cardType === "unlisted" && (
+              <div className="w-full flex flex-col  py-6 px-4 gap-4">
+                <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                  Edit
+                </p>
+                <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                  Mint
+                </p>
+               
+              </div>
+            )}
+            {cardType === "listed" && (
+              <div className="w-full flex flex-col  py-6 px-4 gap-4">
+                <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                  Remove Listing
+                </p>
+              
+               
               </div>
             )}
             {cardType === "general" && (
@@ -82,8 +102,18 @@ const OwnedCard = ({
         </div>
         <Link
           href={`/nft/${item.token_address}/${item.token_id}`}
-          className="w-full"
+          className="w-full relative"
         >
+          {
+            cardType === "listed" && (
+
+            <div className="absolute bottom-2 right-4">
+                <p className="bold grad-text">
+                  On Sale
+</p>
+          </div>
+            )
+          }
           <MediaRenderer
             height="233px"
             width="100%"
