@@ -21,7 +21,7 @@ import Options from "../../options/options";
 
 const CollectionsCard: FC<{
   collection: CollectionResult;
-  cardType: string;
+  cardType?: string;
 }> = ({ collection,cardType }) => {
   const [liked, setLiked] = useState(false);
   const [openOptions, setOpenOptions] = useState(false);

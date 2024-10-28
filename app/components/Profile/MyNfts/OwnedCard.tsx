@@ -18,7 +18,7 @@ const OwnedCard = ({
 }: {
   isTrending: boolean;
     item: NftResult;
-    cardType: string;
+    cardType?: string;
 }) => {
   const [liked, setLiked] = useState(false);
   const [openOptions, setOpenOptions] = useState(false);
