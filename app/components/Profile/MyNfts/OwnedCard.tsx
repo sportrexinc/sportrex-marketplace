@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import heart from "@/public/assets/heart.svg";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
