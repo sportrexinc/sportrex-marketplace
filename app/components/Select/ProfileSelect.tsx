@@ -5,7 +5,7 @@ interface Profile {
   data: any;
   setIsOpen: any;
   setActive: any;
-  active:  number |any;
+  active?:  number |any;
   isOpen: boolean;
   selected: any;
   setSelected:any
@@ -35,7 +35,7 @@ const ProfileSelect = ({
         className="bg-blue-card flex px-4 text-white justify-between py-3 rounded-md"
         onClick={toggleOpen}
       >
-        <p>{selected ? selected.label : name}</p>
+        <p className="text-white ">{selected ? selected.label : name}</p>
         <div className="flex items-center justify-center">
           {isOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
@@ -46,13 +46,13 @@ const ProfileSelect = ({
             {options.map((option:any) => (
               <div
                 key={option.value}
-                className="flex items-center justify-between px-4 py-2 text-md regular hover:bg-blue-btn"
+                className="flex items-center justify-between px-4 py-2 text-white text-md regular hover:bg-blue-btn"
                 onClick={() => {
                   selectOption(option);
                   setActive(option.id);
                 }}
               >
-                <p className="text-sm regular">{option.label}</p>
+                <p className="text-sm regular text-white">{option.label}</p>
               </div>
             ))}
           </div>

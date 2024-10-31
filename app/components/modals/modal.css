@@ -32,7 +32,7 @@
 
 .modal-container {
   border-radius: 12px;
-  background: #192468;
+  background: #020733;
   min-width: 450px;
   /* max-width: 450px; */
   margin: 0px auto;
@@ -45,12 +45,12 @@
 
 
 .modal-header {
-  background: #192468;
+  background: #020733;
   color: black;
   padding: 20px 40px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
-  border-bottom: 1px solid #0b87490e;
+  /* border-bottom: 1px solid #0b87490e; */
 }
 
 .close-button {
@@ -79,7 +79,7 @@ p {
 .modal-body {
   margin: 10px 40px;
   padding: 20px 0;
-  background-color: #192468;
+  background-color: #020733;
   text-align: left;
 
 }
@@ -87,7 +87,7 @@ p {
 .modal-footer {
   padding: 40px;
   padding-top: 10px;
-  background-color: #192468;
+  background-color: #020733;
   display: flex;
   align-items: center;
   justify-content: space-between;

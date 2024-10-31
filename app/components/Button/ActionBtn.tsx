@@ -15,7 +15,7 @@ const ActionBtn = ({ action, name, loading, disabled } :ActionType) => {
       disabled={disabled}
     >
       { loading ? 
-      <span className="animate-spin h-5 w-5 rounded-full border-t-[2px] border-white inline-block" /> :
+      <span className="animate-spin h-5 w-5 rounded-full text-white border-t-[2px] border-white inline-block" /> :
       name 
       }
     </button>
