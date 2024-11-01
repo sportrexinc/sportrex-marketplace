@@ -546,6 +546,14 @@
   border-radius: 25px !important;
   background: linear-gradient(to left, #fac744, #8b14ef, #3333ff);
 }
+.box-bordery-active {
+  /* border-radius: 25px; */
+  /* border: 4px solid transparent; */
+  /* border-image-slice: 1; */
+ 
+  background: linear-gradient(to left, #fac744, #8b14ef, #3333ff);
+}
+
 
 .mob-connect-btn {
   border: 0.5px solid rgba(255, 255, 255, 0.3);

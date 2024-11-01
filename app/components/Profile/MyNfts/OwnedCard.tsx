@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import FavoriteButton from "./favourite-button";
 import Options from "../../options/options";
+import ListingModal from "../../modals/action-modals/ListingModal";
 
 const OwnedCard = ({
   isTrending,
@@ -23,6 +24,8 @@ const OwnedCard = ({
   const [liked, setLiked] = useState(false);
   const [openOptions, setOpenOptions] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [openListing, setOpenListing] = useState(false);
+  
   const [retrievedNft, setRetrievedNft] = useState<any>({
     image: heart,
     name: "NFT not found",
@@ -54,7 +57,7 @@ const OwnedCard = ({
           <Options>
             {cardType === "owned" && (
               <div className="w-full flex flex-col  py-6 px-4 gap-4">
-                <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                <p className="regular text-sm lg:text-lg text-white hover:text-yellow" onClick={() => setOpenListing(!openListing)}>
                   List
                 </p>
                 <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
@@ -152,6 +155,7 @@ const OwnedCard = ({
           </div>
         </div>
       </div>
+      <ListingModal item={item} open={openListing} setOpen={setOpenListing} />
     </>
   );
 };
