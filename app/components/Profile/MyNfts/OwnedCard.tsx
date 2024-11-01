@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import heart from "@/public/assets/heart.svg";
-import { AiFillHeart } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MediaRenderer, useContract, useNFT } from "@thirdweb-dev/react";
 import NftLoading from "../../Loader/NftLoading";
