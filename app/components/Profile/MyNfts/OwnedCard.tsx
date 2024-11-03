@@ -27,7 +27,7 @@ const OwnedCard = ({
 
   const [retrievedNft, setRetrievedNft] = useState<any>({
     image: heart,
-    name: "NFT not found",
+    name: "NFT not",
   });
 
   const { contract } = useContract(item.token_address);
