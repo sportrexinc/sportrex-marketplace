@@ -36,7 +36,7 @@ export default function Options({ children, isLast }: optionProps) {
           <Menu.Items
             className={` ${
               isLast ? "origin-bottom-right bottom-8" : "origin-top-right"
-            }   z-high absolute right-0 mt-2 w-[234px] rounded-[15px] shadow-lg bg-blue-body ring-1 ring-black ring-opacity-5 focus:outline-none`}
+            }   z-high absolute right-0 mt-2 w-[200px] rounded-[15px] shadow-lg bg-blue-body ring-1 ring-black ring-opacity-5 focus:outline-none`}
           >
             <div className="py-1">{children}</div>
           </Menu.Items>
