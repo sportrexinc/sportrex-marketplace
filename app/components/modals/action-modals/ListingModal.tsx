@@ -7,7 +7,8 @@ import Image from "next/image";
 import dummy from "@/public/assets/general/edit-dummy.png";
 import pendingImage from "@/public/assets/general/pending-image.png";
 import paymentSuccess from "@/public/assets/general/payment-success.png";
-
+import { contractType, useAddress, useContract } from "@thirdweb-dev/react";
+import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 interface listingProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -47,6 +48,32 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
   const [auctionPrice, setAuctionPrice] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [active, setActive] = useState(1);
+  const parseMetadata = JSON.parse(item.metadata);
+  const { contract } = useContract(
+    process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
+    sptMarketplaceAbi
+  );
+
+  const ipfsGateway = "https://ipfs.io/ipfs/";
+  const ipfsUrl = parseMetadata.image.replace("ipfs://", "");
+  const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
+
+  const handleListNft = async () => {
+    try {
+      const data = await contract?.call("listNft", [
+        item.token_address,
+        item.token_id,
+        fixedPrice,
+      ]);
+      setCurrent("sucess");
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsOpen(false);
+    }
+  };
+
   const [selected, setSelected] = useState({
     value: "Select Duration",
     label: "Select",
@@ -146,10 +173,10 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                       Price
                     </label>
                     <TextInput
-                      placeholder={"enter price"}
+                      placeholder={"Enter Listing Price"}
                       label={""}
                       name={""}
-                      setValue={(e: any) => setFixedPrice(e?.target?.value)}
+                      setValue={(fixedPrice) => setFixedPrice(fixedPrice)}
                     />
                     <label
                       htmlFor="price"
@@ -169,7 +196,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                   </div>
                   <div className="w-full mx-auto mt-12">
                     <ActionBtn
-                      name="List"
+                      name="Proceed"
                       action={() => setCurrent("checkout")}
                     />
                   </div>
@@ -218,11 +245,12 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                       Start Price
                     </label>
                     <TextInput
-                      placeholder={"enter price"}
+                      placeholder={"Enter Price"}
                       label={""}
                       name={""}
-                      setValue={(e: any) => setFixedPrice(e?.target?.value)}
+                      setValue={(fixedPrice) => console.log(fixedPrice)}
                     />
+
                     <label
                       htmlFor="price"
                       className="semibold text-white text-lg mt-4 mb-3"
@@ -249,25 +277,26 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                   <div className="w-full flex items-center gap-4 lg:gap-8">
                     <div className="w-4/12">
                       <Image
-                        src={dummy}
-                        alt="dummy"
+                        src={httpsImageUrl}
+                        alt="NFT Image"
+                        width={100}
+                        height={0}
                         className="max-w-[146px] max-h-[138px] w-full h-auto "
                       />
                     </div>
                     <div className="flex flex-col gap-3">
-                      <p className="regular text-[#ABABAB] text-sm">
-                        677 Items
-                      </p>
+                      <p className="regular text-[#ABABAB] text-sm">1 Item</p>
+
                       <p className="regular text-white font-semibold text-xl semibold">
-                        Grafitti Kollectionz
+                        {item.name}
                       </p>
                       <div className="flex items-center gap-3">
                         <p className="regular text-yellow text-lg">
-                          0.0532 SPT
+                          {fixedPrice ? fixedPrice : "NAN"} BNB
                         </p>{" "}
-                        <p className="regular text-[#ABABAB] text-sm">
+                        {/* <p className="regular text-[#ABABAB] text-sm">
                           $15,000
-                        </p>
+                        </p> */}
                       </div>
                     </div>
                   </div>
@@ -276,13 +305,16 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                       Sub-Total
                     </p>
                     <div className="flex items-center justify-end w-fit">
-                      <p className="regular text-yellow text-lg">0.0532 SPT</p>{" "}
-                      <p className="regular text-[#ABABAB] text-lg">$15,000</p>
+                      <p className="regular text-yellow text-lg">
+                        {" "}
+                        {fixedPrice ? fixedPrice : "NAN"} BNB
+                      </p>{" "}
+                      {/* <p className="regular text-[#ABABAB] text-lg">$15,000</p> */}
                     </div>
                   </div>
                   <div className="w-full mx-auto mt-12">
                     <ActionBtn
-                      name="Buy now"
+                      name="List Now"
                       action={() => setCurrent("pending")}
                     />
                   </div>
