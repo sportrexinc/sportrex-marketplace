@@ -1,58 +1,56 @@
-import React, { Fragment, SetStateAction, useState,useEffect } from 'react'
-import FixedModal from '../FixedModal';
-import TextInput from '../../Inputs/TextInput';
-import ProfileSelect from '../../Select/ProfileSelect';
-import ActionBtn from '../../Button/ActionBtn';
-import Image from 'next/image';
+import React, { Fragment, SetStateAction, useState, useEffect } from "react";
+import FixedModal from "../FixedModal";
+import TextInput from "../../Inputs/TextInput";
+import ProfileSelect from "../../Select/ProfileSelect";
+import ActionBtn from "../../Button/ActionBtn";
+import Image from "next/image";
 import dummy from "@/public/assets/general/edit-dummy.png";
 import pendingImage from "@/public/assets/general/pending-image.png";
-import paymentSuccess from "@/public/assets/general/payment-success.png"; 
+import paymentSuccess from "@/public/assets/general/payment-success.png";
 
 interface listingProps {
-    open: boolean;
-    setOpen: React.Dispatch<SetStateAction<boolean>>;
-    item: any,
-    
-    
+  open: boolean;
+  setOpen: React.Dispatch<SetStateAction<boolean>>;
+  item: any;
 }
 
-  const durationData = [
-    {
-      value: "1 day",
-      label: "1 day",
-      id: 1,
-    },
-    {
-      value: "3 day",
-      label: "3 day",
-      id: 2,
-    },
-    {
-      value: "5 day",
-      label: "5 day",
-      id: 3,
-    },
-  ];
+const durationData = [
+  {
+    value: "1 day",
+    label: "1 day",
+    id: 1,
+  },
+  {
+    value: "3 day",
+    label: "3 day",
+    id: 2,
+  },
+  {
+    value: "5 day",
+    label: "5 day",
+    id: 3,
+  },
+];
 const ListingModal = ({ open, setOpen, item }: listingProps) => {
-    const [current, setCurrent] = useState<any>("list");
-    const [fixedPrice, setFixedPrice] = useState(0);
+  const [current, setCurrent] = useState<any>("list");
+  const [fixedPrice, setFixedPrice] = useState(0);
   const [auctionPrice, setAuctionPrice] = useState(0);
-   const [isOpen, setIsOpen] = useState(false);
-   const [active, setActive] = useState(1);
-   const [selected, setSelected] = useState({
-     value: "Select Duration",
-     label: "Select",
-     id: 1,
-   });
-useEffect(() => {
-  if (current === "pending") {
-    setTimeout(() => {
-      setCurrent("success")
-    }, 5000);
-  }
-}, [current])
+  const [isOpen, setIsOpen] = useState(false);
+  const [active, setActive] = useState(1);
+  const [selected, setSelected] = useState({
+    value: "Select Duration",
+    label: "Select",
+    id: 1,
+  });
+  useEffect(() => {
+    if (current === "pending") {
+      setTimeout(() => {
+        setCurrent("success");
+      }, 5000);
+    }
+    console.log(item);
+  }, [current]);
 
-  
   return (
     <div>
       {open && (
@@ -309,7 +307,10 @@ useEffect(() => {
                   <div className="w-full mx-auto mt-12">
                     <ActionBtn
                       name="View Nft"
-                      action={() => { setCurrent("list"); setOpen(false) }}
+                      action={() => {
+                        setCurrent("list");
+                        setOpen(false);
+                      }}
                     />
                   </div>
                 </div>
@@ -323,6 +324,6 @@ useEffect(() => {
       )}
     </div>
   );
-}
+};
 
-export default ListingModal
+export default ListingModal;
