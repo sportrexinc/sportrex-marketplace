@@ -32,6 +32,16 @@ interface listingProps {
       label: "5 day",
       id: 3,
     },
+    {
+      value: "7 day",
+      label: "7 day",
+      id: 3,
+    },
+    {
+      value: "10 day",
+      label: "10 day",
+      id: 3,
+    },
   ];
 const ListingModal = ({ open, setOpen, item }: listingProps) => {
     const [current, setCurrent] = useState<any>("list");
