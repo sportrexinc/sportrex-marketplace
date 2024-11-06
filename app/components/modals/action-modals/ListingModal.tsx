@@ -3,12 +3,14 @@ import FixedModal from "../FixedModal";
 import TextInput from "../../Inputs/TextInput";
 import ProfileSelect from "../../Select/ProfileSelect";
 import ActionBtn from "../../Button/ActionBtn";
+import { ethers } from "ethers";
 import Image from "next/image";
 import dummy from "@/public/assets/general/edit-dummy.png";
 import pendingImage from "@/public/assets/general/pending-image.png";
 import paymentSuccess from "@/public/assets/general/payment-success.png";
 import { contractType, useAddress, useContract } from "@thirdweb-dev/react";
 import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
+import SPT721Abi from "@/abi/SptERC721.json";
 interface listingProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -44,15 +46,16 @@ const durationData = [
 ];
 const ListingModal = ({ open, setOpen, item }: listingProps) => {
   const [current, setCurrent] = useState<any>("list");
-  const [fixedPrice, setFixedPrice] = useState(0);
-  const [auctionPrice, setAuctionPrice] = useState(0);
+  const [fixedPrice, setFixedPrice] = useState("");
+  const [auctionPrice, setAuctionPrice] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [active, setActive] = useState(1);
   const parseMetadata = JSON.parse(item.metadata);
-  const { contract } = useContract(
+  const { contract: marketplaceContract } = useContract(
     process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
     sptMarketplaceAbi
   );
+  const { contract: nftContract } = useContract(item.token_address, SPT721Abi);
 
   const ipfsGateway = "https://ipfs.io/ipfs/";
   const ipfsUrl = parseMetadata.image.replace("ipfs://", "");
@@ -60,17 +63,23 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
 
   const handleListNft = async () => {
     try {
-      const data = await contract?.call("listNft", [
+      const weiValue = ethers.utils.parseUnits(fixedPrice, "ether");
+      await nftContract?.call("approve", [
+        process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
+        item.token_id,
+      ]);
+      const data = await marketplaceContract?.call("listNft", [
         item.token_address,
         item.token_id,
-        fixedPrice,
+        weiValue.toString(),
       ]);
-      setCurrent("sucess");
+      setCurrent("success");
       console.log(data);
     } catch (error) {
       console.error(error);
+      setOpen(false);
     } finally {
-      setIsOpen(false);
+      setOpen(false);
     }
   };
 
@@ -80,11 +89,11 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
     id: 1,
   });
   useEffect(() => {
-    if (current === "pending") {
-      setTimeout(() => {
-        setCurrent("success");
-      }, 5000);
-    }
+    // if (current === "pending") {
+    //   setTimeout(() => {
+    //     setCurrent("success");
+    //   }, 5000);
+    // }
     console.log(item);
   }, [current]);
 
@@ -315,7 +324,10 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                   <div className="w-full mx-auto mt-12">
                     <ActionBtn
                       name="List Now"
-                      action={() => setCurrent("pending")}
+                      action={() => {
+                        setCurrent("pending");
+                        handleListNft();
+                      }}
                     />
                   </div>
                 </div>
