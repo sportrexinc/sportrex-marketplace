@@ -1,68 +1,102 @@
-import React, { Fragment, SetStateAction, useState,useEffect } from 'react'
-import FixedModal from '../FixedModal';
-import TextInput from '../../Inputs/TextInput';
-import ProfileSelect from '../../Select/ProfileSelect';
-import ActionBtn from '../../Button/ActionBtn';
-import Image from 'next/image';
+import React, { Fragment, SetStateAction, useState, useEffect } from "react";
+import FixedModal from "../FixedModal";
+import TextInput from "../../Inputs/TextInput";
+import ProfileSelect from "../../Select/ProfileSelect";
+import ActionBtn from "../../Button/ActionBtn";
+import { ethers } from "ethers";
+import Image from "next/image";
 import dummy from "@/public/assets/general/edit-dummy.png";
 import pendingImage from "@/public/assets/general/pending-image.png";
-import paymentSuccess from "@/public/assets/general/payment-success.png"; 
-
+import paymentSuccess from "@/public/assets/general/payment-success.png";
+import { contractType, useAddress, useContract } from "@thirdweb-dev/react";
+import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
+import SPT721Abi from "@/abi/SptERC721.json";
 interface listingProps {
-    open: boolean;
-    setOpen: React.Dispatch<SetStateAction<boolean>>;
-    item: any,
-    
-    
+  open: boolean;
+  setOpen: React.Dispatch<SetStateAction<boolean>>;
+  item: any;
 }
 
-  const durationData = [
-    {
-      value: "1 day",
-      label: "1 day",
-      id: 1,
-    },
-    {
-      value: "3 day",
-      label: "3 day",
-      id: 2,
-    },
-    {
-      value: "5 day",
-      label: "5 day",
-      id: 3,
-    },
-    {
-      value: "7 day",
-      label: "7 day",
-      id: 3,
-    },
-    {
-      value: "10 day",
-      label: "10 day",
-      id: 3,
-    },
-  ];
+const durationData = [
+  {
+    value: "1 day",
+    label: "1 day",
+    id: 1,
+  },
+  {
+    value: "3 day",
+    label: "3 day",
+    id: 2,
+  },
+  {
+    value: "5 day",
+    label: "5 day",
+    id: 3,
+  },
+  {
+    value: "7 day",
+    label: "7 day",
+    id: 3,
+  },
+  {
+    value: "10 day",
+    label: "10 day",
+    id: 3,
+  },
+];
 const ListingModal = ({ open, setOpen, item }: listingProps) => {
-    const [current, setCurrent] = useState<any>("list");
-    const [fixedPrice, setFixedPrice] = useState(0);
-  const [auctionPrice, setAuctionPrice] = useState(0);
-   const [isOpen, setIsOpen] = useState(false);
-   const [active, setActive] = useState(1);
-   const [selected, setSelected] = useState({
-     value: "Select Duration",
-     label: "Select",
-     id: 1,
-   });
-useEffect(() => {
-  if (current === "pending") {
-    setTimeout(() => {
-      setCurrent("success")
-    }, 5000);
-  }
-}, [current])
+  const [current, setCurrent] = useState<any>("list");
+  const [fixedPrice, setFixedPrice] = useState("");
+  const [auctionPrice, setAuctionPrice] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [active, setActive] = useState(1);
+  const parseMetadata = JSON.parse(item.metadata);
+  const { contract: marketplaceContract } = useContract(
+    process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
+    sptMarketplaceAbi
+  );
+  const { contract: nftContract } = useContract(item.token_address, SPT721Abi);
 
-  
+  const ipfsGateway = "https://ipfs.io/ipfs/";
+  const ipfsUrl = parseMetadata.image.replace("ipfs://", "");
+  const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
+
+  const handleListNft = async () => {
+    try {
+      const ethValue = ethers.utils.parseEther(fixedPrice);
+      await nftContract?.call("approve", [
+        process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
+        item.token_id,
+      ]);
+      const data = await marketplaceContract?.call("listNft", [
+        item.token_address,
+        item.token_id,
+        ethValue,
+      ]);
+      setCurrent("success");
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+      setOpen(false);
+    } finally {
+      //setOpen(false);
+    }
+  };
+
+  const [selected, setSelected] = useState({
+    value: "Select Duration",
+    label: "Select",
+    id: 1,
+  });
+  useEffect(() => {
+    // if (current === "pending") {
+    //   setTimeout(() => {
+    //     setCurrent("success");
+    //   }, 5000);
+    // }
+    console.log(item);
+  }, [current]);
+
   return (
     <div>
       {open && (
@@ -93,12 +127,12 @@ useEffect(() => {
             )}
             {current === "pending" && (
               <h2 className="grad-text semibold text-2xl text-center max-w-[270px] mx-auto">
-                Waiting for payment approval
+                Waiting for Wallet approval
               </h2>
             )}
             {current === "success" && (
               <h2 className="grad-text semibold text-2xl text-center  mx-auto">
-                Payment Successful
+                Transaction Successful
               </h2>
             )}
           </div>
@@ -148,10 +182,10 @@ useEffect(() => {
                       Price
                     </label>
                     <TextInput
-                      placeholder={"enter price"}
+                      placeholder={"Enter Listing Price"}
                       label={""}
                       name={""}
-                      setValue={(e: any) => setFixedPrice(e?.target?.value)}
+                      setValue={(fixedPrice) => setFixedPrice(fixedPrice)}
                     />
                     <label
                       htmlFor="price"
@@ -171,7 +205,7 @@ useEffect(() => {
                   </div>
                   <div className="w-full mx-auto mt-12">
                     <ActionBtn
-                      name="List"
+                      name="Proceed"
                       action={() => setCurrent("checkout")}
                     />
                   </div>
@@ -220,11 +254,12 @@ useEffect(() => {
                       Start Price
                     </label>
                     <TextInput
-                      placeholder={"enter price"}
+                      placeholder={"Enter Price"}
                       label={""}
                       name={""}
-                      setValue={(e: any) => setFixedPrice(e?.target?.value)}
+                      setValue={(fixedPrice) => console.log(fixedPrice)}
                     />
+
                     <label
                       htmlFor="price"
                       className="semibold text-white text-lg mt-4 mb-3"
@@ -251,25 +286,26 @@ useEffect(() => {
                   <div className="w-full flex items-center gap-4 lg:gap-8">
                     <div className="w-4/12">
                       <Image
-                        src={dummy}
-                        alt="dummy"
+                        src={httpsImageUrl}
+                        alt="NFT Image"
+                        width={100}
+                        height={0}
                         className="max-w-[146px] max-h-[138px] w-full h-auto "
                       />
                     </div>
                     <div className="flex flex-col gap-3">
-                      <p className="regular text-[#ABABAB] text-sm">
-                        677 Items
-                      </p>
+                      <p className="regular text-[#ABABAB] text-sm">1 Item</p>
+
                       <p className="regular text-white font-semibold text-xl semibold">
-                        Grafitti Kollectionz
+                        {item.name}
                       </p>
                       <div className="flex items-center gap-3">
                         <p className="regular text-yellow text-lg">
-                          0.0532 SPT
+                          {fixedPrice ? fixedPrice : "NAN"} BNB
                         </p>{" "}
-                        <p className="regular text-[#ABABAB] text-sm">
+                        {/* <p className="regular text-[#ABABAB] text-sm">
                           $15,000
-                        </p>
+                        </p> */}
                       </div>
                     </div>
                   </div>
@@ -278,14 +314,20 @@ useEffect(() => {
                       Sub-Total
                     </p>
                     <div className="flex items-center justify-end w-fit">
-                      <p className="regular text-yellow text-lg">0.0532 SPT</p>{" "}
-                      <p className="regular text-[#ABABAB] text-lg">$15,000</p>
+                      <p className="regular text-yellow text-lg">
+                        {" "}
+                        {fixedPrice ? fixedPrice : "NAN"} BNB
+                      </p>{" "}
+                      {/* <p className="regular text-[#ABABAB] text-lg">$15,000</p> */}
                     </div>
                   </div>
                   <div className="w-full mx-auto mt-12">
                     <ActionBtn
-                      name="Buy now"
-                      action={() => setCurrent("pending")}
+                      name="List Now"
+                      action={() => {
+                        setCurrent("pending");
+                        handleListNft();
+                      }}
                     />
                   </div>
                 </div>
@@ -319,7 +361,10 @@ useEffect(() => {
                   <div className="w-full mx-auto mt-12">
                     <ActionBtn
                       name="View Nft"
-                      action={() => { setCurrent("list"); setOpen(false) }}
+                      action={() => {
+                        setCurrent("list");
+                        setOpen(false);
+                      }}
                     />
                   </div>
                 </div>
@@ -333,6 +378,6 @@ useEffect(() => {
       )}
     </div>
   );
-}
+};
 
-export default ListingModal
+export default ListingModal;
