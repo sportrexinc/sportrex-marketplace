@@ -127,12 +127,12 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
             )}
             {current === "pending" && (
               <h2 className="grad-text semibold text-2xl text-center max-w-[270px] mx-auto">
-                Waiting for payment approval
+                Waiting for Wallet approval
               </h2>
             )}
             {current === "success" && (
               <h2 className="grad-text semibold text-2xl text-center  mx-auto">
-                Payment Successful
+                Transaction Successful
               </h2>
             )}
           </div>
