@@ -63,7 +63,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
 
   const handleListNft = async () => {
     try {
-      const weiValue = ethers.utils.parseUnits(fixedPrice, "ether");
+      const ethValue = ethers.utils.parseEther(fixedPrice);
       await nftContract?.call("approve", [
         process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
         item.token_id,
@@ -71,7 +71,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
       const data = await marketplaceContract?.call("listNft", [
         item.token_address,
         item.token_id,
-        weiValue.toString(),
+        ethValue,
       ]);
       setCurrent("success");
       console.log(data);
@@ -79,7 +79,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
       console.error(error);
       setOpen(false);
     } finally {
-      setOpen(false);
+      //setOpen(false);
     }
   };
 
