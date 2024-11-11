@@ -5,6 +5,7 @@ import ProfileSelect from "../../Select/ProfileSelect";
 import ActionBtn from "../../Button/ActionBtn";
 import { ethers } from "ethers";
 import Image from "next/image";
+import Link from "next/link";
 import dummy from "@/public/assets/general/edit-dummy.png";
 import pendingImage from "@/public/assets/general/pending-image.png";
 import paymentSuccess from "@/public/assets/general/payment-success.png";
@@ -97,6 +98,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
     console.log(item);
   }, [current]);
 
+  const handleNavigation = () => {};
   return (
     <div>
       {open && (
@@ -187,21 +189,6 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                       name={""}
                       setValue={(fixedPrice) => setFixedPrice(fixedPrice)}
                     />
-                    <label
-                      htmlFor="price"
-                      className="semibold text-white text-lg mt-4 mb-3"
-                    >
-                      Time Duration
-                    </label>
-                    <ProfileSelect
-                      selected={selected}
-                      setSelected={setSelected}
-                      isOpen={isOpen}
-                      setIsOpen={setIsOpen}
-                      setActive={setActive}
-                      data={durationData}
-                      name=""
-                    />
                   </div>
                   <div className="w-full mx-auto mt-12">
                     <ActionBtn
@@ -233,7 +220,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                     <div
                       className={` ${
                         current === "auction"
-                          ? "box-bordery-active"
+                          ? "box-border-active"
                           : "box-border"
                       }  p-[2px] rounded-[8px] `}
                       onClick={() => setCurrent("auction")}
@@ -359,13 +346,19 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                     Transaction approved
                   </p>
                   <div className="w-full mx-auto mt-12">
-                    <ActionBtn
+                    <Link
+                      className="flex items-center rounded-[10px] justify-center  sm:text-[16px] light bg-blue-btn text-white px-4 py-2  w-full md:py-4 h-[40px] md:h-auto cursor-pointer semibold text-[10px] min-w-max}"
+                      href={`/nft/${item.token_address}/${item.token_id}`}
+                    >
+                      View NFT
+                    </Link>
+                    {/* <ActionBtn
                       name="View Nft"
                       action={() => {
                         setCurrent("list");
                         setOpen(false);
                       }}
-                    />
+                    /> */}
                   </div>
                 </div>
               )}
