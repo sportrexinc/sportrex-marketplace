@@ -8,7 +8,7 @@ import SPT721Abi from "@/abi/SptERC721.json";
 import { useStorageUpload } from "@thirdweb-dev/react";
 import { YellowActionBtn } from "@/app/components";
 import ActionBtn from "../Button/ActionBtn";
-import { TraitsProps } from "@/app/(marketplace)/single-nft/page";
+import { TraitsProps } from "@/app/(create)/single-nft/page";
 import { CreateSingleNFTProps } from "@/types";
 import NormalLayout from "@/app/layouts/NormalLayout";
 import Link from "next/link";
