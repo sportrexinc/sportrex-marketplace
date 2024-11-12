@@ -2,7 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getSimplifiedError } from "@/app/utils";
 import APIService from "@/app/utils/APIServices";
 import { url } from "@/app/utils/endpoints";
-import { MoralisCollectionResponse, MoralisNftResponse } from "@/types";
+import { CreateCollectionProps, MoralisCollectionResponse, MoralisNftResponse } from "@/types";
 
 interface MyNftSliceProps {
     nft_data: MoralisNftResponse | null;
@@ -14,6 +14,7 @@ interface MyNftSliceProps {
     nft_data_history_count: number;
     collection_data: MoralisCollectionResponse | null;
     loading: boolean;
+    created_collections: CreateCollectionProps[]
 }
 
 const initialState: MyNftSliceProps = {
@@ -23,7 +24,7 @@ const initialState: MyNftSliceProps = {
     nft_data_history_count: 0,
     collection_data: null,
     loading:false,
-
+    created_collections: []
 }
 export const userNft = createSlice({
     name: "userNft",
@@ -35,6 +36,9 @@ export const userNft = createSlice({
         },
         setLoading: (state) =>{
             state.nft_loading = true
+        },
+        setCreatedCollections: (state, action: PayloadAction<CreateCollectionProps[]>) => {
+           state.created_collections = action.payload
         }
     },
 
@@ -125,7 +129,7 @@ export const userNft = createSlice({
     }
 })
 
-export const { setLoading, setUserNft } = userNft.actions
+export const { setLoading, setUserNft, setCreatedCollections } = userNft.actions
 
 export default userNft.reducer
 

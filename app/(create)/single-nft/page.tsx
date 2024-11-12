@@ -20,6 +20,8 @@ import StandardModal from "@/app/components/modals/StandardModal";
 import APIService from "@/app/utils/APIServices";
 import MintModal from "../../components/modals/MintModal";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store";
 export interface TraitsProps {
   value: string;
   trait_type: string;
@@ -31,12 +33,13 @@ export interface TraitsProps {
   transactionHash: string;
  }
 const SingleNft = () => {
-  const [collections, setCollections] = useState<CreateCollectionProps[]>([]);
+  
   const [traits, setTraits] = useState<TraitsProps[]>([]);
   const [trait, setTrait] = useState<TraitsProps>({
     value: "",
     trait_type: "",
   });
+  const { created_collections } = useSelector((state: RootState) => state.userNft )
 
   const handleDeleteTrait = (id:number) => {
     const available = traits?.filter((item: any, index: number) => index !== id);
@@ -59,7 +62,6 @@ const SingleNft = () => {
 
 
   
-  const address = useAddress();
   const validationSchema = yup.object().shape({
     logo: yup.mixed().required("Required"),
     name: yup.string().required("Required"),
@@ -67,78 +69,19 @@ const SingleNft = () => {
     supply: yup.number().min(1).required("Required"),
   });
 
-  const getAllUserCollections = async () => {
-    try {
-      const res = await APIService.get(`/user/${address}/collection`);
-      console.log(res.data, "response");
-      setCollections(res.data.data);
-    } catch (error: any) {
-      console.log(error.message);
-    }
-  };
+  
 
   const { t } = useTranslation("translation");
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    if(!collections.length) getAllUserCollections();
-  }, [address, collections]);
+    window.scrollTo(0, 0)
+  }, []);
 
   return (
     <>
-      {/* {isMinted && (
-        <div className="bg-blue-body w-full h-screen">
-          <NormalLayout>
-            <div className="w-full h-screen p-4 flex items-center justify-center relative">
-              <span
-                className="absolute top-4 left-4 cursor-pointer"
-                onClick={() => setIsMinted(false)}
-              >
-                <CloseIcon />
-              </span>
-              <div className="w-full lg:w-7/12 xl:w-1/2 mx-auto flex items-center justify-center flex-col">
-                <span>
-                  <Image
-                    src={picOne}
-                    alt="minted"
-                    className="w-full max-w-[600px] h-auto rounded-md"
-                  />
-                </span>
-                <p className="bold text-white mt-6 text-xl sm:text-2xl lg:text-3xl  ">
-                  Your item has been minted
-                </p>
-                <div className="w-full sm:w-9/12 lg:w-1/2 mt-8 flex justify-center items-center mx-auto gap-4">
-                  <ActionBtn name={"List Item"} />
-                  <YellowActionBtn name={"View Item"} />
-                </div>
-                <div className="mx-auto mt-7">
-                  <Link
-                    href={"#"}
-                    className="text-white flex items-center gap-2"
-                  >
-                    View on BSCscan{" "}
-                    <span>
-                      <FaArrowUpRightFromSquare />
-                    </span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </NormalLayout>
-        </div>
-      )} */}
       
       {!isMinted && (
         <ParentLayout>
-          {/* <div className="w-full flex flex-col md:w-10/12 xl:w-6/12 mx-auto mb-32 ">
-        <ReUseModal open={modal} setOpen={() => setModal(false)}>
-        <CollectionCard data={singleCreatedNFT} />
-        </ReUseModal>
-        <div className="flex flex-col mt-8 xl:mt-20 ">
-        <Header>{t("collection_creation")}</Header>
-        <p className="text-grey-800  text-sm regular">{t("all_fields")}</p>
-        </div>
-        </div> */}
           <Formik
             initialValues={{
               logo: null,
@@ -208,28 +151,28 @@ const SingleNft = () => {
                   </div>
                   <div className="mt-12">
                   {
-                    collections.length > 0 ?  <SelectInput
+                    created_collections.length > 0 ?  <SelectInput
                     placeholder={"Select Collection"}
                     // label={t("blockchain_technology")}
                     label="Choose your collection"
                     name="select"
                     optionRender={(_, { index }) =>  (
-                      <div onClick={() =>  setErcType(collections[index].contractType)} className="flex items-center gap-4">
-                           <Image alt="collection" src={collections[index].logoImage?.url as string} width={45} height={45} className="rounded-[10px]"/> 
+                      <div onClick={() =>  setErcType(created_collections[index].contractType)} className="flex items-center gap-4">
+                           <Image alt="collection" src={created_collections[index].logoImage?.url as string} width={45} height={45} className="rounded-[10px]"/> 
                         <div>
-                          <div className="capitalize text-[14px] text-gray-400">{collections[index].name}</div>
-                          <div className="uppercase text-[11px]  text-gray-600">{collections[index].contractType}</div>
+                          <div className="capitalize text-[14px] text-gray-400">{created_collections[index].name}</div>
+                          <div className="uppercase text-[11px]  text-gray-600">{created_collections[index].contractType}</div>
                         </div>
                       </div>
                     )}
-                    options={ collections.length === 0
+                    options={ created_collections.length === 0
                         ? [
                             {
                               value: "",
                               label: "Select a collection",
                             },
                           ]
-                        : collections.map((item) => ({
+                        : created_collections.map((item) => ({
                             value: item.contractAddress as string,
                             label: item.name,
                           }))

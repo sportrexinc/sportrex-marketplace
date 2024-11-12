@@ -11,7 +11,7 @@ import SPT721Abi from "@/abi/SptERC721.json";
 import SPT1155ABI from "@/abi/SptERC1155.json"
 import { useStorageUpload } from "@thirdweb-dev/react";
 import ActionBtn from "../Button/ActionBtn";
-import { TraitsProps } from "@/app/(marketplace)/single-nft/page";
+import { TraitsProps } from "@/app/(create)/single-nft/page";
 import { CreateSingleNFTProps } from "@/types";
 
 import { BiSolidError } from "react-icons/bi";
