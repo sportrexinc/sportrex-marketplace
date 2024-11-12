@@ -277,7 +277,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                         alt="NFT Image"
                         width={100}
                         height={0}
-                        className="max-w-[146px] max-h-[138px] w-full h-auto "
+                        className="max-w-[146px] max-h-[138px] w-full h-auto object-cover"
                       />
                     </div>
                     <div className="flex flex-col gap-3">
