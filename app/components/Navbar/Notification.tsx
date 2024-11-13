@@ -14,7 +14,7 @@ const Notification = () => {
         <FaBell className="text-blue-btn text-2xl" />
       </div>
       {open && (
-        <div className="absolute  top-[64px] right-0 w-[400px] h-[300px] flow-hide bg-blue-header p-4 flex flex-col space-y-3 ">
+        <div className="absolute z-10  top-[64px] right-0 w-[400px] h-[300px] flow-hide bg-blue-header p-4 flex flex-col space-y-3 ">
           <h4 className="bold text-white text-md">Notifications</h4>
           <div
             className="flex justify-between cursor-pointer"

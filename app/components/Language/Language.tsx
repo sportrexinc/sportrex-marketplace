@@ -12,7 +12,7 @@ const styles = {
   sectionB: "relative",
   close: "hidden",
   listContainer:
-    "absolute top-8 lg:top-16  left-0 bg-blue-header px-2 rounded-sm pt-2 w-48 flex flex-col",
+    "absolute z-10 top-8 lg:top-16  left-0 bg-blue-header px-2 rounded-sm pt-2 w-48 flex flex-col",
   item: "w-full py-4 text-white hover:bg-blue-btn",
 };
 const languages: {
