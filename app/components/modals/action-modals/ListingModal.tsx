@@ -220,7 +220,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                     <div
                       className={` ${
                         current === "auction"
-                          ? "box-border-active"
+                          ? "box-bordery-active"
                           : "box-border"
                       }  p-[2px] rounded-[8px] `}
                       onClick={() => setCurrent("auction")}
@@ -241,10 +241,13 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                       Start Price
                     </label>
                     <TextInput
-                      placeholder={"Enter Price"}
+                      placeholder={"Enter Start Price"}
                       label={""}
                       name={""}
-                      setValue={(fixedPrice) => console.log(fixedPrice)}
+                      setValue={(auctionPrice) => {
+                        console.log(auctionPrice);
+                        setAuctionPrice(auctionPrice);
+                      }}
                     />
 
                     <label
