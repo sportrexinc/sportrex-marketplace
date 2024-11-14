@@ -18,40 +18,47 @@ interface listingProps {
   item: any;
 }
 
-const durationData = [
-  {
-    value: "1 day",
-    label: "1 day",
-    id: 1,
-  },
-  {
-    value: "3 day",
-    label: "3 day",
-    id: 2,
-  },
-  {
-    value: "5 day",
-    label: "5 day",
-    id: 3,
-  },
-  {
-    value: "7 day",
-    label: "7 day",
-    id: 3,
-  },
-  {
-    value: "10 day",
-    label: "10 day",
-    id: 3,
-  },
-];
 const ListingModal = ({ open, setOpen, item }: listingProps) => {
   const [current, setCurrent] = useState<any>("list");
   const [fixedPrice, setFixedPrice] = useState("");
   const [auctionPrice, setAuctionPrice] = useState("");
+  const [auctionDuration, setAuctionDuration] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [active, setActive] = useState(1);
+  const [isAuction, setIsAuction] = useState(false);
   const parseMetadata = JSON.parse(item.metadata);
+
+  const daysToSeconds = (days: any) => {
+    return days * 24 * 60 * 60;
+  };
+
+  const durationData = [
+    {
+      value: daysToSeconds(1),
+      label: "1 day",
+      id: 1,
+    },
+    {
+      value: daysToSeconds(3),
+      label: "3 day",
+      id: 2,
+    },
+    {
+      value: daysToSeconds(5),
+      label: "5 day",
+      id: 3,
+    },
+    {
+      value: daysToSeconds(7),
+      label: "7 day",
+      id: 4,
+    },
+    {
+      value: daysToSeconds(10),
+      label: "10 day",
+      id: 5,
+    },
+  ];
   const { contract: marketplaceContract } = useContract(
     process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
     sptMarketplaceAbi
@@ -84,11 +91,32 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
     }
   };
 
+  const handleAuction = async () => {
+    try {
+     
+      const data = await marketplaceContract?.call("startAuction", [
+        item.token_address,
+        item.token_id,
+        auctionDuration
+      ]);
+      setCurrent("success");
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+      setOpen(false);
+    }
+  };
+
   const [selected, setSelected] = useState({
     value: "Select Duration",
     label: "Select",
     id: 1,
   });
+
+  const handleSelect = (option: any) => {
+    setSelected(option);
+    setAuctionDuration(option.value);
+  };
   useEffect(() => {
     // if (current === "pending") {
     //   setTimeout(() => {
@@ -166,7 +194,10 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                           ? "box-bordery-active"
                           : "box-border"
                       }  p-[2px] rounded-[8px] `}
-                      onClick={() => setCurrent("auction")}
+                      onClick={() => {
+                        setCurrent("auction");
+                        setIsAuction(true);
+                      }}
                     >
                       <span
                         className="flex justify-center  items-center semibold min-w-[160px] w-[160px] text-white text-lg  h-[111px]  bg-blue-header z-10   cursor-pointer rounded-[8px] "
@@ -234,7 +265,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                     </div>
                   </div>
                   <div className="flex flex-col mt-6">
-                    <label
+                    {/* <label
                       htmlFor="price"
                       className="semibold text-white text-lg"
                     >
@@ -245,10 +276,10 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                       label={""}
                       name={""}
                       setValue={(auctionPrice) => {
-                        console.log(auctionPrice);
                         setAuctionPrice(auctionPrice);
+                        console.log(auctionPrice);
                       }}
-                    />
+                    /> */}
 
                     <label
                       htmlFor="price"
@@ -258,7 +289,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                     </label>
                     <ProfileSelect
                       selected={selected}
-                      setSelected={setSelected}
+                      setSelected={handleSelect}
                       isOpen={isOpen}
                       setIsOpen={setIsOpen}
                       setActive={setActive}
@@ -267,7 +298,14 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                     />
                   </div>
                   <div className="w-full mx-auto mt-12">
-                    <ActionBtn name="Auction" />
+                    <ActionBtn
+                      name="Auction"
+                      action={() => {
+                        setCurrent("checkout");
+                        //handleListNft();
+                        console.log(auctionDuration);
+                      }}
+                    />
                   </div>
                 </div>
               )}
@@ -291,7 +329,13 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                       </p>
                       <div className="flex items-center gap-3">
                         <p className="regular text-yellow text-lg">
-                          {fixedPrice ? fixedPrice : "NAN"} BNB
+                          {isAuction
+                            ? auctionPrice
+                              ? `${auctionPrice} BNB`
+                              : ""
+                            : fixedPrice
+                            ? `${fixedPrice} BNB`
+                            : "NAN BNB"}
                         </p>{" "}
                         {/* <p className="regular text-[#ABABAB] text-sm">
                           $15,000
@@ -306,17 +350,25 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                     <div className="flex items-center justify-end w-fit">
                       <p className="regular text-yellow text-lg">
                         {" "}
-                        {fixedPrice ? fixedPrice : "NAN"} BNB
+                        {isAuction
+                          ? auctionPrice
+                            ? `${auctionPrice} BNB`
+                            : ""
+                          : fixedPrice
+                          ? `${fixedPrice} BNB`
+                          : "NAN BNB"}
                       </p>{" "}
                       {/* <p className="regular text-[#ABABAB] text-lg">$15,000</p> */}
                     </div>
                   </div>
                   <div className="w-full mx-auto mt-12">
                     <ActionBtn
-                      name="List Now"
+                      name={isAuction ? `Auction Now` : "List Now"}
                       action={() => {
                         setCurrent("pending");
-                        handleListNft();
+                        {
+                          isAuction ? handleAuction() : handleListNft();
+                        }
                       }}
                     />
                   </div>
