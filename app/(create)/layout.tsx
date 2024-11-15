@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
 import { setCreatedCollections } from '../redux/features/auth/MyNftSlice';
 
-const layout:FC<{children: ReactNode}> = ({
+const Layout:FC<{children: ReactNode}> = ({
     children,
 }) => {
 
@@ -35,4 +35,4 @@ const layout:FC<{children: ReactNode}> = ({
   )
 }
 
-export default layout
+export default Layout
