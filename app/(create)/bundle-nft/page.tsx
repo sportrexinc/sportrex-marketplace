@@ -23,7 +23,7 @@ const BundleNft = () => {
   const [ercType, setErcType] = useState<string>("");
   const [contractAddress, setContractAddress] = useState<string>("");
   const { created_collections } = useSelector((state: RootState) => state.userNft)
-  const erc1155Collections = created_collections.filter(collection => collection.contractType === "erc 1155")
+  const erc1155Collections = created_collections?.filter(collection => collection.contractType === "erc 1155")
 
   const handleInputChange = (index: number, value: string) => {
     const newInputs = [...inputs];
@@ -46,7 +46,7 @@ const BundleNft = () => {
           </p>
         </div>
         {
-                created_collections.length > 0 ?  <SelectInput
+                created_collections?.length > 0 ?  <SelectInput
                 placeholder={"Select Collection"}
                 // label={t("blockchain_technology")}
                 label="Choose your collection"
@@ -60,14 +60,14 @@ const BundleNft = () => {
                     </div>
                   </div>
                 )}
-                options={ erc1155Collections.length === 0
+                options={ erc1155Collections?.length === 0
                     ? [
                         {
                           value: "",
                           label: "Select a collection",
                         },
                       ]
-                    : erc1155Collections.map((item) => ({
+                    : erc1155Collections?.map((item) => ({
                         value: item.contractAddress as string,
                         label: item.name,
                       }))

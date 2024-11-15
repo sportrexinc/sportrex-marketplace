@@ -25,7 +25,7 @@ const layout:FC<{children: ReactNode}> = ({
       };
 
       useEffect(() => {
-        if(created_collections.length == 0)  getAllUserCollections();
+        if(created_collections?.length == 0)  getAllUserCollections();
       }, [address, created_collections]);
 
   return (
