@@ -93,11 +93,10 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
 
   const handleAuction = async () => {
     try {
-     
       const data = await marketplaceContract?.call("startAuction", [
         item.token_address,
         item.token_id,
-        auctionDuration
+        auctionDuration,
       ]);
       setCurrent("success");
       console.log(data);
