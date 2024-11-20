@@ -5,6 +5,7 @@ import dummy from "@/public/assets/general/edit-dummy.png";
 import nodata from "@/public/assets/general/nodata.svg";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { linksArrayA } from "@/app/constants/IconsData";
+import { ethers } from "ethers";
 import { Skeleton } from "antd";
 import { useAddress, useContract } from "@thirdweb-dev/react";
 import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
@@ -77,7 +78,8 @@ const SingleMintNft = (
         address,
         tokenId,
       ]);
-      setPriceData(getPriceData);
+      const priceInWei = ethers.utils.formatEther(getPriceData);
+      setPriceData(priceInWei);
     } catch (error) {
       console.log("Error fetching price: ", error);
     }
@@ -196,7 +198,7 @@ const SingleMintNft = (
                 </p>
                 <p className="mt-12 text-grey-800 regular text-md">Price</p>
                 <p className="mt-2 grad-text text-lg regular bold">
-                  0.5343 SPT
+                  {priceData? `${priceData} BNB` : "NFT not Listed"}
                 </p>
                 <div className="mt-20 flex space-x-8 items-center w-full">
                   <div className="w-3/12">
