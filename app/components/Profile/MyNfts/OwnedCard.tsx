@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import heart from "@/public/assets/heart.svg";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MediaRenderer, useContract, useNFT } from "@thirdweb-dev/react";
 import NftLoading from "../../Loader/NftLoading";
+import { ethers } from "ethers";
 import axios from "axios";
 import { NftResult } from "@/types";
 import { useRouter } from "next/navigation";
@@ -10,7 +11,7 @@ import Link from "next/link";
 import FavoriteButton from "./favourite-button";
 import Options from "../../options/options";
 import ListingModal from "../../modals/action-modals/ListingModal";
-
+import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 const OwnedCard = ({
   isTrending,
   item,
@@ -24,18 +25,41 @@ const OwnedCard = ({
   const [openOptions, setOpenOptions] = useState(false);
   const [loading, setLoading] = useState(false);
   const [openListing, setOpenListing] = useState(false);
-
+  const [priceData, setPriceData] = useState<any>();
   const [retrievedNft, setRetrievedNft] = useState<any>({
     image: heart,
     name: "NFT not found",
   });
 
   const { contract } = useContract(item.token_address);
+  const { contract: marketplaceContract } = useContract(
+    process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
+    sptMarketplaceAbi
+  );
   const { data: nft, isLoading, error } = useNFT(contract, item.token_id);
   const router = useRouter();
   const handleNavigate = () => {
     router.push(`/nft/${item.token_address}/${item.token_id}`);
   };
+
+  useEffect(() => {
+    const handleGetPrice = async () => {
+      try {
+        const getPriceData = await marketplaceContract?.call("getPrice", [
+          item.token_address,
+          item.token_id,
+        ]);
+        const priceInWei = ethers.utils.formatEther(getPriceData);
+        setPriceData(priceInWei);
+      } catch (error) {
+        console.log("Error fetching price: ", error);
+        setPriceData(null);
+      }
+    };
+
+    handleGetPrice();
+  }, [priceData]);
+
   if (loading) return <NftLoading />;
 
   return (
@@ -125,7 +149,7 @@ const OwnedCard = ({
                 {nft?.metadata.name}
               </p>
               <div className="text-[#FAC744]  text-[14px] semibold leading-[22px]">
-                0.3 SPT
+                {priceData ? `${priceData} BNB` : "NFT not listed"}
               </div>
             </Link>
 

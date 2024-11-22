@@ -5,11 +5,10 @@ import dummy from "@/public/assets/general/edit-dummy.png";
 import nodata from "@/public/assets/general/nodata.svg";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { linksArrayA } from "@/app/constants/IconsData";
+import { ethers } from "ethers";
 import { Skeleton } from "antd";
-import one from "@/public/assets/market/one.png";
-import two from "@/public/assets/market/two.png";
-import three from "@/public/assets/market/three.png";
-import four from "@/public/assets/market/four.png";
+import { useAddress, useContract } from "@thirdweb-dev/react";
+import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 import {
   YellowActionBtn,
   ActionBtn,
@@ -41,12 +40,17 @@ const SingleMintNft = (
 
   const dispatch = useAppDispatch();
   const [data, setData] = useState<any>({});
+  const [priceData, setPriceData] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
   const [nftImage, setNftImage] = useState("");
 
   const params = useParams();
   const address = params.contractId;
   const tokenId = params.nftId;
+  const { contract: marketplaceContract } = useContract(
+    process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
+    sptMarketplaceAbi
+  );
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
@@ -68,10 +72,26 @@ const SingleMintNft = (
     setIsLoading(false);
   }, [address, tokenId, dispatch]);
 
+  const handleGetPrice = async () => {
+    try {
+      const getPriceData = await marketplaceContract?.call("getPrice", [
+        address,
+        tokenId,
+      ]);
+      const priceInWei = ethers.utils.formatEther(getPriceData);
+      setPriceData(priceInWei);
+    } catch (error) {
+      console.log("Error fetching price: ", error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
+    handleGetPrice();
   }, [fetchData]);
+
   console.log(data);
+  console.log(priceData);
   const handleMintModal = () => {
     console.log("hey");
   };
@@ -178,7 +198,7 @@ const SingleMintNft = (
                 </p>
                 <p className="mt-12 text-grey-800 regular text-md">Price</p>
                 <p className="mt-2 grad-text text-lg regular bold">
-                  0.5343 SPT
+                  {priceData? `${priceData} BNB` : "NFT not Listed"}
                 </p>
                 <div className="mt-20 flex space-x-8 items-center w-full">
                   <div className="w-3/12">
