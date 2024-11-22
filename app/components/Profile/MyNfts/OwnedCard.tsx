@@ -26,6 +26,7 @@ const OwnedCard = ({
   const [loading, setLoading] = useState(false);
   const [openListing, setOpenListing] = useState(false);
   const [priceData, setPriceData] = useState<any>();
+  const [isFetchingPrice, setIsFetchingPrice] = useState(false);
   const [retrievedNft, setRetrievedNft] = useState<any>({
     image: heart,
     name: "NFT not found",
@@ -44,6 +45,7 @@ const OwnedCard = ({
 
   useEffect(() => {
     const handleGetPrice = async () => {
+      setIsFetchingPrice(true);
       try {
         const getPriceData = await marketplaceContract?.call("getPrice", [
           item.token_address,
@@ -54,11 +56,14 @@ const OwnedCard = ({
       } catch (error) {
         console.log("Error fetching price: ", error);
         setPriceData(null);
+      } finally {
+        setIsFetchingPrice(false);
       }
     };
-
-    handleGetPrice();
-  }, [priceData]);
+    if (marketplaceContract && item.token_address && item.token_id) {
+      handleGetPrice();
+    }
+  }, [item.token_address, item.token_id]);
 
   if (loading) return <NftLoading />;
 
@@ -149,7 +154,13 @@ const OwnedCard = ({
                 {nft?.metadata.name}
               </p>
               <div className="text-[#FAC744]  text-[14px] semibold leading-[22px]">
-                {priceData ? `${priceData} BNB` : "NFT not listed"}
+                {isFetchingPrice
+                  ? "Loading..."
+                  : priceData
+                  ? `${priceData} BNB`
+                  : "NFT not listed"}
+
+                {/* {priceData ? `${priceData} BNB` : "NFT not listed"} */}
               </div>
             </Link>
 
