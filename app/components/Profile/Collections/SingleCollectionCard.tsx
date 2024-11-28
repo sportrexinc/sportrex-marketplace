@@ -18,6 +18,7 @@ import Link from "next/link";
 import Abi from "@/abi/SptNFTContract.json";
 import FavoriteButtonCollection from "./favourite-button-collection";
 import Options from "../../options/options";
+import ShareModal from "../../modals/share-modal";
 
 const CollectionsCard: FC<{
   collection: CollectionResult;
@@ -25,6 +26,8 @@ const CollectionsCard: FC<{
 }> = ({ collection,cardType }) => {
   const [liked, setLiked] = useState(false);
   const [openOptions, setOpenOptions] = useState(false);
+  const [openShare, setOpenShare] = useState(false);
+
   const { contract } = useContract(collection.token_address);
   const { data: totalCount, error: countError } = useTotalCount(contract);
   const { data: metadata, isLoading } = useMetadata(contract);
@@ -40,53 +43,56 @@ const CollectionsCard: FC<{
     <>
       <div className="w-full md:h-[350px] relative overflow-hidden rounded-[20px] ">
         <div className=" w-full z-10 h-full flex flex-col absolute bg-opacity">
-            <div className="absolute right-7 top-7 z-20">
-              <Options>
-                {cardType === "owned" && (
-                  <div className="w-full flex flex-col  py-6 px-4 gap-4">
-                    <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
-                      List
-                    </p>
-                    <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
-                      Share
-                    </p>
-                    <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
-                      Edit
-                    </p>
-                  </div>
-                )}
-                {cardType === "unlisted" && (
-                  <div className="w-full flex flex-col  py-6 px-4 gap-4">
-                    <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
-                      Edit
-                    </p>
-                    <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
-                      Mint
-                    </p>
-                  </div>
-                )}
-                {cardType === "listed" && (
-                  <div className="w-full flex flex-col  py-6 px-4 gap-4">
-                    <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
-                      Remove Listing
-                    </p>
-                  </div>
-                )}
-                {cardType === "general" && (
-                  <div className="w-full flex flex-col  py-6 px-4 gap-4">
-                    <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
-                      Sell
-                    </p>
-                    <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
-                      Change Collection
-                    </p>
-                    <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
-                      Share
-                    </p>
-                  </div>
-                )}
-              </Options>
-            </div>
+          <div className="absolute right-7 top-7 z-20">
+            <Options>
+              {cardType === "owned" && (
+                <div className="w-full flex flex-col  py-6 px-4 gap-4">
+                  <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                    List
+                  </p>
+                  <p
+                    className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
+                    onClick={() => setOpenShare(true)}
+                  >
+                    Share
+                  </p>
+                  <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                    Edit
+                  </p>
+                </div>
+              )}
+              {cardType === "unlisted" && (
+                <div className="w-full flex flex-col  py-6 px-4 gap-4">
+                  <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                    Edit
+                  </p>
+                  <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                    Mint
+                  </p>
+                </div>
+              )}
+              {cardType === "listed" && (
+                <div className="w-full flex flex-col  py-6 px-4 gap-4">
+                  <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                    Remove Listing
+                  </p>
+                </div>
+              )}
+              {cardType === "general" && (
+                <div className="w-full flex flex-col  py-6 px-4 gap-4">
+                  <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                    Sell
+                  </p>
+                  <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                    Change Collection
+                  </p>
+                  <p className="regular text-sm lg:text-lg text-white hover:text-yellow">
+                    Share
+                  </p>
+                </div>
+              )}
+            </Options>
+          </div>
           <Link
             href={`/nft/${collection.token_address}`}
             className="img-container flex-1 items-center w-full flex justify-center relative "
@@ -129,6 +135,13 @@ const CollectionsCard: FC<{
           />
         </div>
       </div>
+      <ShareModal
+        openShare={openShare}
+        setOpenShare={setOpenShare}
+        item={collection}
+        text="Check out this collection item"
+        url={`https://sportrex-marketplace-18bv.vercel.app/nft/${collection?.token_address}`}
+      />
     </>
   );
 };
