@@ -12,6 +12,7 @@ import FavoriteButton from "./favourite-button";
 import Options from "../../options/options";
 import ListingModal from "../../modals/action-modals/ListingModal";
 import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
+import ShareModal from "../../modals/share-modal";
 const OwnedCard = ({
   isTrending,
   item,
@@ -25,6 +26,7 @@ const OwnedCard = ({
   const [openOptions, setOpenOptions] = useState(false);
   const [loading, setLoading] = useState(false);
   const [openListing, setOpenListing] = useState(false);
+  const [openShare, setOpenShare] = useState(false);
   const [priceData, setPriceData] = useState<any>();
   const [isFetchingPrice, setIsFetchingPrice] = useState(false);
   const [retrievedNft, setRetrievedNft] = useState<any>({
@@ -89,7 +91,10 @@ const OwnedCard = ({
                   >
                     List
                   </p>
-                  <p className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer">
+                  <p
+                    className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
+                    onClick={() => setOpenShare(true)}
+                  >
                     Share
                   </p>
                   <p className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer">
@@ -186,6 +191,13 @@ const OwnedCard = ({
       {openListing && (
         <ListingModal item={item} open={openListing} setOpen={setOpenListing} />
       )}
+      <ShareModal
+        openShare={openShare}
+        setOpenShare={setOpenShare}
+        item={item}
+        text="Check out this nft item"
+        url={`https://sportrex-marketplace-18bv.vercel.app/nft/${item?.token_address}/${item?.token_id}`}
+      />
     </div>
   );
 };

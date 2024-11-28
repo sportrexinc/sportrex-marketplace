@@ -8,6 +8,7 @@ import { getUserCollection } from "@/app/redux/features/auth/MyNftSlice";
 import { useAddress } from "@thirdweb-dev/react";
 import { CollectionResult } from "@/types";
 import { useRouter } from "next/navigation";
+
 const OwnedByMe = () => {
   const { collection_data, nft_loading } = useAppSelector(state => state.userNft)
   const dispatch = useAppDispatch()
@@ -46,15 +47,20 @@ const OwnedByMe = () => {
 
   return (
     <div>
-
       <div className="w-full grid grid-cols-2 lg:grid-cols-5 gap-3">
-        { nft_loading ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i, index) => (
-          <CollectionLoading key={index} />
-        )) : 
-         collection_data?.result.map((item: CollectionResult, index: number) => (
-          <SingleCollectionCard  collection={item} key={index} cardType="owned" />
-         ))
-        }
+        {nft_loading
+          ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i, index) => (
+              <CollectionLoading key={index} />
+            ))
+          : collection_data?.result.map(
+              (item: CollectionResult, index: number) => (
+                <SingleCollectionCard
+                  collection={item}
+                  key={index}
+                  cardType="owned"
+                />
+              )
+            )}
       </div>
       <div className="my-10 w-full justify-center space-x-12 flex">
         <button
@@ -75,6 +81,7 @@ const OwnedByMe = () => {
           <ActionBtn name="Add new collection" action={createCollection} />
         </div>
       </div>
+   
     </div>
   );
 };
