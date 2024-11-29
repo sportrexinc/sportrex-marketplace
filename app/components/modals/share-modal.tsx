@@ -1,22 +1,34 @@
-import React from 'react'
-import ReUseModal from './ReUseModal';
+import React from "react";
+import ReUseModal from "./ReUseModal";
 import facebook from "../../../public/assets/icons/facebook.png";
 import instagram from "../../../public/assets/icons/instagram.png";
 import twitter from "../../../public/assets/icons/twitter.png";
 import telegram from "../../../public/assets/icons/telegram.png";
 import discord from "../../../public/assets/icons/discord.png";
-import toast from "react-toastify"
+import toast from "react-toastify";
 
-import Image from 'next/image';
-const ShareModal = ({ openShare, setOpenShare, item,url, text }: { openShare: boolean; setOpenShare: any;item:any, url:string | any, text:string }) => {
-      //  const url = `https://sportrex-marketplace-18bv.vercel.app/nft/${item?.token_address}`;
-      //  const text = "Check out this awesome page!";
+import Image from "next/image";
+const ShareModal = ({
+  openShare,
+  setOpenShare,
+  item,
+  url,
+  text,
+}: {
+  openShare: boolean;
+  setOpenShare: any;
+  item: any;
+  url: string | any;
+  text: string;
+}) => {
+  //  const url = `https://sportrex-marketplace-18bv.vercel.app/nft/${item?.token_address}`;
+  //  const text = "Check out this awesome page!";
 
-       const handleShare = (shareUrl: string) => {
-         window.open(shareUrl, "_blank", "noopener,noreferrer");
+  const handleShare = (shareUrl: string) => {
+    window.open(shareUrl, "_blank", "noopener,noreferrer");
   };
-  
- console.log(item)
+
+  console.log(item);
   return (
     <ReUseModal open={openShare} setOpen={setOpenShare}>
       <div className="w-full flex flex-col">
@@ -49,21 +61,18 @@ const ShareModal = ({ openShare, setOpenShare, item,url, text }: { openShare: bo
             </button>
 
             {/* X (Twitter) Share Button */}
-          
 
             <button
-  onClick={() =>
-    handleShare(
-      `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-        url
-      )}&text=${encodeURIComponent(
-        `${text}`
-      )}`
-    )
-  }
->
-  <Image src={twitter} alt="facebook" className="w-10 h-10" />
-</button>
+              onClick={() =>
+                handleShare(
+                  `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+                    url
+                  )}&text=${encodeURIComponent(`${text}`)}`
+                )
+              }
+            >
+              <Image src={twitter} alt="facebook" className="w-10 h-10" />
+            </button>
 
             {/* LinkedIn Share Button */}
             <button
@@ -93,7 +102,9 @@ const ShareModal = ({ openShare, setOpenShare, item,url, text }: { openShare: bo
               <Image src={instagram} alt="facebook" className="w-10 h-10" />
             </button>
           </div>
-          <p className="mt-6 regular mb-3 text-sm text-white capitalize">or copy link</p>
+          <p className="mt-6 regular mb-3 text-sm text-white capitalize">
+            or copy link
+          </p>
           <div className="flex h-12 items-center bg-[#F0F5FC] rounded-[12px] justify-between ">
             <div className="flex gap-2 items-center w-2/3 pl-2">
               <span className="text-black">{/* <IoCopyOutline /> */}</span>
@@ -112,6 +123,6 @@ const ShareModal = ({ openShare, setOpenShare, item,url, text }: { openShare: bo
       </div>
     </ReUseModal>
   );
-}
+};
 
-export default ShareModal
+export default ShareModal;
