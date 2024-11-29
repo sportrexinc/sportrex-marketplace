@@ -65,7 +65,7 @@ const OwnedCard = ({
     if (marketplaceContract && item.token_address && item.token_id) {
       handleGetPrice();
     }
-  }, []);
+  }, [item.token_address, item.token_id]);
 
   if (loading) return <NftLoading />;
 
