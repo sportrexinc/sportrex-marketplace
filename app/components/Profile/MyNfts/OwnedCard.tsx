@@ -65,7 +65,7 @@ const OwnedCard = ({
     if (marketplaceContract && item.token_address && item.token_id) {
       handleGetPrice();
     }
-  }, [marketplaceContract, item.token_address, item.token_id]);
+  }, []);
 
   if (loading) return <NftLoading />;
 
@@ -89,7 +89,7 @@ const OwnedCard = ({
                     className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
                     onClick={() => setOpenListing(!openListing)}
                   >
-                    List
+                    {priceData ? "UnList" : "List"}
                   </p>
                   <p
                     className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
@@ -195,7 +195,7 @@ const OwnedCard = ({
         openShare={openShare}
         setOpenShare={setOpenShare}
         item={item}
-        text="Check out this nft item"
+        text={`Check out this ${item?.name} NFT out from Sportrex NFT Marketplace.`}
         url={`https://sportrex-marketplace-18bv.vercel.app/nft/${item?.token_address}/${item?.token_id}`}
       />
     </div>

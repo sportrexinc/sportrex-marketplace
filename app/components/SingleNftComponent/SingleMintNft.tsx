@@ -42,6 +42,7 @@ const SingleMintNft = (
   const [data, setData] = useState<any>({});
   const [priceData, setPriceData] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
+  const [isAuction, setIsAuction] = useState(false);
   const [nftImage, setNftImage] = useState("");
 
   const params = useParams();
@@ -85,13 +86,28 @@ const SingleMintNft = (
     }
   };
 
+  const handleAuctionState = async () => {
+    try {
+      const auctionState = await marketplaceContract?.call("getAuctionState", [
+        address,
+        tokenId,
+      ]);
+      console.log("Auction state: ", auctionState);
+      setIsAuction(auctionState);
+    } catch (error) {
+      console.log("Error fetching auction state: ", error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
     handleGetPrice();
+    handleAuctionState();
   }, [fetchData]);
 
   console.log(data);
   console.log(priceData);
+  console.log(isAuction);
   const handleMintModal = () => {
     console.log("hey");
   };
@@ -198,7 +214,7 @@ const SingleMintNft = (
                 </p>
                 <p className="mt-12 text-grey-800 regular text-md">Price</p>
                 <p className="mt-2 grad-text text-lg regular bold">
-                  {priceData? `${priceData} BNB` : "NFT not Listed"}
+                  {priceData ? `${priceData} BNB` : "NFT not Listed"}
                 </p>
                 <div className="mt-20 flex space-x-8 items-center w-full">
                   <div className="w-3/12">
@@ -206,7 +222,11 @@ const SingleMintNft = (
                   </div>
 
                   <div className=" w-3/12">
-                    <YellowActionBtn name="Make an offer" action={Edit} />
+                    {isAuction ? (
+                      <YellowActionBtn name="Make an offer" action={Edit} />
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 </div>
                 <p className="mt-4 regular text-base regular text-grey-800">
