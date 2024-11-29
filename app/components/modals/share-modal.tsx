@@ -49,17 +49,21 @@ const ShareModal = ({ openShare, setOpenShare, item,url, text }: { openShare: bo
             </button>
 
             {/* X (Twitter) Share Button */}
+          
+
             <button
-              onClick={() =>
-                handleShare(
-                  `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-                    url
-                  )}&text=${encodeURIComponent(text)}`
-                )
-              }
-            >
-              <Image src={twitter} alt="facebook" className="w-10 h-10" />
-            </button>
+  onClick={() =>
+    handleShare(
+      `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+        url
+      )}&text=${encodeURIComponent(
+        `${text}`
+      )}`
+    )
+  }
+>
+  <Image src={twitter} alt="facebook" className="w-10 h-10" />
+</button>
 
             {/* LinkedIn Share Button */}
             <button
@@ -89,7 +93,7 @@ const ShareModal = ({ openShare, setOpenShare, item,url, text }: { openShare: bo
               <Image src={instagram} alt="facebook" className="w-10 h-10" />
             </button>
           </div>
-          <p className="mt-6 regular mb-3 text-sm text-white ">or copy link</p>
+          <p className="mt-6 regular mb-3 text-sm text-white capitalize">or copy link</p>
           <div className="flex h-12 items-center bg-[#F0F5FC] rounded-[12px] justify-between ">
             <div className="flex gap-2 items-center w-2/3 pl-2">
               <span className="text-black">{/* <IoCopyOutline /> */}</span>
