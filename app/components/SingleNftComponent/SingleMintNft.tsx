@@ -1,30 +1,28 @@
 "use client";
-import React, { FC, useCallback, useEffect, useState } from "react";
-import ParentLayout from "@/app/layouts/ParentLayout";
-import dummy from "@/public/assets/general/edit-dummy.png";
-import nodata from "@/public/assets/general/nodata.svg";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { linksArrayA } from "@/app/constants/IconsData";
-import { ethers } from "ethers";
-import { Skeleton } from "antd";
-import { useAddress, useContract } from "@thirdweb-dev/react";
 import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 import {
-  YellowActionBtn,
   ActionBtn,
   GeneralAccordion,
-  Tables,
   MarketList,
+  Tables,
+  YellowActionBtn,
 } from "@/app/components";
-import { useParams, useRouter } from "next/navigation";
-import Image from "next/image";
-import { CollectionResult } from "@/types";
+import { linksArrayA } from "@/app/constants/IconsData";
+import ParentLayout from "@/app/layouts/ParentLayout";
 import {
-  getSingleCollectionDetail,
-  getSingleNftDetail,
+  getSingleNftDetail
 } from "@/app/redux/features/auth/MyNftSlice";
 import { useAppDispatch } from "@/app/redux/store";
-
+import nodata from "@/public/assets/general/nodata.svg";
+import { useContract } from "@thirdweb-dev/react";
+import { Skeleton } from "antd";
+import { ethers } from "ethers";
+import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import MakeOfferModal from "../modals/action-modals/MakeOfferModal";
+import { toast } from "react-toastify";
 const styles = {
   icon: "w-[32px] sm:w-[40px] h-auto  ",
 };
@@ -44,7 +42,7 @@ const SingleMintNft = (
   const [isLoading, setIsLoading] = useState(false);
   const [isAuction, setIsAuction] = useState(false);
   const [nftImage, setNftImage] = useState("");
-
+  const [openOffer, setOpenOffer] = useState(false);
   const params = useParams();
   const address = params.contractId;
   const tokenId = params.nftId;
@@ -105,11 +103,11 @@ const SingleMintNft = (
     handleAuctionState();
   }, [fetchData]);
 
-  console.log(data);
-  console.log(priceData);
-  console.log(isAuction);
+ 
   const handleMintModal = () => {
     console.log("hey");
+   toast.info("I am the modal for the fulles");
+
   };
   const Edit = () => {
     navigate.push("/edit-nft");
@@ -223,7 +221,7 @@ const SingleMintNft = (
 
                   <div className=" w-3/12">
                     {isAuction ? (
-                      <YellowActionBtn name="Make an offer" action={Edit} />
+                      <YellowActionBtn name="Make an offer" action={() => setOpenOffer(true)} />
                     ) : (
                       <></>
                     )}
@@ -386,6 +384,9 @@ const SingleMintNft = (
           </div>
         </div>
       </ParentLayout>
+      {openOffer && (
+        <MakeOfferModal item={data} open={openOffer} setOpen={setOpenOffer} />
+      )}
     </div>
   );
 };
