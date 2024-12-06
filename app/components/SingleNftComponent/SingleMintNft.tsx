@@ -9,9 +9,7 @@ import {
 } from "@/app/components";
 import { linksArrayA } from "@/app/constants/IconsData";
 import ParentLayout from "@/app/layouts/ParentLayout";
-import {
-  getSingleNftDetail
-} from "@/app/redux/features/auth/MyNftSlice";
+import { getSingleNftDetail } from "@/app/redux/features/auth/MyNftSlice";
 import { useAppDispatch } from "@/app/redux/store";
 import nodata from "@/public/assets/general/nodata.svg";
 import { useContract } from "@thirdweb-dev/react";
@@ -23,15 +21,12 @@ import { useCallback, useEffect, useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import MakeOfferModal from "../modals/action-modals/MakeOfferModal";
 import { toast } from "react-toastify";
+import { Button, notification } from "antd";
 const styles = {
   icon: "w-[32px] sm:w-[40px] h-auto  ",
 };
 
-const SingleMintNft = (
-  {
-    //collection,
-  }
-) => {
+const SingleMintNft = () => {
   const [liked, setLiked] = useState(false);
 
   const navigate = useRouter();
@@ -39,9 +34,12 @@ const SingleMintNft = (
   const dispatch = useAppDispatch();
   const [data, setData] = useState<any>({});
   const [priceData, setPriceData] = useState<any>();
+  const [priceDataWei, setPriceDataWei] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
   const [isAuction, setIsAuction] = useState(false);
   const [nftImage, setNftImage] = useState("");
+  const [api, contextHolder] = notification.useNotification();
+  const [buyingNFT, setBuyingNFT] = useState(false);
   const [openOffer, setOpenOffer] = useState(false);
   const params = useParams();
   const address = params.contractId;
@@ -79,6 +77,7 @@ const SingleMintNft = (
       ]);
       const priceInWei = ethers.utils.formatEther(getPriceData);
       setPriceData(priceInWei);
+      setPriceDataWei(getPriceData);
     } catch (error) {
       console.log("Error fetching price: ", error);
     }
@@ -103,11 +102,36 @@ const SingleMintNft = (
     handleAuctionState();
   }, [fetchData]);
 
- 
+  console.log(data);
+  console.log(priceData);
+  console.log(isAuction);
+  const handleBuyCollectionNFT = async () => {
+    setBuyingNFT(true);
+    try {
+      const data = await marketplaceContract?.call(
+        "buy_coll_token",
+        [address, tokenId],
+        { value: priceDataWei }
+      );
+      console.log("Buy NFT: ", data);
+      setBuyingNFT(false);
+    } catch (error: any) {
+      const reason =
+        error?.reason || error?.data?.message || "An unexpected error occurred";
+      console.log("Error buying NFT: ", error);
+      api["error"]({
+        message: "Error!",
+        description: `${reason}`,
+        duration: 5,
+        placement: "topRight",
+        showProgress: true,
+      });
+      setBuyingNFT(false);
+    }
+  };
   const handleMintModal = () => {
     console.log("hey");
-   toast.info("I am the modal for the fulles");
-
+    toast.info("I am the modal for the fulles");
   };
   const Edit = () => {
     navigate.push("/edit-nft");
@@ -215,13 +239,21 @@ const SingleMintNft = (
                   {priceData ? `${priceData} BNB` : "NFT not Listed"}
                 </p>
                 <div className="mt-20 flex space-x-8 items-center w-full">
+                  {contextHolder}
                   <div className="w-3/12">
-                    <ActionBtn name="Buy now" action={handleMintModal} />
+                    <ActionBtn
+                      name="Buy now"
+                      action={handleBuyCollectionNFT}
+                      loading={buyingNFT}
+                    />
                   </div>
 
                   <div className=" w-3/12">
                     {isAuction ? (
-                      <YellowActionBtn name="Make an offer" action={() => setOpenOffer(true)} />
+                      <YellowActionBtn
+                        name="Make an offer"
+                        action={() => setOpenOffer(true)}
+                      />
                     ) : (
                       <></>
                     )}

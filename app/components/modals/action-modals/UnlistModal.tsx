@@ -20,10 +20,13 @@ interface listingProps {
 
 const UnListModal = ({ open, setOpen, item }: listingProps) => {
   const [current, setCurrent] = useState<any>("checkout");
+  const [priceData, setPriceData] = useState<any>();
+  const [priceDataWei, setPriceDataWei] = useState<any>();
   const [fixedPrice, setFixedPrice] = useState("");
   const [auctionPrice, setAuctionPrice] = useState("");
   const [auctionDuration, setAuctionDuration] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
+  const [unListingNFT, setUnListingNFT] = useState(false);
   const [active, setActive] = useState(1);
   const [isAuction, setIsAuction] = useState(false);
   const parseMetadata = JSON.parse(item.metadata);
@@ -91,21 +94,6 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
     }
   };
 
-  const handleAuction = async () => {
-    try {
-      const data = await marketplaceContract?.call("startAuction", [
-        item.token_address,
-        item.token_id,
-        auctionDuration,
-      ]);
-      setCurrent("success");
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-      setOpen(false);
-    }
-  };
-
   const [selected, setSelected] = useState({
     value: "Select Duration",
     label: "Select",
@@ -116,7 +104,22 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
     setSelected(option);
     setAuctionDuration(option.value);
   };
+  const handleGetPrice = async () => {
+    try {
+      const getPriceData = await marketplaceContract?.call("getPrice", [
+        item.token_address,
+        item.token_id,
+      ]);
+      const priceInWei = ethers.utils.formatEther(getPriceData);
+      setPriceData(priceInWei);
+      setPriceDataWei(getPriceData);
+    } catch (error) {
+      console.log("Error fetching price: ", error);
+    }
+  };
+
   useEffect(() => {
+    handleGetPrice();
     // if (current === "pending") {
     //   setTimeout(() => {
     //     setCurrent("success");
@@ -124,6 +127,20 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
     // }
     console.log(item);
   }, [current]);
+
+  const handleUnListNFT = async () => {
+    try {
+      const unListData = await marketplaceContract?.call("unlistNft", [
+        item.token_address,
+        item.token_id,
+      ]);
+      console.log(unListData);
+      setCurrent("success");
+    } catch (error) {
+      console.log("Error UnListing NFT: ", error);
+      setOpen(false);
+    }
+  };
 
   const handleNavigation = () => {};
   return (
@@ -139,7 +156,6 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
           showHeader
         >
           <div key="header">
-         
             {current === "checkout" && (
               <h2 className="grad-text semibold text-2xl text-center">
                 Unlist
@@ -159,7 +175,6 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
 
           <div key="body">
             <div className="w-full">
-            
               {current === "checkout" && (
                 <div className="w-full flex flex-col">
                   <div className="w-full flex items-center gap-4 lg:gap-8">
@@ -180,7 +195,7 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
                       </p>
                       <div className="flex items-center gap-3">
                         <p className="regular text-yellow text-lg">
-                         1 BNB
+                          {priceData ? `${priceData} BNB` : "Fetching Price"}
                         </p>{" "}
                         {/* <p className="regular text-[#ABABAB] text-sm">
                           $15,000
@@ -194,8 +209,7 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
                     </p>
                     <div className="flex items-center justify-end w-fit">
                       <p className="regular text-yellow text-lg">
-                        {" "}
-                       1 BNB
+                        {priceData ? `${priceData} BNB` : "Fetching Price"}
                       </p>{" "}
                       {/* <p className="regular text-[#ABABAB] text-lg">$15,000</p> */}
                     </div>
@@ -205,6 +219,7 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
                       name={"Unlist"}
                       action={() => {
                         setCurrent("pending");
+                        handleUnListNFT();
                         // {
                         //   isAuction ? handleAuction() : handleListNft();
                         // }
