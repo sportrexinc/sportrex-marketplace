@@ -13,6 +13,7 @@ import Options from "../../options/options";
 import ListingModal from "../../modals/action-modals/ListingModal";
 import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 import ShareModal from "../../modals/share-modal";
+import UnlistModal from "../../modals/action-modals/UnlistModal";
 const OwnedCard = ({
   isTrending,
   item,
@@ -26,6 +27,7 @@ const OwnedCard = ({
   const [openOptions, setOpenOptions] = useState(false);
   const [loading, setLoading] = useState(false);
   const [openListing, setOpenListing] = useState(false);
+  const [openUnListing, setOpenUnListing] = useState(false);
   const [openShare, setOpenShare] = useState(false);
   const [priceData, setPriceData] = useState<any>();
   const [isFetchingPrice, setIsFetchingPrice] = useState(false);
@@ -97,7 +99,9 @@ const OwnedCard = ({
                   >
                     Share
                   </p>
-                  <p className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer">
+                  <p className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
+                  onClick={() => setOpenUnListing(true)}
+                  >
                     Edit
                   </p>
                 </div>
@@ -190,6 +194,9 @@ const OwnedCard = ({
       </>
       {openListing && (
         <ListingModal item={item} open={openListing} setOpen={setOpenListing} />
+      )}
+      {openUnListing && (
+        <UnlistModal item={item} open={openUnListing} setOpen={setOpenUnListing} />
       )}
       <ShareModal
         openShare={openShare}
