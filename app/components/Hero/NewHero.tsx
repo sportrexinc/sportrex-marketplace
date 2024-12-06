@@ -23,7 +23,7 @@ const styles = {
   parentContainer: "w-full h-full px-4   ",
   container:
     "2xl:container 2xl:mx-auto flex flex-col  lg:flex-row space-y-6 lg:space-y-0 lg:justify-between",
-  inactive: "text-white text-[18px] text-grey-800 regular",
+  inactive: "text-white text-opacity-50 text-[18px] text-grey-800 regular",
   listItem: "flex items-center justify-center",
   left: "w-full lg:w-6/12 h-full justify-start flex items-center  element-index max-w-[451px] z-10",
   right: "w-full lg:w-6/12  h-full  element-index  flex justify-end bg-blue-body",
@@ -112,7 +112,6 @@ const NewHero = ({ current = 1 }: any) => {
                       {!address ? (
                         <ActionBtn
                           name="Connect Wallet"
-                          
                           action={() => setOpen((prev) => !prev)}
                         />
                       ) : (
@@ -170,7 +169,7 @@ const NewHero = ({ current = 1 }: any) => {
                             with Ease
                           </span>
                         </div>
-                        <div className="text-white mt-4 ">
+                        <div className="text-[#D4D4D4] mt-4 ">
                           <p className="text-[16px] sm:text-xl lg:text-2xl leading-[25px] lg:leading-9 regular sm:w-full w-full">
                             {/* {t("hero_header")} */}
                             Stake and earn yield on the most liquid

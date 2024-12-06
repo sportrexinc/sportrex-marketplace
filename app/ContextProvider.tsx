@@ -10,7 +10,7 @@ const ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <ToastContainer position="bottom-right" />
+        <ToastContainer position="top-right" />
         <ThirdwebProvider
           activeChain={"binance-testnet"}
           clientId={process.env.NEXT_PUBLIC_THIRD_WEB_CLIENT_ID}

@@ -4,6 +4,7 @@ import "./globals.css";
 import ContextProvider from "./ContextProvider";
 const inter = Inter({ subsets: ["latin"] });
 import NextTopLoader from "nextjs-toploader";
+import "react-toastify/dist/ReactToastify.css";
 
 export const metadata: Metadata = {
   title: "Sportrex NFT Marketplace",
