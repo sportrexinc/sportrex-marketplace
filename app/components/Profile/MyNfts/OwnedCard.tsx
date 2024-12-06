@@ -29,6 +29,7 @@ const OwnedCard = ({
   const [openListing, setOpenListing] = useState(false);
   const [openUnListing, setOpenUnListing] = useState(false);
   const [openShare, setOpenShare] = useState(false);
+
   const [priceData, setPriceData] = useState<any>();
   const [isFetchingPrice, setIsFetchingPrice] = useState(false);
   const [retrievedNft, setRetrievedNft] = useState<any>({
@@ -89,7 +90,11 @@ const OwnedCard = ({
                 <div className="w-full flex flex-col  py-6 px-4 gap-4">
                   <p
                     className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
-                    onClick={() => setOpenListing(!openListing)}
+                    onClick={
+                      priceData
+                        ? () => setOpenUnListing(true)
+                        : () => setOpenListing(!openListing)
+                    }
                   >
                     {priceData ? "UnList" : "List"}
                   </p>
@@ -99,8 +104,9 @@ const OwnedCard = ({
                   >
                     Share
                   </p>
-                  <p className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
-                  onClick={() => setOpenUnListing(true)}
+                  <p
+                    className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
+                    onClick={() => setOpenUnListing(true)}
                   >
                     Edit
                   </p>
@@ -196,7 +202,11 @@ const OwnedCard = ({
         <ListingModal item={item} open={openListing} setOpen={setOpenListing} />
       )}
       {openUnListing && (
-        <UnlistModal item={item} open={openUnListing} setOpen={setOpenUnListing} />
+        <UnlistModal
+          item={item}
+          open={openUnListing}
+          setOpen={setOpenUnListing}
+        />
       )}
       <ShareModal
         openShare={openShare}
