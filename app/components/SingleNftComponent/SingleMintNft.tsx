@@ -21,6 +21,7 @@ import { useCallback, useEffect, useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import MakeOfferModal from "../modals/action-modals/MakeOfferModal";
 import { toast } from "react-toastify";
+import { Button, notification } from "antd";
 const styles = {
   icon: "w-[32px] sm:w-[40px] h-auto  ",
 };
@@ -37,6 +38,8 @@ const SingleMintNft = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isAuction, setIsAuction] = useState(false);
   const [nftImage, setNftImage] = useState("");
+  const [api, contextHolder] = notification.useNotification();
+  const [buyingNFT, setBuyingNFT] = useState(false);
   const [openOffer, setOpenOffer] = useState(false);
   const params = useParams();
   const address = params.contractId;
@@ -103,6 +106,7 @@ const SingleMintNft = () => {
   console.log(priceData);
   console.log(isAuction);
   const handleBuyCollectionNFT = async () => {
+    setBuyingNFT(true);
     try {
       const data = await marketplaceContract?.call(
         "buy_coll_token",
@@ -110,8 +114,19 @@ const SingleMintNft = () => {
         { value: priceDataWei }
       );
       console.log("Buy NFT: ", data);
-    } catch (error) {
+      setBuyingNFT(false);
+    } catch (error: any) {
+      const reason =
+        error?.reason || error?.data?.message || "An unexpected error occurred";
       console.log("Error buying NFT: ", error);
+      api["error"]({
+        message: "Error!",
+        description: `${reason}`,
+        duration: 5,
+        placement: "topRight",
+        showProgress: true,
+      });
+      setBuyingNFT(false);
     }
   };
   const handleMintModal = () => {
@@ -224,8 +239,13 @@ const SingleMintNft = () => {
                   {priceData ? `${priceData} BNB` : "NFT not Listed"}
                 </p>
                 <div className="mt-20 flex space-x-8 items-center w-full">
+                  {contextHolder}
                   <div className="w-3/12">
-                    <ActionBtn name="Buy now" action={handleBuyCollectionNFT} />
+                    <ActionBtn
+                      name="Buy now"
+                      action={handleBuyCollectionNFT}
+                      loading={buyingNFT}
+                    />
                   </div>
 
                   <div className=" w-3/12">
