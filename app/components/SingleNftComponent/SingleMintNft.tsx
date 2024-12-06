@@ -41,6 +41,7 @@ const SingleMintNft = (
   const dispatch = useAppDispatch();
   const [data, setData] = useState<any>({});
   const [priceData, setPriceData] = useState<any>();
+  const [priceDataWei, setPriceDataWei] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
   const [isAuction, setIsAuction] = useState(false);
   const [nftImage, setNftImage] = useState("");
@@ -81,6 +82,7 @@ const SingleMintNft = (
       ]);
       const priceInWei = ethers.utils.formatEther(getPriceData);
       setPriceData(priceInWei);
+      setPriceDataWei(getPriceData);
     } catch (error) {
       console.log("Error fetching price: ", error);
     }
@@ -108,8 +110,17 @@ const SingleMintNft = (
   console.log(data);
   console.log(priceData);
   console.log(isAuction);
-  const handleMintModal = () => {
-    console.log("hey");
+  const handleBuyCollectionNFT = async () => {
+    try {
+      const data = await marketplaceContract?.call(
+        "buy_coll_token",
+        [address, tokenId],
+        { value: priceDataWei }
+      );
+      console.log("Buy NFT: ", data);
+    } catch (error) {
+      console.log("Error buying NFT: ", error);
+    }
   };
   const Edit = () => {
     navigate.push("/edit-nft");
@@ -218,7 +229,7 @@ const SingleMintNft = (
                 </p>
                 <div className="mt-20 flex space-x-8 items-center w-full">
                   <div className="w-3/12">
-                    <ActionBtn name="Buy now" action={handleMintModal} />
+                    <ActionBtn name="Buy now" action={handleBuyCollectionNFT} />
                   </div>
 
                   <div className=" w-3/12">
