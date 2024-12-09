@@ -241,15 +241,19 @@ const SingleMintNft = () => {
                 <div className="mt-20 flex space-x-8 items-center w-full">
                   {contextHolder}
                   <div className="w-3/12">
-                    <ActionBtn
-                      name="Buy now"
-                      action={handleBuyCollectionNFT}
-                      loading={buyingNFT}
-                    />
+                    {priceData ? (
+                      <ActionBtn
+                        name="Buy now"
+                        action={handleBuyCollectionNFT}
+                        loading={buyingNFT}
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </div>
 
                   <div className=" w-3/12">
-                    {isAuction ? (
+                    {priceData ? (
                       <YellowActionBtn
                         name="Make an offer"
                         action={() => setOpenOffer(true)}

@@ -1,6 +1,6 @@
 import React, { SetStateAction, useState, useEffect } from "react";
 import FixedModal from "../FixedModal";
-
+import { useParams, useRouter } from "next/navigation";
 import ActionBtn from "../../Button/ActionBtn";
 import { ethers } from "ethers";
 import Image from "next/image";
@@ -11,6 +11,7 @@ import paymentSuccess from "@/public/assets/general/payment-success.png";
 import { useContract } from "@thirdweb-dev/react";
 import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 import SPT721Abi from "@/abi/SptERC721.json";
+import { Button, notification } from "antd";
 interface listingProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -22,9 +23,7 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
   const [fixedPrice, setFixedPrice] = useState("");
   const [auctionPrice, setAuctionPrice] = useState("");
   const [auctionDuration, setAuctionDuration] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-  const [active, setActive] = useState(1);
-  const [isAuction, setIsAuction] = useState(false);
+  const [makingOffer, setMakingOffer] = useState(false);
   const parseMetadata = JSON.parse(item.metadata);
 
   const daysToSeconds = (days: any) => {
@@ -63,11 +62,15 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
     sptMarketplaceAbi
   );
   const { contract: nftContract } = useContract(item.token_address, SPT721Abi);
-
+  const [offerPrice, setOfferPrice] = useState<any>();
+  const [priceDataWei, setPriceDataWei] = useState<any>();
   const ipfsGateway = "https://ipfs.io/ipfs/";
   const ipfsUrl = parseMetadata.image.replace("ipfs://", "");
   const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
-
+  const [api, contextHolder] = notification.useNotification();
+  const params = useParams();
+  const address = params.contractId;
+  const tokenId = params.nftId;
   const handleListNft = async () => {
     try {
       const ethValue = ethers.utils.parseEther(fixedPrice);
@@ -115,6 +118,33 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
     setSelected(option);
     setAuctionDuration(option.value);
   };
+
+  const handleMakeOffer = async () => {
+    try {
+      const data = await marketplaceContract?.call(
+        "bid",
+        [address, tokenId, offerPrice]
+        //   {
+        //   value: offerPrice,
+        // }
+      );
+      console.log("Bidding NFT: ", data);
+      setCurrent("success");
+    } catch (error: any) {
+      const reason =
+        error?.reason || error?.data?.message || "An unexpected error occurred";
+      console.log("Error bidding NFT: ", error);
+      api["error"]({
+        message: "Error!",
+        description: `${reason}`,
+        duration: 5,
+        placement: "topRight",
+        showProgress: true,
+      });
+      setOpen(false);
+    }
+  };
+
   useEffect(() => {
     // if (current === "pending") {
     //   setTimeout(() => {
@@ -123,8 +153,6 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
     // }
     console.log(item);
   }, [current]);
-
-  const handleNavigation = () => {};
   return (
     <div>
       {open && (
@@ -150,7 +178,7 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
             )}
             {current === "checkout" && (
               <h2 className="grad-text semibold text-2xl text-center">
-                Checkout
+                You are Offering
               </h2>
             )}
             {current === "pending" && (
@@ -193,12 +221,14 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
                       </div>
                       <input
                         type="number"
+                        required
                         className="flex flex-grow px-4 h-12 bg-transparent border-none outline-none focus:outline-none text-white regular placeholder:text-[#ababab]"
                         placeholder="Enter price"
+                        onChange={(e) => setOfferPrice(e.target.value)}
                       />
                     </div>
                   </div>
-                  <div className="flex flex-col mt-6">
+                  {/* <div className="flex flex-col mt-6">
                     <label
                       htmlFor="bid"
                       className="semibold text-white text-lg mb-3"
@@ -217,33 +247,23 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   <p className="text-grey-800 text-xs semibold text-center mx-auto w-full max-w-[433px] mt-10">
                     All transactions are placed in SPT, system automatically
                     convert your crypocurrency to SPT. Please review the
                     conversion summary below.
-                                  </p>
-                                  
-                                  <div className="flex mt-8 items-center justify-evenly max-w-[360px] mx-auto w-full">
-                                      <p className="semibold text-white">
-                                          1SPT
-                                      </p>
-                                      <p className="semibold text-white">
-                                          =
-                                      </p>
-                                      <p className="semibold text-white">
-                                          0.5ETH
-                                      </p>
-                                      <p className="semibold text-white">
-                                          =
-                                      </p>
-                                      <p className="semibold text-white">
-                                          $300
-                                      </p>
-                                  </div>
+                  </p>
+
+                  <div className="flex mt-8 items-center justify-evenly max-w-[360px] mx-auto w-full">
+                    <p className="semibold text-white">1SPT</p>
+                    <p className="semibold text-white">=</p>
+                    <p className="semibold text-white">0.5ETH</p>
+                    <p className="semibold text-white">=</p>
+                    <p className="semibold text-white">$300</p>
+                  </div>
                   <div className="w-full mx-auto mt-12">
                     <ActionBtn
-                      name="Place bid"
+                      name="Make an Offer"
                       action={() => setCurrent("checkout")}
                     />
                   </div>
@@ -270,7 +290,7 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
                       </p>
                       <div className="flex items-center gap-3">
                         <p className="regular text-yellow text-lg">
-                       1 SPT
+                          {offerPrice} BNB
                         </p>{" "}
                         {/* <p className="regular text-[#ABABAB] text-sm">
                           $15,000
@@ -284,16 +304,19 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
                     </p>
                     <div className="flex items-center justify-end w-fit">
                       <p className="regular text-yellow text-lg">
-                       1 SPT
+                        {offerPrice} BNB
                       </p>{" "}
                       {/* <p className="regular text-[#ABABAB] text-lg">$15,000</p> */}
                     </div>
                   </div>
+                  
                   <div className="w-full mx-auto mt-12">
+                  {contextHolder}
                     <ActionBtn
                       name={"Continue"}
                       action={() => {
                         setCurrent("pending");
+                        handleMakeOffer();
                         // {
                         //   isAuction ? handleAuction() : handleListNft();
                         // }
