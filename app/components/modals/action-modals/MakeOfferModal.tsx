@@ -11,7 +11,7 @@ import paymentSuccess from "@/public/assets/general/payment-success.png";
 import { useContract } from "@thirdweb-dev/react";
 import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 import SPT721Abi from "@/abi/SptERC721.json";
-import { Button, notification } from "antd";
+import errorIcon from "@/public/assets/icons/error-icon.png";
 interface listingProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -63,11 +63,11 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
   );
   const { contract: nftContract } = useContract(item.token_address, SPT721Abi);
   const [offerPrice, setOfferPrice] = useState<any>();
+  const [errorMessage, setErrorMessage] = useState("")
   const [priceDataWei, setPriceDataWei] = useState<any>();
   const ipfsGateway = "https://ipfs.io/ipfs/";
   const ipfsUrl = parseMetadata.image.replace("ipfs://", "");
   const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
-  const [api, contextHolder] = notification.useNotification();
   const params = useParams();
   const address = params.contractId;
   const tokenId = params.nftId;
@@ -134,14 +134,9 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
       const reason =
         error?.reason || error?.data?.message || "An unexpected error occurred";
       console.log("Error bidding NFT: ", error);
-      api["error"]({
-        message: "Error!",
-        description: `${reason}`,
-        duration: 5,
-        placement: "topRight",
-        showProgress: true,
-      });
-      setOpen(false);
+      setErrorMessage(reason)
+      setCurrent("error");
+      //setOpen(false);
     }
   };
 
@@ -189,6 +184,11 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
             {current === "success" && (
               <h2 className="grad-text semibold text-2xl text-center  mx-auto">
                 Transaction Successful
+              </h2>
+            )}
+            {current === "error" && (
+              <h2 className="grad-text semibold text-2xl text-center  mx-auto">
+                Error
               </h2>
             )}
           </div>
@@ -309,9 +309,8 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
                       {/* <p className="regular text-[#ABABAB] text-lg">$15,000</p> */}
                     </div>
                   </div>
-                  
+
                   <div className="w-full mx-auto mt-12">
-                  {contextHolder}
                     <ActionBtn
                       name={"Continue"}
                       action={() => {
@@ -365,6 +364,32 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
                         setOpen(false);
                       }}
                     /> */}
+                  </div>
+                </div>
+              )}
+              {current === "error" && (
+                <div className="w-full flex flex-col items-center gap-2">
+                  <Image src={errorIcon} alt="pending " className=" mx-auto" />
+                  <p className="regular text-white text-[18px] leading-[30px] max-w-[320px] mx-auto text-center  ">
+                    Transaction Failed
+                  </p>
+                  <p className="text-sm regular text-white">
+                    {errorMessage}
+                  </p>
+                  <div className="w-full mx-auto mt-5">
+                    {/* <Link
+                      className="flex items-center rounded-[10px] justify-center  sm:text-[16px] light bg-blue-btn text-white px-4 py-2  w-full md:py-4 h-[40px] md:h-auto cursor-pointer semibold text-[10px] min-w-max}"
+                      href={`/nft/${item.token_address}/${item.token_id}`}
+                    >
+                      View NFT
+                    </Link> */}
+                    <ActionBtn
+                      name="Retry"
+                      action={() => {
+                        setCurrent("list");
+                        setOpen(false);
+                      }}
+                    />
                   </div>
                 </div>
               )}
