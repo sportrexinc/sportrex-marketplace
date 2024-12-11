@@ -12,6 +12,8 @@ import paymentSuccess from "@/public/assets/general/payment-success.png";
 import { contractType, useAddress, useContract } from "@thirdweb-dev/react";
 import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 import SPT721Abi from "@/abi/SptERC721.json";
+import errorIcon from "@/public/assets/icons/error-icon.png";
+
 interface listingProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -171,6 +173,11 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
                 Transaction Successful
               </h2>
             )}
+            {current === "error" && (
+              <h2 className="grad-text semibold text-2xl text-center  mx-auto">
+                Error
+              </h2>
+            )}
           </div>
 
           <div key="body">
@@ -268,6 +275,32 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
                         setOpen(false);
                       }}
                     /> */}
+                  </div>
+                </div>
+              )}
+              {current === "error" && (
+                <div className="w-full flex flex-col items-center gap-6">
+                  <Image src={errorIcon} alt="pending " className=" mx-auto" />
+                  <p className="regular text-white text-[18px] leading-[30px] max-w-[320px] mx-auto text-center  ">
+                    Transaction Failed
+                  </p>
+                  <p className="text-sm regular text-white">
+                    Oops, Something went wrong try again later.
+                  </p>
+                  <div className="w-full mx-auto mt-12">
+                    {/* <Link
+                      className="flex items-center rounded-[10px] justify-center  sm:text-[16px] light bg-blue-btn text-white px-4 py-2  w-full md:py-4 h-[40px] md:h-auto cursor-pointer semibold text-[10px] min-w-max}"
+                      href={`/nft/${item.token_address}/${item.token_id}`}
+                    >
+                      View NFT
+                    </Link> */}
+                    <ActionBtn
+                      name="Retry"
+                      action={() => {
+                        setCurrent("list");
+                        setOpen(false);
+                      }}
+                    />
                   </div>
                 </div>
               )}
