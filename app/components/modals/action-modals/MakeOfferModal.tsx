@@ -369,7 +369,7 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
               )}
               {current === "error" && (
                 <div className="w-full flex flex-col items-center gap-2">
-                  <Image src={errorIcon} alt="pending " className=" mx-auto" />
+                  <Image src={errorIcon} alt="pending " className="w-[100px] mx-auto" />
                   <p className="regular text-white text-[18px] leading-[30px] max-w-[320px] mx-auto text-center  ">
                     Transaction Failed
                   </p>

@@ -134,7 +134,12 @@ const OwnedCard = ({
                       End Auction
                     </p>
                   ) : (
-                    <></>
+                    <p
+                      className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
+                      onClick={() => setOpenListing(!openListing)}
+                    >
+                      Auction
+                    </p>
                   )}
                 </div>
               )}
