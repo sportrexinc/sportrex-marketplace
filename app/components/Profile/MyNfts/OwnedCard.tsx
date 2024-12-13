@@ -14,6 +14,7 @@ import ListingModal from "../../modals/action-modals/ListingModal";
 import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 import ShareModal from "../../modals/share-modal";
 import UnlistModal from "../../modals/action-modals/UnlistModal";
+import EndAuctionModal from "../../modals/action-modals/EndAuctionModal";
 const OwnedCard = ({
   isTrending,
   item,
@@ -29,6 +30,8 @@ const OwnedCard = ({
   const [openListing, setOpenListing] = useState(false);
   const [openUnListing, setOpenUnListing] = useState(false);
   const [openShare, setOpenShare] = useState(false);
+  const [isAuction, setIsAuction] = useState(false);
+  const [openEndAuction, setOpenEndAuction] = useState(false);
 
   const [priceData, setPriceData] = useState<any>();
   const [isFetchingPrice, setIsFetchingPrice] = useState(false);
@@ -48,30 +51,45 @@ const OwnedCard = ({
     router.push(`/nft/${item.token_address}/${item.token_id}`);
   };
 
+  const handleAuctionState = async () => {
+    try {
+      const auctionState = await marketplaceContract?.call("getAuctionState", [
+        item?.token_address,
+        item?.token_id,
+      ]);
+      console.log("Auction state: ", auctionState);
+      setIsAuction(auctionState);
+    } catch (error) {
+      console.log("Error fetching auction state: ", error);
+    }
+  };
+
+  const handleGetPrice = async () => {
+    setIsFetchingPrice(true);
+    try {
+      const getPriceData = await marketplaceContract?.call("getPrice", [
+        item.token_address,
+        item.token_id,
+      ]);
+      const priceInWei = ethers.utils.formatEther(getPriceData);
+      setPriceData(priceInWei);
+    } catch (error) {
+      console.log("Error fetching price: ", error);
+      setPriceData(null);
+    } finally {
+      setIsFetchingPrice(false);
+    }
+  };
+
   useEffect(() => {
-    const handleGetPrice = async () => {
-      setIsFetchingPrice(true);
-      try {
-        const getPriceData = await marketplaceContract?.call("getPrice", [
-          item.token_address,
-          item.token_id,
-        ]);
-        const priceInWei = ethers.utils.formatEther(getPriceData);
-        setPriceData(priceInWei);
-      } catch (error) {
-        console.log("Error fetching price: ", error);
-        setPriceData(null);
-      } finally {
-        setIsFetchingPrice(false);
-      }
-    };
+    handleAuctionState();
     if (marketplaceContract && item.token_address && item.token_id) {
       handleGetPrice();
     }
   }, [item.token_address, item.token_id]);
 
   if (loading) return <NftLoading />;
-
+  console.log(isAuction);
   return (
     <div>
       <>
@@ -110,6 +128,21 @@ const OwnedCard = ({
                   >
                     Edit
                   </p>
+                  {isAuction ? (
+                    <p
+                      className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
+                      onClick={() => setOpenEndAuction(true)}
+                    >
+                      End Auction
+                    </p>
+                  ) : (
+                    <p
+                      className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
+                      onClick={() => setOpenListing(!openListing)}
+                    >
+                      Auction
+                    </p>
+                  )}
                 </div>
               )}
               {cardType === "unlisted" && (
@@ -208,6 +241,15 @@ const OwnedCard = ({
           setOpen={setOpenUnListing}
         />
       )}
+      {
+        isAuction && (
+          <EndAuctionModal
+          item={item}
+          open={openEndAuction}
+          setOpen={setOpenEndAuction}
+          />
+        )
+      }
       <ShareModal
         openShare={openShare}
         setOpenShare={setOpenShare}

@@ -1,6 +1,6 @@
 import React, { SetStateAction, useState, useEffect } from "react";
 import FixedModal from "../FixedModal";
-
+import { useParams, useRouter } from "next/navigation";
 import ActionBtn from "../../Button/ActionBtn";
 import { ethers } from "ethers";
 import Image from "next/image";
@@ -12,7 +12,6 @@ import { useContract } from "@thirdweb-dev/react";
 import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 import SPT721Abi from "@/abi/SptERC721.json";
 import errorIcon from "@/public/assets/icons/error-icon.png";
-
 interface listingProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -24,9 +23,7 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
   const [fixedPrice, setFixedPrice] = useState("");
   const [auctionPrice, setAuctionPrice] = useState("");
   const [auctionDuration, setAuctionDuration] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-  const [active, setActive] = useState(1);
-  const [isAuction, setIsAuction] = useState(false);
+  const [makingOffer, setMakingOffer] = useState(false);
   const parseMetadata = JSON.parse(item.metadata);
 
   const daysToSeconds = (days: any) => {
@@ -65,11 +62,15 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
     sptMarketplaceAbi
   );
   const { contract: nftContract } = useContract(item.token_address, SPT721Abi);
-
+  const [offerPrice, setOfferPrice] = useState<any>();
+  const [errorMessage, setErrorMessage] = useState("")
+  const [priceDataWei, setPriceDataWei] = useState<any>();
   const ipfsGateway = "https://ipfs.io/ipfs/";
   const ipfsUrl = parseMetadata.image.replace("ipfs://", "");
   const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
-
+  const params = useParams();
+  const address = params.contractId;
+  const tokenId = params.nftId;
   const handleListNft = async () => {
     try {
       const ethValue = ethers.utils.parseEther(fixedPrice);
@@ -117,6 +118,28 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
     setSelected(option);
     setAuctionDuration(option.value);
   };
+
+  const handleMakeOffer = async () => {
+    try {
+      const data = await marketplaceContract?.call(
+        "bid",
+        [address, tokenId, offerPrice]
+        //   {
+        //   value: offerPrice,
+        // }
+      );
+      console.log("Bidding NFT: ", data);
+      setCurrent("success");
+    } catch (error: any) {
+      const reason =
+        error?.reason || error?.data?.message || "An unexpected error occurred";
+      console.log("Error bidding NFT: ", error);
+      setErrorMessage(reason)
+      setCurrent("error");
+      //setOpen(false);
+    }
+  };
+
   useEffect(() => {
     // if (current === "pending") {
     //   setTimeout(() => {
@@ -125,8 +148,6 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
     // }
     console.log(item);
   }, [current]);
-
-  const handleNavigation = () => {};
   return (
     <div>
       {open && (
@@ -152,7 +173,7 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
             )}
             {current === "checkout" && (
               <h2 className="grad-text semibold text-2xl text-center">
-                Checkout
+                You are Offering
               </h2>
             )}
             {current === "pending" && (
@@ -200,12 +221,14 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
                       </div>
                       <input
                         type="number"
+                        required
                         className="flex flex-grow px-4 h-12 bg-transparent border-none outline-none focus:outline-none text-white regular placeholder:text-[#ababab]"
                         placeholder="Enter price"
+                        onChange={(e) => setOfferPrice(e.target.value)}
                       />
                     </div>
                   </div>
-                  <div className="flex flex-col mt-6">
+                  {/* <div className="flex flex-col mt-6">
                     <label
                       htmlFor="bid"
                       className="semibold text-white text-lg mb-3"
@@ -224,7 +247,7 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   <p className="text-grey-800 text-xs semibold text-center mx-auto w-full max-w-[433px] mt-10">
                     All transactions are placed in SPT, system automatically
                     convert your crypocurrency to SPT. Please review the
@@ -240,7 +263,7 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
                   </div>
                   <div className="w-full mx-auto mt-12">
                     <ActionBtn
-                      name="Place bid"
+                      name="Make an Offer"
                       action={() => setCurrent("checkout")}
                     />
                   </div>
@@ -263,10 +286,12 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
                       <p className="regular text-[#ABABAB] text-sm">1 Item</p>
 
                       <p className="regular text-white font-semibold text-xl semibold">
-                        {item.name}
+                        {parseMetadata?.name}
                       </p>
                       <div className="flex items-center gap-3">
-                        <p className="regular text-yellow text-lg">1 SPT</p>{" "}
+                        <p className="regular text-yellow text-lg">
+                          {offerPrice} BNB
+                        </p>{" "}
                         {/* <p className="regular text-[#ABABAB] text-sm">
                           $15,000
                         </p> */}
@@ -278,15 +303,19 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
                       Sub-Total
                     </p>
                     <div className="flex items-center justify-end w-fit">
-                      <p className="regular text-yellow text-lg">1 SPT</p>{" "}
+                      <p className="regular text-yellow text-lg">
+                        {offerPrice} BNB
+                      </p>{" "}
                       {/* <p className="regular text-[#ABABAB] text-lg">$15,000</p> */}
                     </div>
                   </div>
+
                   <div className="w-full mx-auto mt-12">
                     <ActionBtn
                       name={"Continue"}
                       action={() => {
                         setCurrent("pending");
+                        handleMakeOffer();
                         // {
                         //   isAuction ? handleAuction() : handleListNft();
                         // }
@@ -339,15 +368,15 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
                 </div>
               )}
               {current === "error" && (
-                <div className="w-full flex flex-col items-center gap-6">
-                  <Image src={errorIcon} alt="pending " className=" mx-auto" />
+                <div className="w-full flex flex-col items-center gap-2">
+                  <Image src={errorIcon} alt="pending " className="w-[100px] mx-auto" />
                   <p className="regular text-white text-[18px] leading-[30px] max-w-[320px] mx-auto text-center  ">
                     Transaction Failed
                   </p>
                   <p className="text-sm regular text-white">
-                    Oops, Something went wrong try again later.
+                    {errorMessage}
                   </p>
-                  <div className="w-full mx-auto mt-12">
+                  <div className="w-full mx-auto mt-5">
                     {/* <Link
                       className="flex items-center rounded-[10px] justify-center  sm:text-[16px] light bg-blue-btn text-white px-4 py-2  w-full md:py-4 h-[40px] md:h-auto cursor-pointer semibold text-[10px] min-w-max}"
                       href={`/nft/${item.token_address}/${item.token_id}`}
