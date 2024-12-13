@@ -330,7 +330,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                       <p className="regular text-[#ABABAB] text-sm">1 Item</p>
 
                       <p className="regular text-white font-semibold text-xl semibold">
-                        {item.name}
+                        {parseMetadata?.name}
                       </p>
                       <div className="flex items-center gap-3">
                         <p className="regular text-yellow text-lg">
