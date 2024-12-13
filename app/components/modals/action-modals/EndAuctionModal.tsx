@@ -20,7 +20,7 @@ interface listingProps {
   item: any;
 }
 
-const UnListModal = ({ open, setOpen, item }: listingProps) => {
+const EndAuctionModal = ({ open, setOpen, item }: listingProps) => {
   const [current, setCurrent] = useState<any>("checkout");
   const [priceData, setPriceData] = useState<any>();
   const [priceDataWei, setPriceDataWei] = useState<any>();
@@ -31,6 +31,7 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
   const [unListingNFT, setUnListingNFT] = useState(false);
   const [active, setActive] = useState(1);
   const [isAuction, setIsAuction] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const parseMetadata = JSON.parse(item.metadata);
 
   const daysToSeconds = (days: any) => {
@@ -130,17 +131,20 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
     console.log(item);
   }, [current]);
 
-  const handleUnListNFT = async () => {
+  const handleEndAuction = async () => {
     try {
-      const unListData = await marketplaceContract?.call("unlistNft", [
+      const endAuctionData = await marketplaceContract?.call("endAuction", [
         item.token_address,
         item.token_id,
       ]);
-      console.log(unListData);
+      console.log(endAuctionData);
       setCurrent("success");
-    } catch (error) {
-      console.log("Error UnListing NFT: ", error);
-      setOpen(false);
+    } catch (error: any) {
+      const reason =
+        error?.reason || error?.data?.message || "An unexpected error occurred";
+      console.log("Error bidding NFT: ", error);
+      setErrorMessage(reason);
+      setCurrent("error");
     }
   };
 
@@ -160,7 +164,7 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
           <div key="header">
             {current === "checkout" && (
               <h2 className="grad-text semibold text-2xl text-center">
-                Unlist
+                End Auction
               </h2>
             )}
             {current === "pending" && (
@@ -200,17 +204,15 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
                       <p className="regular text-white font-semibold text-xl semibold">
                         {parseMetadata?.name}
                       </p>
-                      <div className="flex items-center gap-3">
+                      {/* <div className="flex items-center gap-3">
                         <p className="regular text-yellow text-lg">
                           {priceData ? `${priceData} BNB` : "Fetching Price"}
                         </p>{" "}
-                        {/* <p className="regular text-[#ABABAB] text-sm">
-                          $15,000
-                        </p> */}
-                      </div>
+                       
+                      </div> */}
                     </div>
                   </div>
-                  <div className="w-full flex justify-between items-center mt-10">
+                  {/* <div className="w-full flex justify-between items-center mt-10">
                     <p className="regular text-white font-semibold text-xl semibold">
                       Sub-Total
                     </p>
@@ -218,15 +220,15 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
                       <p className="regular text-yellow text-lg">
                         {priceData ? `${priceData} BNB` : "Fetching Price"}
                       </p>{" "}
-                      {/* <p className="regular text-[#ABABAB] text-lg">$15,000</p> */}
+                    
                     </div>
-                  </div>
+                  </div> */}
                   <div className="w-full mx-auto mt-12">
                     <ActionBtn
-                      name={"Unlist"}
+                      name={"End Auction"}
                       action={() => {
                         setCurrent("pending");
-                        handleUnListNFT();
+                        handleEndAuction();
                         // {
                         //   isAuction ? handleAuction() : handleListNft();
                         // }
@@ -284,9 +286,7 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
                   <p className="regular text-white text-[18px] leading-[30px] max-w-[320px] mx-auto text-center  ">
                     Transaction Failed
                   </p>
-                  <p className="text-sm regular text-white">
-                    Oops, Something went wrong try again later.
-                  </p>
+                  <p className="text-sm regular text-white">{errorMessage}</p>
                   <div className="w-full mx-auto mt-12">
                     {/* <Link
                       className="flex items-center rounded-[10px] justify-center  sm:text-[16px] light bg-blue-btn text-white px-4 py-2  w-full md:py-4 h-[40px] md:h-auto cursor-pointer semibold text-[10px] min-w-max}"
@@ -315,4 +315,4 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
   );
 };
 
-export default UnListModal;
+export default EndAuctionModal;
