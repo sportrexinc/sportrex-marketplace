@@ -133,12 +133,14 @@ const OwnedCard = ({
                       className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
                       onClick={() => setOpenEndAuction(true)}
                     >
-                      End Auction
+                    Cancel Auction 
                     </p>
                   ) : (
                     <p
                       className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
-                      onClick={() => setOpenListing(!openListing)}
+                      onClick={() => {
+                        setOpenListing(!openListing);
+                      }}
                     >
                       Auction
                     </p>
@@ -241,15 +243,13 @@ const OwnedCard = ({
           setOpen={setOpenUnListing}
         />
       )}
-      {
-        isAuction && (
-          <EndAuctionModal
+      {isAuction && (
+        <EndAuctionModal
           item={item}
           open={openEndAuction}
           setOpen={setOpenEndAuction}
-          />
-        )
-      }
+        />
+      )}
       <ShareModal
         openShare={openShare}
         setOpenShare={setOpenShare}

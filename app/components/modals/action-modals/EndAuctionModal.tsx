@@ -133,7 +133,7 @@ const EndAuctionModal = ({ open, setOpen, item }: listingProps) => {
 
   const handleEndAuction = async () => {
     try {
-      const endAuctionData = await marketplaceContract?.call("endAuction", [
+      const endAuctionData = await marketplaceContract?.call("cancelAuction", [
         item.token_address,
         item.token_id,
       ]);
@@ -164,7 +164,7 @@ const EndAuctionModal = ({ open, setOpen, item }: listingProps) => {
           <div key="header">
             {current === "checkout" && (
               <h2 className="grad-text semibold text-2xl text-center">
-                End Auction
+                Cancel Auction
               </h2>
             )}
             {current === "pending" && (
@@ -225,7 +225,7 @@ const EndAuctionModal = ({ open, setOpen, item }: listingProps) => {
                   </div> */}
                   <div className="w-full mx-auto mt-12">
                     <ActionBtn
-                      name={"End Auction"}
+                      name={"Cancel Auction"}
                       action={() => {
                         setCurrent("pending");
                         handleEndAuction();
