@@ -337,12 +337,11 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                   </div>
                   <div className="w-full mx-auto mt-12">
                     <ActionBtn
-                      name={isAuction ? `Auction Now` : "List Now"}
+                      name={"List Now"}
                       action={() => {
                         setCurrent("pending");
-                        {
-                          isAuction ? handleAuction() : handleListNft();
-                        }
+                          handleListNft();
+                        
                       }}
                     />
                   </div>

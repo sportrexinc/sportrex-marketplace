@@ -140,7 +140,6 @@ const AuctionModal = ({ open, setOpen, item }: listingProps) => {
           showHeader
         >
           <div key="header">
-           
             {current === "auction" && (
               <h2 className="grad-text semibold text-2xl text-center">
                 Auction NFT
@@ -170,14 +169,12 @@ const AuctionModal = ({ open, setOpen, item }: listingProps) => {
 
           <div key="body">
             <div className="w-full">
-            
               {current === "auction" && (
                 <div className="w-full flex flex-col">
                   <h1 className="regular text-white text-lg semibold ">
                     Selected type
                   </h1>
                   <div className="w-full gap-8 flex items-center mt-4">
-                 
                     <div
                       className={` ${
                         current === "auction"
@@ -257,48 +254,15 @@ const AuctionModal = ({ open, setOpen, item }: listingProps) => {
                       <p className="regular text-white font-semibold text-xl semibold">
                         {parseMetadata?.name}
                       </p>
-                      <div className="flex items-center gap-3">
-                        <p className="regular text-yellow text-lg">
-                          {isAuction
-                            ? auctionPrice
-                              ? `${auctionPrice} BNB`
-                              : ""
-                            : fixedPrice
-                            ? `${fixedPrice} BNB`
-                            : "NAN BNB"}
-                        </p>{" "}
-                        {/* <p className="regular text-[#ABABAB] text-sm">
-                          $15,000
-                        </p> */}
-                      </div>
                     </div>
                   </div>
-                  <div className="w-full flex justify-between items-center mt-10">
-                    <p className="regular text-white font-semibold text-xl semibold">
-                      Sub-Total
-                    </p>
-                    <div className="flex items-center justify-end w-fit">
-                      <p className="regular text-yellow text-lg">
-                        {" "}
-                        {isAuction
-                          ? auctionPrice
-                            ? `${auctionPrice} BNB`
-                            : ""
-                          : fixedPrice
-                          ? `${fixedPrice} BNB`
-                          : "NAN BNB"}
-                      </p>{" "}
-                      {/* <p className="regular text-[#ABABAB] text-lg">$15,000</p> */}
-                    </div>
-                  </div>
+
                   <div className="w-full mx-auto mt-12">
                     <ActionBtn
-                      name={isAuction ? `Auction Now` : "List Now"}
+                      name={`Auction Now`}
                       action={() => {
                         setCurrent("pending");
-                        {
-                          isAuction ? handleAuction() : handleListNft();
-                        }
+                        handleAuction();
                       }}
                     />
                   </div>
@@ -337,7 +301,6 @@ const AuctionModal = ({ open, setOpen, item }: listingProps) => {
                     >
                       View NFT
                     </Link>
-                  
                   </div>
                 </div>
               )}

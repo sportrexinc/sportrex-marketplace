@@ -43,7 +43,7 @@ const SingleMintNft = () => {
   const [api, contextHolder] = notification.useNotification();
   const [buyingNFT, setBuyingNFT] = useState(false);
   const [openOffer, setOpenOffer] = useState(false);
-  const [open, setOpen] = useState(false); 
+  const [open, setOpen] = useState(false);
   const [openEndAuction, setOpenEndAuction] = useState(false);
   const params = useParams();
   const address = params.contractId;
@@ -197,33 +197,31 @@ const SingleMintNft = () => {
                     {/* {"daniel"} */}
                   </p>
                   <div className="flex flex-col ">
-
-                  <div className="flex space-x-1 items-center mb-4">
-                    {liked ? (
-                      <AiFillHeart
-                      className="text-xl text-yellow"
-                      onClick={() => setLiked(false)}
-                      />
-                    ) : (
-                      <AiOutlineHeart
-                        className="text-xl text-grey-800"
-                        onClick={() => setLiked(true)}
+                    <div className="flex space-x-1 items-center mb-4">
+                      {liked ? (
+                        <AiFillHeart
+                          className="text-xl text-yellow"
+                          onClick={() => setLiked(false)}
+                        />
+                      ) : (
+                        <AiOutlineHeart
+                          className="text-xl text-grey-800"
+                          onClick={() => setLiked(true)}
                         />
                       )}
-                    <p className="regular text-grey-800">23</p>
+                      <p className="regular text-grey-800">23</p>
                     </div>
-                      <Options>
-                                  
-                                 
-                                    <div className="w-full flex flex-col  py-6 px-4 gap-4">
-                                      <p className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer" onClick={() => setOpenEndAuction(true)}>
-                                        End Auction
-                                      </p>
-                                     
-                                    </div>
-                                  
-                                </Options>
+                    <Options>
+                      <div className="w-full flex flex-col  py-6 px-4 gap-4">
+                        <p
+                          className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
+                          onClick={() => setOpenEndAuction(true)}
+                        >
+                          {isAuction ? "End Auction" : ""}
+                        </p>
                       </div>
+                    </Options>
+                  </div>
                 </div>
                 <div className="flex space-x-5 mt-4">
                   <p className="text-grey-800 text-base regular regular">
@@ -271,7 +269,7 @@ const SingleMintNft = () => {
                   </div>
 
                   <div className=" w-3/12">
-                    {priceData ? (
+                    {priceData && isAuction ? (
                       <YellowActionBtn
                         name="Make an offer"
                         action={() => setOpenOffer(true)}
@@ -441,15 +439,13 @@ const SingleMintNft = () => {
       {openOffer && (
         <MakeOfferModal item={data} open={openOffer} setOpen={setOpenOffer} />
       )}
-      {
-        openEndAuction && (
-          <EndAuctionModal
-            item={data}
-            open={openEndAuction}
-            setOpen={setOpenEndAuction}
-          />
-         ) 
-      }
+      {openEndAuction && (
+        <EndAuctionModal
+          item={data}
+          open={openEndAuction}
+          setOpen={setOpenEndAuction}
+        />
+      )}
     </div>
   );
 };
