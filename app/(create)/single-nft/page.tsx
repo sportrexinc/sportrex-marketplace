@@ -151,7 +151,7 @@ const SingleNft = () => {
                   </div>
                   <div className="mt-12">
                   {
-                    created_collections.length > 0 ?  <SelectInput
+                    created_collections?.length > 0 ?  <SelectInput
                     placeholder={"Select Collection"}
                     // label={t("blockchain_technology")}
                     label="Choose your collection"
@@ -165,7 +165,7 @@ const SingleNft = () => {
                         </div>
                       </div>
                     )}
-                    options={ created_collections.length === 0
+                    options={ created_collections?.length === 0
                         ? [
                             {
                               value: "",
