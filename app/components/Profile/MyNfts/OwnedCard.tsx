@@ -15,6 +15,7 @@ import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 import ShareModal from "../../modals/share-modal";
 import UnlistModal from "../../modals/action-modals/UnlistModal";
 import EndAuctionModal from "../../modals/action-modals/EndAuctionModal";
+import AuctionModal from "../../modals/action-modals/AuctionModal";
 const OwnedCard = ({
   isTrending,
   item,
@@ -32,6 +33,7 @@ const OwnedCard = ({
   const [openShare, setOpenShare] = useState(false);
   const [isAuction, setIsAuction] = useState(false);
   const [openEndAuction, setOpenEndAuction] = useState(false);
+  const [openAuction, setOpenAuction] = useState(false);
 
   const [priceData, setPriceData] = useState<any>();
   const [isFetchingPrice, setIsFetchingPrice] = useState(false);
@@ -133,14 +135,12 @@ const OwnedCard = ({
                       className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
                       onClick={() => setOpenEndAuction(true)}
                     >
-                    Cancel Auction 
+                      Cancel Auction
                     </p>
                   ) : (
                     <p
                       className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
-                      onClick={() => {
-                        setOpenListing(!openListing);
-                      }}
+                      onClick={() => setOpenAuction(!openAuction)}
                     >
                       Auction
                     </p>
@@ -235,6 +235,9 @@ const OwnedCard = ({
       </>
       {openListing && (
         <ListingModal item={item} open={openListing} setOpen={setOpenListing} />
+      )}
+      {openAuction && (
+        <AuctionModal item={item} open={openAuction} setOpen={setOpenAuction} />
       )}
       {openUnListing && (
         <UnlistModal
