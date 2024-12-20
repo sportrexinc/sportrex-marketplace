@@ -19,8 +19,8 @@ interface listingProps {
   item: any;
 }
 
-const ListingModal = ({ open, setOpen, item }: listingProps) => {
-  const [current, setCurrent] = useState<any>("list");
+const AuctionModal = ({ open, setOpen, item }: listingProps) => {
+  const [current, setCurrent] = useState<any>("auction");
   const [fixedPrice, setFixedPrice] = useState("");
   const [auctionPrice, setAuctionPrice] = useState("");
   const [auctionDuration, setAuctionDuration] = useState(0);
@@ -132,7 +132,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
       {open && (
         <FixedModal
           closeModal={() => {
-            setCurrent("list");
+            setCurrent("auction");
             setOpen(false);
           }}
           onConfirm={() => console.log("Life")}
@@ -140,16 +140,12 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
           showHeader
         >
           <div key="header">
-            {current === "list" && (
-              <h2 className="grad-text semibold text-2xl text-center">
-                List NFT
-              </h2>
-            )}
-            {/* {current === "auction" && (
+           
+            {current === "auction" && (
               <h2 className="grad-text semibold text-2xl text-center">
                 Auction NFT
               </h2>
-            )} */}
+            )}
             {current === "checkout" && (
               <h2 className="grad-text semibold text-2xl text-center">
                 Checkout
@@ -174,69 +170,29 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
 
           <div key="body">
             <div className="w-full">
-              {current === "list" && (
+            
+              {current === "auction" && (
                 <div className="w-full flex flex-col">
                   <h1 className="regular text-white text-lg semibold ">
                     Selected type
                   </h1>
                   <div className="w-full gap-8 flex items-center mt-4">
-                    <div
-                      className={` ${
-                        current === "list" ? "box-bordery-active" : "box-border"
-                      }  p-[2px] rounded-[8px] `}
-                      onClick={() => setCurrent("list")}
-                    >
-                      <span
-                        className="flex justify-center  items-center semibold min-w-[160px] w-[160px] text-white text-lg  h-[111px]  bg-blue-header z-10   cursor-pointer rounded-[8px] "
-                        // onClick={() => navigate.push("/single-nft")}
-                      >
-                        <p className="text-white mx-auto">Fixed Price</p>
-                      </span>
-                    </div>
-                  
-                  </div>
-                  <div className="flex flex-col mt-6">
-                    <label
-                      htmlFor="price"
-                      className="semibold text-white text-lg"
-                    >
-                      Price
-                    </label>
-                    <TextInput
-                      placeholder={"Enter Listing Price"}
-                      label={""}
-                      name={""}
-                      setValue={(fixedPrice) => setFixedPrice(fixedPrice)}
-                    />
-                  </div>
-                  <div className="w-full mx-auto mt-12">
-                    <ActionBtn
-                      name="Proceed"
-                      action={() => setCurrent("checkout")}
-                    />
-                  </div>
-                </div>
-              )}
-              {current === "auction" && (
-                <div className="w-full flex flex-col">
-                  <h1 className="regular text-white text-lg semibold ">
-                    Select type
-                  </h1>
-                  <div className="w-full gap-8 flex items-center mt-4">
-                    <div
-                      className={` ${
-                        current === "list" ? "box-bordery-active" : "box-border"
-                      }  p-[2px] rounded-[8px] `}
-                      onClick={() => setCurrent("list")}
-                    >
-                      <span
-                        className="flex justify-center  items-center semibold min-w-[160px] w-[160px] text-white text-lg  h-[111px]  bg-blue-header z-10   cursor-pointer rounded-[8px] "
-                        // onClick={() => navigate.push("/single-nft")}
-                      >
-                        <p className="text-white mx-auto">Fixed Price</p>
-                      </span>
-                    </div>
                  
+                    <div
+                      className={` ${
+                        current === "auction"
+                          ? "box-bordery-active"
+                          : "box-border"
+                      }  p-[2px] rounded-[8px] `}
+                      onClick={() => setCurrent("auction")}
+                    >
+                      <span
+                        className="flex justify-center  items-center semibold min-w-[160px] w-[160px] text-white text-lg  h-[111px]  bg-blue-header z-10   cursor-pointer rounded-[8px] "
+                        // onClick={() => navigate.push("/single-nft")}
+                      >
+                        <p className="text-white mx-auto">Auction</p>
+                      </span>
+                    </div>
                   </div>
                   <div className="flex flex-col mt-6">
                     {/* <label
@@ -381,28 +337,18 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                     >
                       View NFT
                     </Link>
-                    {/* <ActionBtn
-                      name="View Nft"
-                      action={() => {
-                        setCurrent("list");
-                        setOpen(false);
-                      }}
-                    /> */}
+                  
                   </div>
                 </div>
               )}
               {current === "error" && (
                 <div className="w-full flex flex-col items-center gap-6">
-                  <Image
-                    src={errorIcon}
-                    alt="pending "
-                    className=" mx-auto"
-                  />
+                  <Image src={errorIcon} alt="pending " className=" mx-auto" />
                   <p className="regular text-white text-[18px] leading-[30px] max-w-[320px] mx-auto text-center  ">
                     Transaction Failed
                   </p>
                   <p className="text-sm regular text-white">
-                      Oops, Something went wrong try again later. 
+                    Oops, Something went wrong try again later.
                   </p>
                   <div className="w-full mx-auto mt-12">
                     {/* <Link
@@ -414,7 +360,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                     <ActionBtn
                       name="Retry"
                       action={() => {
-                        setCurrent("list");
+                        setCurrent("auction");
                         setOpen(false);
                       }}
                     />
@@ -432,4 +378,4 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
   );
 };
 
-export default ListingModal;
+export default AuctionModal;
