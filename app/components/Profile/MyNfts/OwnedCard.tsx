@@ -16,6 +16,7 @@ import ShareModal from "../../modals/share-modal";
 import UnlistModal from "../../modals/action-modals/UnlistModal";
 import EndAuctionModal from "../../modals/action-modals/EndAuctionModal";
 import AuctionModal from "../../modals/action-modals/AuctionModal";
+import CancelAuctionModal from "../../modals/action-modals/CancelAutionModal";
 const OwnedCard = ({
   isTrending,
   item,
@@ -34,6 +35,7 @@ const OwnedCard = ({
   const [isAuction, setIsAuction] = useState(false);
   const [openEndAuction, setOpenEndAuction] = useState(false);
   const [openAuction, setOpenAuction] = useState(false);
+  const [openCancelAuction, setOpenCancelAuction] = useState(false);
 
   const [priceData, setPriceData] = useState<any>();
   const [isFetchingPrice, setIsFetchingPrice] = useState(false);
@@ -133,7 +135,7 @@ const OwnedCard = ({
                   {isAuction ? (
                     <p
                       className="regular text-sm lg:text-lg text-white hover:text-yellow cursor-pointer"
-                      onClick={() => setOpenEndAuction(true)}
+                      onClick={() => setOpenCancelAuction(true)}
                     >
                       Cancel Auction
                     </p>
@@ -244,6 +246,13 @@ const OwnedCard = ({
           item={item}
           open={openUnListing}
           setOpen={setOpenUnListing}
+        />
+      )}
+      {openCancelAuction && (
+        <CancelAuctionModal
+          item={item}
+          open={openCancelAuction}
+          setOpen={setOpenCancelAuction}
         />
       )}
       {isAuction && (
