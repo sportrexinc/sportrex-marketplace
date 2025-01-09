@@ -133,7 +133,7 @@ const CancelAuctionModal = ({ open, setOpen, item }: listingProps) => {
 
   const handleCancelAuction = async () => {
     try {
-      const endAuctionData = await marketplaceContract?.call("endAuction", [
+      const endAuctionData = await marketplaceContract?.call("cancelAuction", [
         item.token_address,
         item.token_id,
       ]);
