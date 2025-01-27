@@ -128,7 +128,6 @@ const EndAuctionModal = ({ open, setOpen, item }: listingProps) => {
     //     setCurrent("success");
     //   }, 5000);
     // }
-    console.log(item);
   }, [current]);
 
   const handleEndAuction = async () => {
@@ -164,7 +163,7 @@ const EndAuctionModal = ({ open, setOpen, item }: listingProps) => {
           <div key="header">
             {current === "checkout" && (
               <h2 className="grad-text semibold text-2xl text-center">
-               End Auction
+                End Auction
               </h2>
             )}
             {current === "pending" && (
