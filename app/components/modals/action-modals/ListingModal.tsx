@@ -12,6 +12,7 @@ import paymentSuccess from "@/public/assets/general/payment-success.png";
 import { contractType, useAddress, useContract } from "@thirdweb-dev/react";
 import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 import SPT721Abi from "@/abi/SptERC721.json";
+import APIService from "@/app/utils/APIServices";
 import errorIcon from "@/public/assets/icons/error-icon.png";
 interface listingProps {
   open: boolean;
@@ -82,6 +83,22 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
         item.token_id,
         ethValue,
       ]);
+      const listData = {
+        blockChain: "binance-testnet",
+        contractAddress: item.token_address,
+        price: ethValue,
+        nftid: item.token_id,
+        status: "buy now",
+        collectionId: "66cc5dfc60956a914921efb6",
+        nftName: item?.metadata?.name,
+        collectionName: item?.name,
+      };
+
+      const listApiResponse = await APIService.post(
+        `/marketplace/list`,
+        listData
+      );
+      console.log(listApiResponse);
       setCurrent("success");
       console.log(data);
     } catch (error) {
@@ -193,7 +210,6 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                         <p className="text-white mx-auto">Fixed Price</p>
                       </span>
                     </div>
-                  
                   </div>
                   <div className="flex flex-col mt-6">
                     <label
@@ -236,7 +252,6 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                         <p className="text-white mx-auto">Fixed Price</p>
                       </span>
                     </div>
-                 
                   </div>
                   <div className="flex flex-col mt-6">
                     {/* <label
@@ -340,8 +355,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                       name={"List Now"}
                       action={() => {
                         setCurrent("pending");
-                          handleListNft();
-                        
+                        handleListNft();
                       }}
                     />
                   </div>
@@ -392,16 +406,12 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
               )}
               {current === "error" && (
                 <div className="w-full flex flex-col items-center gap-6">
-                  <Image
-                    src={errorIcon}
-                    alt="pending "
-                    className=" mx-auto"
-                  />
+                  <Image src={errorIcon} alt="pending " className=" mx-auto" />
                   <p className="regular text-white text-[18px] leading-[30px] max-w-[320px] mx-auto text-center  ">
                     Transaction Failed
                   </p>
                   <p className="text-sm regular text-white">
-                      Oops, Something went wrong try again later. 
+                    Oops, Something went wrong try again later.
                   </p>
                   <div className="w-full mx-auto mt-12">
                     {/* <Link
