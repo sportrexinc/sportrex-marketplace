@@ -1,19 +1,14 @@
-import React,{useState,useEffect} from 'react'
+import { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 
 import ActionBtn from "../Button/ActionBtn";
 import Language from "../Language/Language";
 import Profile from "../Navbar/Profile";
-import Resources from "../Navbar/Resources";
+import gifImage from "@/public/assets/gifs/hero-gif.gif";
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
-import { FaUserCircle, FaBell } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "@/app/redux/store";
 import { setAddress } from "@/app/redux/features/auth/AuthSlice";
 import Notification from "../Navbar/Notification";
-import nftA from "@/public/assets/general/nft1.png";
-import nftB from "@/public/assets/general/nft2.png";
-import nftC from "@/public/assets/general/nft3.png";
-import nftD from "@/public/assets/general/nft4.png";
 import logo from "@/public/assets/sportrex-new-logo.svg";
 import LinkBtn from '../Button/LinkBtn';
 import YellowBtn from '../Button/YellowBtn';
@@ -55,14 +50,14 @@ const MobileHero = () => {
         <div className="w-full  p-4 flex flex-col bg-blue-body rounded-[30px] ">
           {/* start of the navbar */}
           <div className="w-full h-[64px] flex items-center bg-white bg-opacity-15 mt-8  rounded-[20px]  justify-between px-3 ">
-            <span className="w-4/12">
+            <span className="w-3/12">
               <Image
                 src={logo}
                 alt="logo"
-                className="w-full max-w-[150px] h-auto"
+                className="w-full max-w-[140px] h-auto"
               />
             </span>
-            <div className="flex w-7/12 justify-end items-center">
+            <div className="flex w-9/12 justify-end items-center">
               <div className={styles.listItem}>
                 <Language />
               </div>
@@ -94,24 +89,7 @@ const MobileHero = () => {
             </div>
           </div>
           {/* end of the navbar */}
-          <div className="w-full flex flex-col mt-12">
-            <div className="w-full items-center flex justify-between">
-              <span>
-                <Image
-                  src={nftD}
-                  alt="nft"
-                  className="w-auto h-auto min-w-[97px] max-w-[97px] object-cover"
-                />
-              </span>
-              <span className=" flex  w-auto">
-                <Image
-                  src={nftB}
-                  alt="nft"
-                  className="w-auto h-auto min-w-[97px] max-w-[97px] object-cover"
-                />
-              </span>
-            </div>
-          </div>
+          <div className="w-full flex flex-col mt-12"></div>
           {/* end pf first images */}
           {/* CEnter pannel */}
           <div className="w-full xl:w-6/12 xl:min-w-[637px] xl:max-w-[637px] flex flex-col items-center xl:px-4 mt-[34px] ">
@@ -159,7 +137,7 @@ const MobileHero = () => {
                 marketplace, and view your NFTs in VR/AR Mode
               </p>
             </div>
-            <div className="flex flex-col mt-8  items-center gap-6 w-7/12 mx-auto">
+            <div className="flex flex-col mt-8  items-center gap-6 w-7/12 mx-auto max-w-[203px]">
               <LinkBtn
                 path="/market"
                 name={"Explore Market"}
@@ -175,21 +153,13 @@ const MobileHero = () => {
             </div>
           </div>
           {/* end of center pannel */}
-          <div className="w-full  items-center flex justify-between mt-8">
-            <span>
-              <Image
-                src={nftC}
-                alt="nft"
-                className="w-auto h-auto min-w-[97px] max-w-[97px] object-cover"
-              />
-            </span>
-            <span className=" flex  w-auto">
-              <Image
-                src={nftA}
-                alt="nft"
-                className="w-auto h-auto min-w-[97px] max-w-[97px] object-cover"
-              />
-            </span>
+          <div className="w-full mt-[75px] pb-10">
+            <Image
+              src={gifImage}
+              alt="hero-gif"
+              className="w-full mt-12"
+              unoptimized
+            />
           </div>
         </div>
       </div>

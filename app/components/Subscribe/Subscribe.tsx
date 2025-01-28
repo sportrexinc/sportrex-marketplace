@@ -50,20 +50,23 @@ const Subscribe = () => {
   return (
     <>
       <NormalLayout>
-        <div className={styles.contentContainer}>
-          <div className="w-full sm:w-9/12 lg:w-5/12 ">
+        <div className="md:mx-auto bg-[#0E1648]  w-full flex flex-col rounded-[20px] lg:flex-row items-center py-8 md:justify-between gap-y-4 sm:gap-y-10 lg:space-y-0 px-[14px] lg:px-12 lg:py-16">
+          <div className="w-full sm:w-9/12 lg:w-5/12  ">
             <div className={styles.title}>
               {/* <ColouredHeaderText text="Be Part Of Greatness, Join the Sportex community " size="30px" /> */}
-              <h1 className="grad-text text-22px  md:text-[30px] text-center lg:text-start">
+              <h1 className="grad-text text-22px  md:text-[30px] text-start lg:text-start">
                 {/* {t("be_part")} */}
                 Be Part Of Greatness, Join the Sportex community
               </h1>
             </div>
           </div>
-          <div className="w-full sm:w-9/12  lg:w-7/12 flex justify-center ">
-            <form className={styles.inputContainer} onSubmit={handleSubmit}>
+          <div className="w-full sm:w-9/12  lg:w-6/12 flex justify-center ">
+            <form
+              className={`flex items-center bg-white h-[72px] rounded-[36px] px-4 w-full justify-between gap-1 `}
+              onSubmit={handleSubmit}
+            >
               <input
-                className={styles.input}
+                className={`bg-transparent text-black flex h-auto border-none outline-none focus:outline-none focus:border-none  text-grey-dark text-lg regular flex-grow  `}
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -72,7 +75,7 @@ const Subscribe = () => {
                 required
               />
 
-              <button type="submit">
+              <button type="submit" className="flex justify-end ">
                 <Image
                   className={styles.img}
                   src={sendicon}

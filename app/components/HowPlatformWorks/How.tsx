@@ -2,7 +2,7 @@ import React from "react";
 import NormalLayout from "@/app/layouts/NormalLayout";
 import animator from "@/public/assets/animator.png";
 import LinkBtn from "../Button/LinkBtn";
-import MobileHow from "./MobileHow";
+
 import "./How.css";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
@@ -40,6 +40,7 @@ const options = [
   },
 ];
 
+
 const How = () => {
    const { t } = useTranslation(["translation"]);
   return (
@@ -52,10 +53,10 @@ const How = () => {
               How The Platform Works
             </h1>
           </div>
-          <div className="mt-[90px] hidden lg:flex w-full  space-x-8 justify-between items-center flow-hide-x lg:overflow-x-hidden overflow-y-hidden h-full">
+          <div className="mt-[90px] flex flex-col md:flex-row lg:flex w-full  gap-y-10 2xl:gap-8 justify-between items-center flow-hide-x 2xl:overflow-x-hidden md:gap-8 xl:gap-4  md:flex-wrap overflow-y-hidden h-full">
             {options.map((option, index) => (
               <div
-                className="how-card shape-ex"
+                className="how-card shape-ex "
                 key={index}
                 style={{
                   borderBottomRightRadius: "30px",
@@ -77,18 +78,18 @@ const How = () => {
                         <Image
                           src={option.image}
                           alt={option.imageAlt}
-                          className=" w-[30px] lg:w-[80px] h-auto object-center object-cover "
+                          className=" w-[60px] lg:w-[80px] h-auto object-center object-cover "
                         />
                       </div>
                       <div className="mt-2">
-                        <h2 className=" text-white text-base regular lg:text-2xl font-bold bold bold">
+                        <h2 className=" text-white text-lg regular  lg:text-2xl font-bold bold bold">
                           {option.title}
                         </h2>
-                        <p className="text-white text-sm lg:text-lg regular leading-4 lg:leading-8">
+                        <p className="text-white text-base lg:text-base 2xl:text-lg regular  lg:leading-8 leading-[30px]">
                           {option.description}
                         </p>
                       </div>
-                      <div className=" w-full lg:w-7/12 mt-2 lg:mt-4">
+                      <div className=" w-fit min-w-max mt-4 lg:mt-4">
                         <LinkBtn name={option.name} path={option.path} />
                       </div>
                     </div>
@@ -97,9 +98,7 @@ const How = () => {
               </div>
             ))}
           </div>
-          <div className="mt-[90px]">
-            <MobileHow />
-          </div>
+       
         </div>
       </div>
     </NormalLayout>
