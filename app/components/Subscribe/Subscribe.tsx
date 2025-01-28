@@ -47,6 +47,7 @@ const Subscribe = () => {
     }
     setLoading(false);
   };
+  
   return (
     <>
       <NormalLayout>
