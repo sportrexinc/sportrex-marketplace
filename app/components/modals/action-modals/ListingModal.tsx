@@ -83,6 +83,8 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
         item.token_id,
         ethValue,
       ]);
+      const metadataString = item?.metadata;
+      const metadata = JSON.parse(metadataString);
       const listData = {
         blockChain: "binance-testnet",
         contractAddress: item.token_address,
@@ -90,7 +92,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
         nftid: item.token_id,
         status: "buy now",
         collectionId: "66cc5dfc60956a914921efb6",
-        nftName: item?.metadata?.name,
+        nftName: metadata?.name,
         collectionName: item?.name,
       };
 

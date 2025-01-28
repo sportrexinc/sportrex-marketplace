@@ -86,11 +86,15 @@ const OwnedCard = ({
   };
 
   useEffect(() => {
-    handleAuctionState();
-    if (marketplaceContract && item.token_address && item.token_id) {
-      handleGetPrice();
-    }
-  }, []);
+    const fetchData = async () => {
+      handleAuctionState(); // Call the auction state handler
+      if (marketplaceContract && item.token_address && item.token_id) {
+        await handleGetPrice(); // Fetch the price immediately
+      }
+    };
+
+    fetchData(); // Call the fetchData function as soon as the component mounts
+  }, [marketplaceContract, item.token_address, item.token_id]); // Add dependencies
 
   if (loading) return <NftLoading />;
   console.log(isAuction);
