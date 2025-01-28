@@ -86,7 +86,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
       const listData = {
         blockChain: "binance-testnet",
         contractAddress: item.token_address,
-        price: ethValue,
+        price: fixedPrice,
         nftid: item.token_id,
         status: "buy now",
         collectionId: "66cc5dfc60956a914921efb6",

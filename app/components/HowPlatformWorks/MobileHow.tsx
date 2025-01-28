@@ -60,8 +60,8 @@ const MobileHow = () => {
     <div className=" w-full flex flex-col lg:hidden">
       <div className=" w-full  overflow-x-hidden">
         <div
-          className="mt-[90px]  w-[1200px] flex space-x-8  items-center   overflow-y-hidden h-full "
-          style={{ transform: `translateX(${translate}px)` }}
+          className="mt-[90px]  flex flex-col gap-8   overflow-y-hidden h-full "
+        
         >
           {options.map((option, index) => (
             <div className="how-card shape-ex" key={index}>

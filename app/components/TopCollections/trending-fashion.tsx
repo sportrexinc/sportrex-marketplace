@@ -161,7 +161,7 @@ const TrendingFashion = () => {
             <Image
               src={starbox}
               alt="star"
-              className="w-[124px] h-auto lg:w-auto rotate-spin"
+              className="w-[124px] h-auto lg:w-auto "
             />
           </div>
         </NormalLayout>

@@ -60,7 +60,7 @@ const Top = () => {
                     : "h-[41px] w-[39px] sm:w-[50px] flex rounded-[8px] items-center justify-center text-white regular text-[10px] sm:text-sm bg-[#0E1648]"
                 }
               >
-                1hrs 
+                1hrs
               </p>
               <p
                 className={
@@ -163,17 +163,17 @@ const Top = () => {
               View all ranking
             </Link>
           </div>
-          <div className="w-full flex justify-end">
+          <div className="w-full flex justify-end lg:-mt-0">
             <Image
               src={sptStar}
               alt="spt"
-              className="w-[124px] h-auto lg:w-auto rotate-spin"
+              className=" w-[80px] max-w-[124px] md:max-w-[156px] md:w-[124px] h-auto lg:w-auto rotate-spin"
             />
           </div>
         </div>
       </NormalLayout>
-      <div className="w-full h-[300px] 2xl:h-[250px] ">
-        <div className=" w-[600px] 2xl:w-[2600px] flex items-center bg-yellow h-[80px] lg:h-[114px] rotate-card gap-8 2xl:-ml-10 flex-grow  ">
+      <div className="w-full h-[300px] 2xl:h-[250px] lg:mt-60 mt-64 ">
+        <div className=" w-[600px] 2xl:w-[2600px] flex items-center bg-yellow min-w-max h-[80px] lg:h-[114px] rotate-card gap-8 2xl:-ml-10 flex-grow  ">
           {itemsList?.map((item, index) => {
             return (
               <div
@@ -194,11 +194,11 @@ const Top = () => {
           })}
         </div>
         <NormalLayout>
-          <div className="w-full lg:-mt-20 2xl:-mt-32">
+          <div className="w-full -mt-64  lg:-mt-64 2xl:-mt-64">
             <Image
               src={sptStar}
               alt="spt"
-              className="w-[124px] h-auto lg:w-auto rotate-spin"
+              className="w-[80px] max-w-[124px] md:max-w-[156px] md:w-[124px] h-auto lg:w-auto rotate-spin"
             />
           </div>
         </NormalLayout>
