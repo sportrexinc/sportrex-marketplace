@@ -86,7 +86,12 @@ const MainHero = () => {
           </div>
           <div className={styles.right}>
             <div className={styles.imgContainer}>
-              <Image src={gifImage} alt="hero-gif" className="w-full" />
+              <Image
+                src={gifImage}
+                alt="hero-gif"
+                className="w-full"
+                unoptimized
+              />
             </div>
           </div>
         </div>

@@ -79,11 +79,11 @@ const Drop = () => {
   // useEffect(() => {
   //   i18next.changeLanguage(auth?.language);
   // }, []);
-  console.log(lang);
+
   return (
     <div className={styles.parent}>
       <div className={styles.sectionA} onClick={() => setOpen(!open)}>
-        <p className="light text-white text-[18px]">English</p>
+        <p className="light text-white text-[18px]">Eng</p>
         <MdArrowDropDown />
       </div>
       <div className={open ? styles.listContainer : styles.close}>
