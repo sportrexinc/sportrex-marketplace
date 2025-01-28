@@ -105,6 +105,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
       console.log(data);
     } catch (error) {
       console.error(error);
+      setCurrent("error");
       setOpen(false);
     } finally {
       //setOpen(false);
