@@ -28,7 +28,6 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [active, setActive] = useState(1);
   const [isAuction, setIsAuction] = useState(false);
-  const [collectionId, setCollectionId] = useState("");
   const parseMetadata = JSON.parse(item.metadata);
 
   const daysToSeconds = (days: any) => {
@@ -91,14 +90,14 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
         `/marketplace/marketplace-collection/${item.token_address}`
       );
       console.log(getSingleResponse);
-      setCollectionId(getSingleResponse?.data?.data?._id);
+
       const listData = {
         blockChain: "binance-testnet",
         contractAddress: item.token_address,
         price: fixedPrice,
         nftid: item.token_id,
         status: "buy now",
-        collectionId: collectionId,
+        collectionId: getSingleResponse?.data?.data?._id,
         nftName: metadata?.name,
         collectionName: item?.name,
       };
