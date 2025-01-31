@@ -100,14 +100,14 @@ const SingleNftCard = ({
     <div>
       <>
         <div className="w-full overflow-hidden box-border md:h-[350px] h-full bg-blue-header rounded-[10px] p-2 lg:p-4 md:rounded-[20px] flex flex-col  items-start space-y-[12px] justify-between relative">
-          <div className="absolute left-2 top-2">
+          {/* <div className="absolute left-2 top-2">
             {Number(item?.price) > 1 && (
               <span className="bg-black text-[14px] rounded-full p-1 text-green">
                 {" "}
                 {`x${item?.price}`}{" "}
               </span>
             )}
-          </div>
+          </div> */}
           <div className="absolute right-7 top-7 z-10">
             <Options>
               {cardType === "owned" && (
