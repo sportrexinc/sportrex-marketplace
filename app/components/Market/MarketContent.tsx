@@ -1,15 +1,16 @@
-import {useState} from 'react'
-import { SearchIcon,CollapseIcon } from '@/public/assets/icons';
-import Select from '../Select/ReuseSelect';
-import { SingleItemsData } from '../../utils/marketDatas';
-import SingleItemCard from '../Cards/SingleCard';
-import SingleItem from '../Cards/SingleItem';
-import SingleNftCard from './SingleNftCard';
+import { useState } from "react";
+import { SearchIcon, CollapseIcon } from "@/public/assets/icons";
+import Select from "../Select/ReuseSelect";
+import { SingleItemsData } from "../../utils/marketDatas";
+import SingleItemCard from "../Cards/SingleCard";
+import SingleItem from "../Cards/SingleItem";
+import SingleNftCard from "./SingleNftCard";
+import NftLoading from "../Loader/NftLoading";
 const selectTypeData = [
-  {name:"bundle", value:"b",},
-  {name:"single item", value:"s",},
-  {name:"collection", value:"c",}
-]
+  { name: "bundle", value: "b" },
+  { name: "single item", value: "s" },
+  { name: "collection", value: "c" },
+];
 const sortData = [
   { name: "Lastest", value: "b" },
   { name: "Last 7 days", value: "s" },
@@ -17,11 +18,15 @@ const sortData = [
   { name: "Last 60 days", value: "sd" },
   { name: "Last 90 days", value: "sdsd" },
 ];
-const MarketContent = ({openSide,setOpenSide, allListedNfts} :any) => {
+const MarketContent = ({
+  openSide,
+  setOpenSide,
+  allListedNfts,
+  loading,
+}: any) => {
   const [selectedType, setSelectedType] = useState({ name: "", value: "" });
   const [selectedSort, setSelectedSort] = useState({ name: "", value: "" });
-
-
+  // if (loading) return <NftLoading />;
 
   return (
     <div
@@ -52,29 +57,38 @@ const MarketContent = ({openSide,setOpenSide, allListedNfts} :any) => {
         </div>
         <div className="lg:w-4/12 lg:max-w-[479px] grid grid-cols-2 gap-x-4 w-full ">
           <span>
-            
-            <Select options={selectTypeData} title={'Bundle'} selected={selectedType} setSelected={setSelectedType}  />
-            </span>
+            <Select
+              options={selectTypeData}
+              title={"Bundle"}
+              selected={selectedType}
+              setSelected={setSelectedType}
+            />
+          </span>
           <span>
-            
-            <Select options={sortData} title={'Sort by'} selected={selectedSort} setSelected={setSelectedSort}  />
-            </span>
-            <span></span>
+            <Select
+              options={sortData}
+              title={"Sort by"}
+              selected={selectedSort}
+              setSelected={setSelectedSort}
+            />
+          </span>
+          <span></span>
         </div>
       </div>
       {/* start of the content side of things */}
 
       <div className="mt-8  gap-5 grid grid-cols-2 2xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 place-items-center ">
-
-        {
-          allListedNfts?.length > 0 && (
-            allListedNfts?.map((item: any, index: number) => {
-              return (
-                <SingleNftCard item={item} key={index} cardType='listed' isTrending />
-              )
-            })
-          )
-}
+        {allListedNfts?.length > 0 &&
+          allListedNfts?.map((item: any, index: number) => {
+            return (
+              <SingleNftCard
+                item={item}
+                key={index}
+                cardType="listed"
+                isTrending={false}
+              />
+            );
+          })}
 
         {/* {
           SingleItemsData?.map((item: any, index: number) => {
@@ -83,13 +97,11 @@ const MarketContent = ({openSide,setOpenSide, allListedNfts} :any) => {
   )
 })
         } */}
-
-</div>
-
+      </div>
 
       {/* end of the content */}
     </div>
   );
-}
+};
 
-export default MarketContent
+export default MarketContent;

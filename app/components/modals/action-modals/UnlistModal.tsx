@@ -12,6 +12,7 @@ import paymentSuccess from "@/public/assets/general/payment-success.png";
 import { contractType, useAddress, useContract } from "@thirdweb-dev/react";
 import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 import SPT721Abi from "@/abi/SptERC721.json";
+import APIService from "@/app/utils/APIServices";
 import errorIcon from "@/public/assets/icons/error-icon.png";
 
 interface listingProps {
@@ -74,28 +75,6 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
   const ipfsUrl = parseMetadata.image.replace("ipfs://", "");
   const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
 
-  const handleListNft = async () => {
-    try {
-      const ethValue = ethers.utils.parseEther(fixedPrice);
-      await nftContract?.call("approve", [
-        process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
-        item.token_id,
-      ]);
-      const data = await marketplaceContract?.call("listNft", [
-        item.token_address,
-        item.token_id,
-        ethValue,
-      ]);
-      setCurrent("success");
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-      setOpen(false);
-    } finally {
-      //setOpen(false);
-    }
-  };
-
   const [selected, setSelected] = useState({
     value: "Select Duration",
     label: "Select",
@@ -136,11 +115,17 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
         item.token_address,
         item.token_id,
       ]);
+
+      const unListApiResponse = await APIService.patch(
+        `/marketplace/list/status?contractAddress=${item?.token_address}&nftid=${item?.token_id}`
+      );
       console.log(unListData);
+      console.log(unListApiResponse);
       setCurrent("success");
     } catch (error) {
       console.log("Error UnListing NFT: ", error);
       setOpen(false);
+      setCurrent("error");
     }
   };
 

@@ -18,82 +18,81 @@ import EndAuctionModal from "../modals/action-modals/EndAuctionModal";
 import AuctionModal from "../modals/action-modals/AuctionModal";
 import CancelAuctionModal from "../modals/action-modals/CancelAutionModal";
 const SingleNftCard = ({
-    isTrending,
-    item,
-    cardType,
+  isTrending,
+  item,
+  cardType,
 }: {
-    isTrending: boolean;
-    item: any;
-    cardType?: string;
+  isTrending: boolean;
+  item: any;
+  cardType?: string;
 }) => {
-    const [liked, setLiked] = useState(false);
-    const [openOptions, setOpenOptions] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [openListing, setOpenListing] = useState(false);
-    const [openUnListing, setOpenUnListing] = useState(false);
-    const [openShare, setOpenShare] = useState(false);
-    const [isAuction, setIsAuction] = useState(false);
-    const [openEndAuction, setOpenEndAuction] = useState(false);
-    const [openAuction, setOpenAuction] = useState(false);
-    const [openCancelAuction, setOpenCancelAuction] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [openOptions, setOpenOptions] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [openListing, setOpenListing] = useState(false);
+  const [openUnListing, setOpenUnListing] = useState(false);
+  const [openShare, setOpenShare] = useState(false);
+  const [isAuction, setIsAuction] = useState(false);
+  const [openEndAuction, setOpenEndAuction] = useState(false);
+  const [openAuction, setOpenAuction] = useState(false);
+  const [openCancelAuction, setOpenCancelAuction] = useState(false);
 
-    const [priceData, setPriceData] = useState<any>();
-    const [isFetchingPrice, setIsFetchingPrice] = useState(false);
-    const [retrievedNft, setRetrievedNft] = useState<any>({
-        image: heart,
-        name: "NFT not found",
-    });
+  const [priceData, setPriceData] = useState<any>();
+  const [isFetchingPrice, setIsFetchingPrice] = useState(false);
+  const [retrievedNft, setRetrievedNft] = useState<any>({
+    image: heart,
+    name: "NFT not found",
+  });
 
-    const { contract } = useContract(item.contractAddress);
-    
-    const { contract: marketplaceContract } = useContract(
-        process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
-        sptMarketplaceAbi
-    );
-    const { data: nft, isLoading, error } = useNFT(contract, item.nftId);
-    const router = useRouter();
-    const handleNavigate = () => {
-        router.push(`/nft/${item.contractAddress}/${item.nftId}`);
-    };
+  const { contract } = useContract(item.contractAddress);
 
-    const handleAuctionState = async () => {
-        try {
-            const auctionState = await marketplaceContract?.call("getAuctionState", [
-                item?.contractAddress,
-                item?.nftId,
-            ]);
-            console.log("Auction state: ", auctionState);
-            setIsAuction(auctionState);
-        } catch (error) {
-            console.log("Error fetching auction state: ", error);
-        }
-    };
+  const { contract: marketplaceContract } = useContract(
+    process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
+    sptMarketplaceAbi
+  );
+  const { data: nft, isLoading, error } = useNFT(contract, item.nftId);
+  const router = useRouter();
+  const handleNavigate = () => {
+    router.push(`/nft/${item.contractAddress}/${item.nftId}`);
+  };
 
-    const handleGetPrice = async () => {
-        setIsFetchingPrice(true);
-        try {
-            const getPriceData = await marketplaceContract?.call("getPrice", [
-                contract,
-                item?._id,
-            ]);
-            console.log({getPriceData})
-            const priceInWei = ethers.utils.formatEther(getPriceData);
-            setPriceData(priceInWei);
-        } catch (error) {
-            console.log("Error fetching price: ", error);
-            setPriceData(null);
-        } finally {
-            setIsFetchingPrice(false);
-        }
-    };
+  const handleAuctionState = async () => {
+    try {
+      const auctionState = await marketplaceContract?.call("getAuctionState", [
+        item?.contractAddress,
+        item?.nftId,
+      ]);
+      console.log("Auction state: ", auctionState);
+      setIsAuction(auctionState);
+    } catch (error) {
+      console.log("Error fetching auction state: ", error);
+    }
+  };
 
-    useEffect(() => {
-        handleAuctionState();
-        if (marketplaceContract && item.contractAddress && item.nftId) {
-            handleGetPrice();
-        }
-    }, [item.contractAddress, item.nftId]);
-    
+  const handleGetPrice = async () => {
+    setIsFetchingPrice(true);
+    try {
+      const getPriceData = await marketplaceContract?.call("getPrice", [
+        contract,
+        item?._id,
+      ]);
+      console.log({ getPriceData });
+      const priceInWei = ethers.utils.formatEther(getPriceData);
+      setPriceData(priceInWei);
+    } catch (error) {
+      console.log("Error fetching price: ", error);
+      setPriceData(null);
+    } finally {
+      setIsFetchingPrice(false);
+    }
+  };
+
+  useEffect(() => {
+    handleAuctionState();
+    if (marketplaceContract && item.contractAddress && item.nftId) {
+      handleGetPrice();
+    }
+  }, [item.contractAddress, item.nftId]);
 
   if (loading) return <NftLoading />;
 
@@ -189,19 +188,23 @@ const SingleNftCard = ({
             className="w-full relative"
           >
             {cardType === "listed" &&
-              item?.status !==
-                "not for sale" && (
-                  <div className="absolute bottom-2 right-4">
-                    <p className="bold grad-text">On Sale</p>
-                  </div>
-                )}
+              item?.status !== "not for sale" &&
+              isLoading === false && (
+                <div className="absolute bottom-2 right-4">
+                  <p className="bold grad-text">On Sale</p>
+                </div>
+              )}
             <MediaRenderer
               height="233px"
-              width="100%"
+              width="300px"
               style={{
                 backgroundColor: nft?.metadata.background_color || "black",
               }}
-              className="w-full flex-[3]  rounded-[20px] object-cover "
+              className={
+                isLoading
+                  ? `w-full flex-[3]  rounded-[20px] object-cover animate-pulse`
+                  : `w-full flex-[3]  rounded-[20px] object-cover `
+              }
               src={nft?.metadata.image}
             />
           </Link>
