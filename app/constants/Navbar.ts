@@ -23,21 +23,19 @@ export const navData: {
     linkTo: "/select-nft",
   
   },
-  {
-    id: 3,
-    text: "FAQ",
-
-    // linkTo: "/select-nft",
-    linkTo: "/faq",
-  },
+  // {
+  //   id: 3,
+  //   text: "FAQ",
+  //   linkTo: "/faq",
+  // },
  
-  {
-    id: 4,
-    text: "Staking" ,
+  // {
+  //   id: 4,
+  //   text: "Staking" ,
 
-    linkTo: "/staking",
-    // linkTo: "/home",
-  },
+  //   linkTo: "/staking",
+  
+  // },
  
 ];
 export const marketNavData: {

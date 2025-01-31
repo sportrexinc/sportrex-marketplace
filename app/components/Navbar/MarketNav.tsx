@@ -56,16 +56,7 @@ const MarketNav = ({ current }: any) => {
           />
         </div>
         <div className="right w-9/12 flex  items-center  justify-between">
-          <div className="w-full max-w-[400px] h-[40px]  flex-grow flex items-center bg-[#ABABAB] bg-opacity-10 rounded-[8px] py-2 px-3 space-x-3 overflow-x-hidden ">
-            <span>
-              <SearchIcon />
-            </span>
-            <input
-              type="text"
-              className="placeholder:text-white placeholder:text-opacity-50 placeholder:text-sm text-white text-sm bg-transparent outline-none border-none  "
-              placeholder="search here"
-            />
-          </div>
+         
           <ul className="w-full flex items-center justify-around space-x-5">
             {marketNavData.map((item, index) => {
               return (
