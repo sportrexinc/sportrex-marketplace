@@ -92,7 +92,7 @@ const NewHero = ({ current = 1 }: any) => {
                       );
                     })}
                   </div>
-                  <div className="w-5/12 flex items-center gap-3 justify-between">
+                  <div className="w-6/12 flex items-center gap-3 justify-between">
                     <div className={styles.listItem}>
                       <Resources />
                     </div>

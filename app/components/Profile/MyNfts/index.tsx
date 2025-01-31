@@ -15,7 +15,7 @@ const MyNfts = () => {
   const address = useAddress()
   const dispatch = useAppDispatch()
   const { nft_data, nft_loading, nft_data_history_count, nft_data_history } = useAppSelector(state => state.userNft)
-
+ 
   useEffect(() => {
      if(address) dispatch(getUserNft({ address, chain: 'binance-testnet', limit: 15 }))
   },[address])
