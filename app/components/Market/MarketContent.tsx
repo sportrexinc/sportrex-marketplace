@@ -4,6 +4,7 @@ import Select from '../Select/ReuseSelect';
 import { SingleItemsData } from '../../utils/marketDatas';
 import SingleItemCard from '../Cards/SingleCard';
 import SingleItem from '../Cards/SingleItem';
+import SingleNftCard from './SingleNftCard';
 const selectTypeData = [
   {name:"bundle", value:"b",},
   {name:"single item", value:"s",},
@@ -16,7 +17,7 @@ const sortData = [
   { name: "Last 60 days", value: "sd" },
   { name: "Last 90 days", value: "sdsd" },
 ];
-const MarketContent = ({openSide,setOpenSide} :any) => {
+const MarketContent = ({openSide,setOpenSide, allListedNfts} :any) => {
   const [selectedType, setSelectedType] = useState({ name: "", value: "" });
   const [selectedSort, setSelectedSort] = useState({ name: "", value: "" });
 
@@ -24,12 +25,12 @@ const MarketContent = ({openSide,setOpenSide} :any) => {
 
   return (
     <div
-      className={`sidebar-h overflow-y-scroll  ${
-        openSide ? "lg:px-8 lg:py-12 w-full " : "px-16 lg:py-12 w-full"
+      className={`sidebar-h  overflow-y-scroll  ${
+        openSide ? "lg:px-8 lg:py-12 w-full " : "px-4 lg:px-16 lg:py-12 w-full"
       }`}
     >
-      <div className="w-full flex lg:flex-row justify-between items-center">
-        <div className="w-full lg:6/12 max-w-[479px]  2xl:w-4/12 flex items-center space-x-4 ">
+      <div className="w-full flex  flex-col gap-4 mt-8 lg:flex-row lg:justify-between lg:items-center ">
+        <div className="w-full lg:6/12 max-w-[479px]  2xl:w-4/12 flex items-center gap-4 ">
           {!openSide && (
             <span className="cursor-pointer" onClick={() => setOpenSide(true)}>
               <CollapseIcon />
@@ -37,7 +38,7 @@ const MarketContent = ({openSide,setOpenSide} :any) => {
           )}
 
           {/* search */}
-          <div className="w-full flex-grow flex items-center bg-[#ABABAB] bg-opacity-10 rounded-[8px] py-3 px-3 space-x-3 overflow-x-hidden ">
+          <div className="w-full flex-grow flex items-center bg-[#ABABAB] bg-opacity-10 rounded-[8px] py-3 px-3 gap-x-3 overflow-x-hidden ">
             <span>
               <SearchIcon />
             </span>
@@ -49,7 +50,7 @@ const MarketContent = ({openSide,setOpenSide} :any) => {
           </div>
           {/* end of search  */}
         </div>
-        <div className="lg:w-4/12 max-w-[479px] grid grid-cols-2 gap-4 ">
+        <div className="lg:w-4/12 lg:max-w-[479px] grid grid-cols-2 gap-x-4 w-full ">
           <span>
             
             <Select options={selectTypeData} title={'Bundle'} selected={selectedType} setSelected={setSelectedType}  />
@@ -63,14 +64,26 @@ const MarketContent = ({openSide,setOpenSide} :any) => {
       </div>
       {/* start of the content side of things */}
 
-      <div className="mt-8  gap-5 grid 2xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 place-items-center ">
+      <div className="mt-8  gap-5 grid grid-cols-2 2xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 place-items-center ">
+
         {
+          allListedNfts?.length > 0 && (
+            allListedNfts?.map((item: any, index: number) => {
+              return (
+                <SingleNftCard item={item} key={index} cardType='listed' isTrending />
+              )
+            })
+          )
+}
+
+        {/* {
           SingleItemsData?.map((item: any, index: number) => {
             return (
     <SingleItem key={index} isTrending={false} image={item?.image} name={item?.name} price={item.price} likes={item?.likes}  />
   )
 })
-        }
+        } */}
+
 </div>
 
 

@@ -11,6 +11,7 @@ import { persistReducer, persistStore } from "redux-persist";
 
 import AuthSlice, { authSlice } from "./features/auth/AuthSlice";
 import UserNft from "./features/auth/MyNftSlice";
+import  marketSlice  from "./features/marketplace/marketplaceSlice";
 // import logger from "redux-logger";
 import storageSession from "redux-persist/lib/storage";
 import {
@@ -24,7 +25,8 @@ import {
 
 const reducer = combineReducers({
   auth: AuthSlice,
-  userNft: UserNft
+  userNft: UserNft,
+  market: marketSlice,
 });
 const persistConfig = {
   key: "root",

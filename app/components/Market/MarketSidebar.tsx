@@ -60,7 +60,7 @@ const MarketSidebar = ({ openSide, setOpenSide }: { openSide: boolean; setOpenSi
     return (
       <div
         className={`sidebar-h flex-col lg:pt-10 border-r overflow-y-scroll border-r-[#ababab] border-opacity-10  ${
-          openSide ? "max-w-[291px] bg-blue-card w-full flex" : "hidden "
+          openSide ? "fixed top-[100px] lg:top-0 left-0 right-0 z-50 lg:relative lg:max-w-[291px] bg-blue-card w-full flex" : "hidden "
         }`}
       >
         {/* start of filter and close */}
