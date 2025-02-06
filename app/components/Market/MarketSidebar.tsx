@@ -53,10 +53,11 @@ const catData = [
   },
 ]
 const MarketSidebar = ({ openSide, setOpenSide,minPrice,setMinPrice,maxPrice,setMaxPrice,status, setStatus,category, setCategory, allCollections,  handleSearchCollection, collectionSearchText, setCollectionSearchText }: any) => {
-  const [openFilterBy, setOpenFilterBy] = useState(true);
-  const [openPrice, setOpenPrice] = useState(true);
-  const [openCollection, setOpenCollection] = useState(true);
-  const [openCat, setOpenCat] = useState(true);
+  const [openFilterBy, setOpenFilterBy] = useState<boolean>(true);
+  const [openPrice, setOpenPrice] = useState<boolean>(true);
+  const [openCollection, setOpenCollection] = useState<boolean>(true);
+  const [openCat, setOpenCat] = useState<boolean>(true);
+  const [showAll, setShowAll] = useState<boolean>(false);
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       handleSearchCollection();
@@ -198,7 +199,9 @@ const MarketSidebar = ({ openSide, setOpenSide,minPrice,setMinPrice,maxPrice,set
           </div>
           {/* end of search  */}
           <div className="flex flex-col space-y-4">
-            {allCollections?.slice(0, 40)?.map((item: any, index: number) => {
+            {
+            (showAll ? allCollections : allCollections?.slice(0,10))
+              ?.map((item: any, index: number) => {
               return (
                 <div className="flex space-x-4 items-center " key={index}>
                   <Image
@@ -213,7 +216,16 @@ const MarketSidebar = ({ openSide, setOpenSide,minPrice,setMinPrice,maxPrice,set
               );
             })}
           </div>
-          <p className="semibold text-sm text-[#ababab] ">View All</p>
+          {
+            allCollections?.length > 10 && (
+
+              <p className="semibold text-sm text-[#ababab]" onClick={() => setShowAll(!showAll)}>
+                {
+                  showAll ? "Show less" : "Show all"
+              }  
+              </p>
+            )
+          }
         </div>
       )}
       {/* enf of collection */}
@@ -231,7 +243,9 @@ const MarketSidebar = ({ openSide, setOpenSide,minPrice,setMinPrice,maxPrice,set
           <div className="flex flex-col space-y-4">
             {catData.map((item: any, index: number) => {
               return (
-                <div className="flex space-x-4 items-center cursor-pointer " key={index} onClick={() => setCategory(item?.name)}>
+                <div className="flex space-x-4 items-center cursor-pointer " key={index}
+                  // onClick={() => setCategory(item?.name)}
+                >
                   <Image src={item.image} alt="name" />
                   <p className="semibold text-white capitalize">{item.name}</p>
                 </div>
