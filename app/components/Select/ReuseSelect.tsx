@@ -18,7 +18,7 @@ const Select = ({ title, selected, setSelected, options, className }: { title: s
         className={`${className??"bg-blue-dropHeader"}  flex px-4 text-white justify-between py-3 rounded-md`}
         onClick={toggleOpen}
       >
-        <p className="regular">{selected.name ? selected.name : title}</p>
+        <p className="regular">{selected?.name ? selected?.name : title}</p>
         <div className="flex items-center justify-center">
           {isOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
@@ -28,11 +28,11 @@ const Select = ({ title, selected, setSelected, options, className }: { title: s
           <div className="flex flex-col p-4">
             {options.map((option:any) => (
               <div
-                key={option.value}
+                key={option?.value}
                 className="flex items-center justify-between px-4 py-2 text-md regular hover:bg-blue-btn"
                 onClick={() => selectOption(option)}
               >
-                <p className="text-sm regular">{option.name}</p>
+                <p className="text-sm regular">{option?.name}</p>
               </div>
             ))}
           </div>
