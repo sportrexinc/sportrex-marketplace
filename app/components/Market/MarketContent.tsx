@@ -7,9 +7,9 @@ import SingleItem from "../Cards/SingleItem";
 import SingleNftCard from "./SingleNftCard";
 import NftLoading from "../Loader/NftLoading";
 const selectTypeData = [
-  { name: "bundle", value: "b" },
-  { name: "single item", value: "s" },
-  { name: "collection", value: "c" },
+  { name: "single", value: "single-edition" },
+  { name: "multiple", value: "multiple-edition" },
+
 ];
 const sortData = [
   { name: "Lastest", value: "b" },
@@ -23,11 +23,16 @@ const MarketContent = ({
   setOpenSide,
   allListedNfts,
   loading,
+  collectionType,setCollectionType, searchText, setSearchText, handleSearch
 }: any) => {
   const [selectedType, setSelectedType] = useState({ name: "", value: "" });
   const [selectedSort, setSelectedSort] = useState({ name: "", value: "" });
   // if (loading) return <NftLoading />;
-
+const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  if (event.key === "Enter") {
+    handleSearch();
+  }
+};
   return (
     <div
       className={`sidebar-h  overflow-y-scroll  ${
@@ -51,6 +56,9 @@ const MarketContent = ({
               type="text"
               className="placeholder:text-white placeholder:text-opacity-50 placeholder:text-sm text-white text-sm bg-transparent outline-none border-none  "
               placeholder="Enter Search Querry"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
           </div>
           {/* end of search  */}
@@ -59,9 +67,9 @@ const MarketContent = ({
           <span>
             <Select
               options={selectTypeData}
-              title={"Bundle"}
-              selected={selectedType}
-              setSelected={setSelectedType}
+              title={"select"}
+              selected={collectionType}
+              setSelected={setCollectionType}
             />
           </span>
           <span>

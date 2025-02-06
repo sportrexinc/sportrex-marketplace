@@ -28,7 +28,7 @@ const ShareModal = ({
     window.open(shareUrl, "_blank", "noopener,noreferrer");
   };
 
-  console.log(item);
+
   return (
     <ReUseModal open={openShare} setOpen={setOpenShare}>
       <div className="w-full flex flex-col">
