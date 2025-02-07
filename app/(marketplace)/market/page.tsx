@@ -62,7 +62,7 @@ const Marketplace = () => {
     const searchQuery = buildCollectionSearchQuery();
   
     setCollectionLoading(true);
-    const { payload } = await dispatch(getAllNftCollection(searchQuery));
+    const { payload } = await dispatch(getMarketplaceCollections(searchQuery));
        if (payload?.data) {
          setAllCollections(payload?.data);
          setCollectionLoading(false);
@@ -79,27 +79,41 @@ const Marketplace = () => {
   };
   const handleFetchAllCollections = async () => {
     setCollectionLoading(true);
-    const { payload } = await dispatch(getMarketplaceCollections());
+    const { payload } = await dispatch(getMarketplaceCollections(""));
     if (payload?.data) {
     
       setAllCollections(payload?.data);
       setCollectionLoading(false);
     }
   };
-  useEffect(() => {
-    handleFetchAllNfts();
-    handleFetchAllCollections();
-
-  }, []);
+  // useEffect(() => {
+  //   handleFetchAllNfts();
+  //   handleFetchAllCollections();
+  // }, []);
 
 useEffect(() => {
   handleSearch();
 }, [minPrice, maxPrice, collectionType, status])
+  useEffect(() => {
+    if (!searchText) {
+      handleFetchAllNfts();
+    }
+    else if(searchText?.length > 2) {
+      handleSearch();
+    }
+    if (!collectionSearchText) {
+       handleFetchAllCollections();
+    }
+    else if (collectionSearchText?.length > 2) {
+      handleSearchCollection();
+    }
+    
+  }, [searchText,collectionSearchText])
+  
   
   
 
- 
-  
+
   
   return (
     <MarketLayout current={2}>
