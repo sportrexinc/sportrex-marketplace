@@ -201,11 +201,11 @@ export const getCollectionByRanking = createAsyncThunk(
 
 export const getMarketplaceCollections = createAsyncThunk(
   "getMarketplaceCollections",
-  async (_, { rejectWithValue, getState }) => {
+  async (payload:string, { rejectWithValue, getState }) => {
     const { auth }: any = getState();
     try {
       const { data } = await APIService.get(
-        `${url.marketplace}/marketplace-collection`
+        `${url.marketplace}/marketplace-collection${payload}`
       );
       return data;
     } catch (error: any) {

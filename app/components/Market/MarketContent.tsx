@@ -63,8 +63,8 @@ const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
           </div>
           {/* end of search  */}
         </div>
-        <div className="lg:w-4/12 lg:max-w-[479px] grid grid-cols-2 gap-x-4 w-full ">
-          <span>
+        <div className="lg:w-4/12 lg:max-w-[479px] flex justify-end gap-x-4 w-full ">
+          <span className="w-1/2">
             <Select
               options={selectTypeData}
               title={"select"}
@@ -72,14 +72,14 @@ const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
               setSelected={setCollectionType}
             />
           </span>
-          <span>
+          {/* <span>
             <Select
               options={sortData}
               title={"Sort by"}
               selected={selectedSort}
               setSelected={setSelectedSort}
             />
-          </span>
+          </span> */}
           <span></span>
         </div>
       </div>

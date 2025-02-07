@@ -95,7 +95,7 @@ const SingleNftCard = ({
   }, [item.contractAddress, item.nftId]);
 
   if (loading) return <NftLoading />;
-
+  console.log(nft);
   return (
     <div>
       <>
