@@ -95,19 +95,11 @@ const SingleNftCard = ({
   }, [item.contractAddress, item.nftId]);
 
   if (loading) return <NftLoading />;
-
+  console.log(nft);
   return (
     <div>
       <>
         <div className="w-full overflow-hidden box-border md:h-[350px] h-full bg-blue-header rounded-[10px] p-2 lg:p-4 md:rounded-[20px] flex flex-col  items-start space-y-[12px] justify-between relative">
-          {/* <div className="absolute left-2 top-2">
-            {Number(item?.price) > 1 && (
-              <span className="bg-black text-[14px] rounded-full p-1 text-green">
-                {" "}
-                {`x${item?.price}`}{" "}
-              </span>
-            )}
-          </div> */}
           <div className="absolute right-7 top-7 z-10">
             <Options>
               {cardType === "owned" && (
@@ -184,7 +176,7 @@ const SingleNftCard = ({
             </Options>
           </div>
           <Link
-            href={`/nft/${item.contractAddress}/${item.nftId}`}
+            href={`/nft/${item?.contractAddress}/${item?.nftid}`}
             className="w-full relative"
           >
             {cardType === "listed" &&
@@ -209,9 +201,9 @@ const SingleNftCard = ({
             />
           </Link>
           <div className="flex flex-1 overflow-hidden justify-between items-center w-full mb-2 px-2">
-            <Link href={`/nft/${item.contractAddress}/${item.nftId}`}>
+            <Link href={`/nft/${item?.contractAddress}/${item?.nftid}`}>
               <p className="text-[16px] semibold" onClick={handleNavigate}>
-                {nft?.metadata.name}
+                {item?.nftName}
               </p>
               <div className="text-[#FAC744]  text-[14px] semibold leading-[22px]">
                 {isFetchingPrice

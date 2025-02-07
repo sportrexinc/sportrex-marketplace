@@ -52,7 +52,7 @@ const MarketNav = ({ current }: any) => {
             src={logo}
             alt="logo"
             className="w-48 cursor-pointer"
-            onClick={() => navigate.push("/home")}
+            onClick={() => navigate.push("/")}
           />
         </div>
         <div className="right w-9/12 flex  items-center  justify-between">

@@ -11,7 +11,9 @@ import paymentSuccess from "@/public/assets/general/payment-success.png";
 import { useContract } from "@thirdweb-dev/react";
 import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 import SPT721Abi from "@/abi/SptERC721.json";
+import { useAddress } from "@thirdweb-dev/react";
 import errorIcon from "@/public/assets/icons/error-icon.png";
+import APIService from "@/app/utils/APIServices";
 interface listingProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -25,7 +27,7 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
   const [auctionDuration, setAuctionDuration] = useState(0);
   const [makingOffer, setMakingOffer] = useState(false);
   const parseMetadata = JSON.parse(item.metadata);
-
+  const userAddress = useAddress();
   const daysToSeconds = (days: any) => {
     return days * 24 * 60 * 60;
   };
@@ -63,7 +65,7 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
   );
   const { contract: nftContract } = useContract(item.token_address, SPT721Abi);
   const [offerPrice, setOfferPrice] = useState<any>();
-  const [errorMessage, setErrorMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState("");
   const [priceDataWei, setPriceDataWei] = useState<any>();
   const ipfsGateway = "https://ipfs.io/ipfs/";
   const ipfsUrl = parseMetadata.image.replace("ipfs://", "");
@@ -71,42 +73,6 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
   const params = useParams();
   const address = params.contractId;
   const tokenId = params.nftId;
-  const handleListNft = async () => {
-    try {
-      const ethValue = ethers.utils.parseEther(fixedPrice);
-      await nftContract?.call("approve", [
-        process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
-        item.token_id,
-      ]);
-      const data = await marketplaceContract?.call("listNft", [
-        item.token_address,
-        item.token_id,
-        ethValue,
-      ]);
-      setCurrent("success");
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-      setOpen(false);
-    } finally {
-      //setOpen(false);
-    }
-  };
-
-  const handleAuction = async () => {
-    try {
-      const data = await marketplaceContract?.call("startAuction", [
-        item.token_address,
-        item.token_id,
-        auctionDuration,
-      ]);
-      setCurrent("success");
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-      setOpen(false);
-    }
-  };
 
   const [selected, setSelected] = useState({
     value: "Select Duration",
@@ -119,6 +85,7 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
     setAuctionDuration(option.value);
   };
 
+  const currentTimeStamp = Date.now();
   const handleMakeOffer = async () => {
     try {
       const data = await marketplaceContract?.call(
@@ -128,13 +95,23 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
         //   value: offerPrice,
         // }
       );
+      const offerData = {
+        bidder: userAddress,
+        price: offerPrice,
+        timestamp: currentTimeStamp,
+      };
+      const offerResponse = await APIService.post(
+        `/marketplace/list/bid?contractAddress=${address}&nftid=${tokenId}`,
+        offerData
+      );
+      console.log(offerResponse);
       console.log("Bidding NFT: ", data);
       setCurrent("success");
     } catch (error: any) {
       const reason =
         error?.reason || error?.data?.message || "An unexpected error occurred";
       console.log("Error bidding NFT: ", error);
-      setErrorMessage(reason)
+      setErrorMessage(reason);
       setCurrent("error");
       //setOpen(false);
     }
@@ -369,13 +346,15 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
               )}
               {current === "error" && (
                 <div className="w-full flex flex-col items-center gap-2">
-                  <Image src={errorIcon} alt="pending " className="w-[100px] mx-auto" />
+                  <Image
+                    src={errorIcon}
+                    alt="pending "
+                    className="w-[100px] mx-auto"
+                  />
                   <p className="regular text-white text-[18px] leading-[30px] max-w-[320px] mx-auto text-center  ">
                     Transaction Failed
                   </p>
-                  <p className="text-sm regular text-white">
-                    {errorMessage}
-                  </p>
+                  <p className="text-sm regular text-white">{errorMessage}</p>
                   <div className="w-full mx-auto mt-5">
                     {/* <Link
                       className="flex items-center rounded-[10px] justify-center  sm:text-[16px] light bg-blue-btn text-white px-4 py-2  w-full md:py-4 h-[40px] md:h-auto cursor-pointer semibold text-[10px] min-w-max}"

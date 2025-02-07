@@ -5,7 +5,7 @@ const Resources = () => {
   const [open, setOpen] = useState(false);
   const navigate = useRouter();
   const handleBlog = () => {
-    navigate.push("/home");
+    navigate.push("/");
     setOpen(false);
   };
   const handleFaq = () => {
