@@ -50,7 +50,7 @@ const SingleNftCard = ({
     process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
     sptMarketplaceAbi
   );
-  const { data: nft, isLoading, error } = useNFT(contract, item.nftId);
+  const { data: nft, isLoading, error } = useNFT(contract, item?.nftid);
   const router = useRouter();
   const handleNavigate = () => {
     router.push(`/nft/${item.contractAddress}/${item.nftId}`);
