@@ -3,22 +3,11 @@ import { useCallback, useEffect, useState } from "react";
 import NonControlledLayout from "@/app/layouts/NonControlledLayout";
 import NormalLayout from "@/app/layouts/NormalLayout";
 import React from "react";
-import Collections from "../Profile/Collections";
-import Favourite from "../Profile/Favourite";
 import MyActivities from "../Profile/MyActivities";
-import MyNfts from "../Profile/MyNfts";
-import MyOffer from "../Profile/MyOffer";
-import ProfileHero from "../Profile/ProfileHero";
-import ProfileTab from "../Profile/ProfileTab";
 import CollectionHero from "./CollectionHero";
 import CollectionTab from "./CollectionTab";
 import CollectionItems from "./CollectionsItems";
-import {
-  getSingleCollectionDetail,
-  getUserNft,
-} from "@/app/redux/features/auth/MyNftSlice";
 import { useAppDispatch, useAppSelector } from "@/app/redux/store";
-import { useAddress } from "@thirdweb-dev/react";
 import APIService from "@/app/utils/APIServices";
 import { useParams, useRouter } from "next/navigation";
 
@@ -70,13 +59,13 @@ const NewCollectionMint = () => {
   const Edit = () => {
     navigate.push("/edit-nft");
   };
-  const [pD, setPd] = useState(true);
-  const [aP, setaP] = useState(true);
-  const [details, setDetails] = useState(true);
-  const [pA, setPA] = useState(true);
-  const [offers, setOffers] = useState(true);
-  const [listing, setListing] = useState(true);
-  const [events, setEvents] = useState(true);
+  // const [pD, setPd] = useState(true);
+  // const [aP, setaP] = useState(true);
+  // const [details, setDetails] = useState(true);
+  // const [pA, setPA] = useState(true);
+  // const [offers, setOffers] = useState(true);
+  // const [listing, setListing] = useState(true);
+  // const [events, setEvents] = useState(true);
 
   const truncateMiddle = (text: string, length: number) => {
     if (typeof text !== "string") return text;

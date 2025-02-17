@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import thumbnail from "@/public/assets/profile/thumbnail.jpg";
+
+
 import { FiSettings } from "react-icons/fi";
 import { AiFillCamera } from "react-icons/ai";
 import "./profile.css";
-import defaultPic from "@/public/assets/png/default-profile-pic.jpg"
+import defaultPic from "@/public/assets/png/default-profile-pic.jpg";
+import logo from "@/public/assets/sportrex-logo.png"
 import ReUseModal from "../modals/ReUseModal";
 import ActionBtn from "../Button/ActionBtn";
 import { toast } from "react-toastify";
@@ -11,7 +14,10 @@ import { useAddress } from "@thirdweb-dev/react";
 import { useAppDispatch, useAppSelector } from "@/app/redux/store";
 import { useRouter } from "next/navigation";
 import Image from "next/image"
-import { getUserProfile, resetImageUpload, updateUserProfileAvatar, updateUserProfileBanner } from "@/app/redux/features/auth/AuthSlice";
+import { createUserProfile, getUserProfile, resetImageUpload, updateUserProfileAvatar, updateUserProfileBanner } from "@/app/redux/features/auth/AuthSlice";
+import Link from "next/link";
+import { YellowActionBtn } from "..";
+import { setLoading } from "@/app/redux/features/auth/MyNftSlice";
 interface ImageUploaderProps {
   onImageUpload: (image: File) => void;
 }
@@ -31,54 +37,47 @@ const ProfileHero = () => {
   const dispatch = useAppDispatch();
   const auth = useAppSelector((state) => state.auth);
   const [isAvatar, setIsAvatar] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
 
   const [activeTab, setActiveTab] = useState("nft");
+  const [openNewUser, setOpenNewUser] = useState(false);
+  const [avatarImage, setAvatarImage] = useState<File | null>(null);
+  const [bannerImage, setBannerImage] = useState<File | null>(null);
+  
   const navigate = useRouter();
   const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const address = useAddress()
 
-  const handleImageChangeAvatar = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
+ const handleImageChange = (
+   event: React.ChangeEvent<HTMLInputElement>,
+   isAvatar: boolean
+ ) => {
+   const files = event.target.files;
+   if (files && files.length > 0) {
+     if (isAvatar) {
+       setAvatarImage(files[0]);
+       uploadImage(files[0], true);
+     } else {
+       setBannerImage(files[0]);
+       uploadImage(files[0], false);
+     }
+   }
+ };
 
-    if (files && files.length > 0) {
-      setSelectedImage(files[0]);
-      setIsAvatar(true);
-    }
-  };
-  const handleImageChangeBanner = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
+ const uploadImage = async (image: File, isAvatar: boolean) => {
+   if (!image || !address) return;
 
-    if (files && files.length > 0) {
-      setSelectedImage(files[0]);
-      setIsAvatar(false);
-    }
-  };
+ 
+   if (isAvatar) {
+    
+   await  dispatch(updateUserProfileAvatar({ image, address }));
+   } else {
+  await dispatch(updateUserProfileBanner({ image, address }));
+   }
+ };
 
-  const handleUpload = () => {
-    if (selectedImage) {
-      // You can create a FormData object and append the image file to it
-      const formData = new FormData();
-      formData.append("file", selectedImage);
-      if (isAvatar ) {
-       address && dispatch(updateUserProfileAvatar({formData, address}));
-      } else {
-       address && dispatch(updateUserProfileBanner({formData, address}));
-      }
-      console.log(formData);
-      // Call the onImageUpload function with the FormData object
 
-      // Clear the selected image after uploading
-      setSelectedImage(null);
-    }
-  };
-  useEffect(() => {
-    if (selectedImage) {
-      handleUpload();
-     
-      console.log(selectedImage);
-    }
-  }, [selectedImage])
   
 
   let defualtData = {
@@ -109,10 +108,40 @@ const ProfileHero = () => {
       }, 2000);
     }
   }, [auth.avatarUpdateSuccess]);
+  const handleFetchProfile = async () => {
+    setLoading(true);
+    if (address) {
+      const { payload, meta } = await dispatch(getUserProfile({ address }));
+      setLoading(false);
+     
+      if (meta.requestStatus === "rejected") {
+        setLoading(false);
+        setOpenNewUser(true);
+      }
+    }
+  }
   useEffect(() => {
-        address && dispatch(getUserProfile({ address }));
+    // address && dispatch(getUserProfile({ address }));
+    handleFetchProfile();
   }, [address]);
-  console.log(auth?.userData);
+  
+
+  const handleRegister = async () => {
+    setLoading(true);
+    try {
+        const { payload } = await dispatch(createUserProfile({ address }));
+        if (payload.status === "success") {
+          setOpenNewUser(false);
+          setLoading(false);
+          toast.success("Registered Successfully");
+          handleFetchProfile();
+        }
+    } catch (error) {
+      console.log(error);
+    }
+  
+  }
+
   const thumb = banner?.url ? banner?.url : thumbnail
  
   // console.log({ avatar });
@@ -139,6 +168,8 @@ const ProfileHero = () => {
           layout="fill"
           objectFit="cover"
           className="backdrop-blur-2xl"
+          
+        
         />
         <div className="flex space-x-4 absolute right-8 bottom-4">
           <FiSettings
@@ -151,7 +182,7 @@ const ProfileHero = () => {
               className="absolute inset-0 opacity-0 "
               type="file"
               accept="image/*"
-              onChange={handleImageChangeBanner}
+              onChange={(e) => handleImageChange(e, false)}
             />
           </div>
         </div>
@@ -161,6 +192,8 @@ const ProfileHero = () => {
               alt="image"
               src={avatar?.url ? avatar?.url : defaultPic}
               className={styles.profileImg}
+              width={200}
+              height={200}
               onClick={() => {
                 setIsAvatar(true);
                 setOpen(true);
@@ -172,7 +205,7 @@ const ProfileHero = () => {
             <input
               type="file"
               accept="image/*"
-              onChange={handleImageChangeAvatar}
+              onChange={(e) => handleImageChange(e, true)}
               className="opacity-0 absolute inset-0"
             />
           </div>
@@ -204,12 +237,48 @@ const ProfileHero = () => {
           <input
             type="file"
             accept="image/*"
-            onChange={handleImageChangeAvatar}
+            onChange={(e) => handleImageChange(e, true)}
           />
-          <ActionBtn
-            name={auth?.loading ? "Loading..." : "Upload"}
-            action={handleUpload}
-          />
+        
+        </div>
+      </ReUseModal>
+      <ReUseModal open={openNewUser} setOpen={setOpenNewUser}>
+        <div className="w-full flex flex-col space-y-4">
+          <span className="w-full flex justify-center">
+            <Image
+              src={logo}
+              alt="logo"
+              className="w-48 cursor-pointer"
+              onClick={() => navigate.push("/")}
+            />
+          </span>
+
+          <h1 className="text-white bold text-center">
+            Welcome to Sportrex Nft Marketplace
+          </h1>
+          <p className="regular text-sm text-white ">
+            By connecting your wallet and using Sportrex Nft Marketplace, you
+            agree to our
+            <Link href="/terms" className="text-yellow underline ml-1">
+              Terms of Service
+            </Link>{" "}
+            and
+            <Link href="/privacy" className="text-yellow underline ml-1">
+              Privacy Policy
+            </Link>
+            .
+          </p>
+          <div className="w-full flex items-center gap-4 mt-8">
+            <YellowActionBtn
+              name="Cancel"
+              action={() => setOpenNewUser(false)}
+            />
+            <ActionBtn
+              name={loading ? "Loading..." : "Accept and Login"}
+              disabled={loading}
+              action={handleRegister}
+            />
+          </div>
         </div>
       </ReUseModal>
     </div>
