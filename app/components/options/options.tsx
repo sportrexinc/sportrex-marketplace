@@ -18,7 +18,7 @@ export default function Options({ children, isLast }: optionProps) {
     <>
       <Menu as="div" className="relative inline-block text-left">
         <div>
-          <Menu.Button className=" rounded-full flex items-center text-gray-400 hover:text-gray-600 bg-black p-1 ">
+          <Menu.Button className=" rounded-full flex items-center text-gray-400 hover:text-gray-600 bg-black w-10 justify-center h-10  ">
             <span className="sr-only">Open options</span>
             <MenuIcon />
           </Menu.Button>

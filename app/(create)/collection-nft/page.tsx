@@ -262,9 +262,7 @@ const CollectionNft = () => {
             </div>
           ) : (
             <div className="h-[30vh] grid place-items-center">
-              {" "}
-              {/* @ts-ignore */}
-              {"connect_profile_message"} ...
+              Kindly connect your wallet address
             </div>
           )}
         </ParentLayout>

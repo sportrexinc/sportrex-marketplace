@@ -130,7 +130,22 @@ export const authSlice = createSlice({
       .addCase(updateUserProfileBanner.rejected, (state, { payload }) => {
         state.loading = false;
         state.bannerUpdateSuccess = false;
-      });
+      })
+      .addCase(createUserProfile.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createUserProfile.fulfilled, (state, { payload }) => {
+        state.loading = false;
+
+     
+      })
+      .addCase(createUserProfile.rejected, (state, { payload }) => {
+        state.loading = false;
+    
+      })
+      
+      
+      ;
     // end of session
   },
 });
@@ -180,13 +195,14 @@ export const updateUserProfile = createAsyncThunk(
 );
 export const updateUserProfileBanner = createAsyncThunk(
   "updateUserProfileBanner",
-  async (payload: { formData: any; address: string }, { rejectWithValue, getState }) => {
+  async (payload: { image: any; address: string }, { rejectWithValue, getState }) => {
     const { auth }: any = getState();
-
+ const formData = new FormData();
+ formData.append("file", payload.image);
     try {
       const { data } = await APIService.put(
         `${url.profile}/${payload.address}/banner`,
-        {...payload.formData}
+        formData
       );
       return data;
     } catch (error: any) {
@@ -197,13 +213,32 @@ export const updateUserProfileBanner = createAsyncThunk(
 );
 export const updateUserProfileAvatar = createAsyncThunk(
   "updateUserProfileAvatar",
-  async (payload: { formData: any, address: string }, { rejectWithValue, getState }) => {
+  async (payload: { image: any, address: string }, { rejectWithValue, getState }) => {
     const { auth }: any = getState();
-
+ const formData = new FormData();
+    formData.append("file", payload.image);
+   
     try {
       const { data } = await APIService.put(
         `${url.profile}/${payload.address}/avatar`,
-        {...payload.formData}
+        formData
+      );
+      return data;
+    } catch (error: any) {
+      let newError = getSimplifiedError(error);
+      return rejectWithValue(newError);
+    }
+  }
+);
+export const createUserProfile = createAsyncThunk(
+  "createUserProfile",
+  async (payload: {  address: string | undefined }, { rejectWithValue, getState }) => {
+    const { auth }: any = getState();
+
+    try {
+      const { data } = await APIService.post(
+        `${url.profile}/${payload.address}`,
+
       );
       return data;
     } catch (error: any) {
