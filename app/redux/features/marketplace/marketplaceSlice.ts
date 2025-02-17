@@ -45,100 +45,87 @@ export const marketSlice = createSlice({
       state.address = "";
       state.message = "";
     },
-    
   },
   extraReducers: (builder) => {
     builder
 
-      
       .addCase(getAllListedNft.pending, (state) => {
         state.loading = true;
       })
       .addCase(getAllListedNft.fulfilled, (state, { payload }) => {
         state.loading = false;
-       
       })
       .addCase(getAllListedNft.rejected, (state, { payload }) => {
         state.loading = false;
-    
       })
       .addCase(getAllNftCollection.pending, (state) => {
         state.loading = true;
       })
       .addCase(getAllNftCollection.fulfilled, (state, { payload }) => {
         state.loading = false;
-       
       })
       .addCase(getAllNftCollection.rejected, (state, { payload }) => {
         state.loading = false;
-    
       })
       .addCase(getNftDetail.pending, (state) => {
         state.loading = true;
       })
       .addCase(getNftDetail.fulfilled, (state, { payload }) => {
         state.loading = false;
-       
       })
       .addCase(getNftDetail.rejected, (state, { payload }) => {
         state.loading = false;
-    
       })
       .addCase(getCollectionByRanking.pending, (state) => {
         state.loading = true;
       })
       .addCase(getCollectionByRanking.fulfilled, (state, { payload }) => {
         state.loading = false;
-       
       })
       .addCase(getCollectionByRanking.rejected, (state, { payload }) => {
         state.loading = false;
-    
       })
       .addCase(getMarketplaceCollections.pending, (state) => {
         state.loading = true;
       })
       .addCase(getMarketplaceCollections.fulfilled, (state, { payload }) => {
         state.loading = false;
-       
       })
       .addCase(getMarketplaceCollections.rejected, (state, { payload }) => {
         state.loading = false;
-    
       })
       .addCase(getSingleMarketplaceCollectionDetail.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getSingleMarketplaceCollectionDetail.fulfilled, (state, { payload }) => {
-        state.loading = false;
-       
-      })
-      .addCase(getSingleMarketplaceCollectionDetail.rejected, (state, { payload }) => {
-        state.loading = false;
-    
-      })
+      .addCase(
+        getSingleMarketplaceCollectionDetail.fulfilled,
+        (state, { payload }) => {
+          state.loading = false;
+        }
+      )
+      .addCase(
+        getSingleMarketplaceCollectionDetail.rejected,
+        (state, { payload }) => {
+          state.loading = false;
+        }
+      )
       .addCase(getNftByAttribute.pending, (state) => {
         state.loading = true;
       })
       .addCase(getNftByAttribute.fulfilled, (state, { payload }) => {
         state.loading = false;
-       
       })
       .addCase(getNftByAttribute.rejected, (state, { payload }) => {
         state.loading = false;
-    
-      })
+      });
 
-
-
-     
     // end of session
   },
 });
 
 export const getAllListedNft = createAsyncThunk(
   "getAllListedNft",
-  async (payload:  string , { rejectWithValue, getState }) => {
+  async (payload: string, { rejectWithValue, getState }) => {
     const { auth }: any = getState();
     try {
       const { data } = await APIService.get(
@@ -153,7 +140,7 @@ export const getAllListedNft = createAsyncThunk(
 );
 export const getAllNftCollection = createAsyncThunk(
   "getAllNftCollection",
-  async (payload:  string , { rejectWithValue, getState }) => {
+  async (payload: string, { rejectWithValue, getState }) => {
     const { auth }: any = getState();
     try {
       const { data } = await APIService.get(
@@ -169,7 +156,7 @@ export const getAllNftCollection = createAsyncThunk(
 
 export const getNftDetail = createAsyncThunk(
   "getNftDetail",
-  async (payload:  string , { rejectWithValue, getState }) => {
+  async (payload: string, { rejectWithValue, getState }) => {
     const { auth }: any = getState();
     try {
       const { data } = await APIService.get(
@@ -184,11 +171,15 @@ export const getNftDetail = createAsyncThunk(
 );
 export const getCollectionByRanking = createAsyncThunk(
   "getCollectionByRanking",
-  async (payload:  {limit:string,sort_field:string,sort_direction:string} , { rejectWithValue, getState }) => {
+  async (
+    payload: { limit: string; sort_field: string; sort_direction: string },
+    { rejectWithValue, getState }
+  ) => {
     const { auth }: any = getState();
     try {
       const { data } = await APIService.post(
-        `${url.marketplace}/collection`,payload
+        `${url.marketplace}/collection`,
+        payload
       );
       return data;
     } catch (error: any) {
@@ -198,14 +189,13 @@ export const getCollectionByRanking = createAsyncThunk(
   }
 );
 
-
 export const getMarketplaceCollections = createAsyncThunk(
   "getMarketplaceCollections",
-  async (payload:string, { rejectWithValue, getState }) => {
+  async (payload: string, { rejectWithValue, getState }) => {
     const { auth }: any = getState();
     try {
       const { data } = await APIService.get(
-        `${url.marketplace}/marketplace-collection/${payload}`
+        `${url.collections}/nfts?address=${payload}&limit=100`
       );
       return data;
     } catch (error: any) {
@@ -217,7 +207,7 @@ export const getMarketplaceCollections = createAsyncThunk(
 // getSingleCollectionDetail
 export const getSingleMarketplaceCollectionDetail = createAsyncThunk(
   "getSingleMarketplaceCollectionDetail",
-  async (payload:  string , { rejectWithValue, getState }) => {
+  async (payload: string, { rejectWithValue, getState }) => {
     const { auth }: any = getState();
     try {
       const { data } = await APIService.get(
@@ -234,7 +224,13 @@ export const getSingleMarketplaceCollectionDetail = createAsyncThunk(
 export const getNftByAttribute = createAsyncThunk(
   "getNftByAttribute",
   async (
-    payload: { "limit": string; "show_attribute":string, "sort_direction": string, "contract_address":string, "attributes":any  },
+    payload: {
+      limit: string;
+      show_attribute: string;
+      sort_direction: string;
+      contract_address: string;
+      attributes: any;
+    },
     { rejectWithValue, getState }
   ) => {
     const { auth }: any = getState();
@@ -251,15 +247,7 @@ export const getNftByAttribute = createAsyncThunk(
   }
 );
 
-
-
-
-
-
 export const marketSelector = (state: any) => state.market;
 
-export const {
-  restoreDefault,
-
-} = marketSlice.actions;
+export const { restoreDefault } = marketSlice.actions;
 export default marketSlice.reducer;

@@ -101,14 +101,18 @@ const SingleMintNft = () => {
   };
 
   useEffect(() => {
-    fetchData();
-    handleGetPrice();
-    handleAuctionState();
-  }, [fetchData]);
+    const handleFetchData = async () => {
+      handleAuctionState();
+      if (marketplaceContract && address && tokenId) {
+        await handleGetPrice();
+      }
+    };
+    handleFetchData();
+  }, [marketplaceContract, address, tokenId]);
 
-  console.log(data);
-  console.log(priceData);
-  console.log(isAuction);
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
   const handleBuyCollectionNFT = async () => {
     setBuyingNFT(true);
     try {

@@ -9,7 +9,6 @@ import NftLoading from "../Loader/NftLoading";
 const selectTypeData = [
   { name: "single", value: "single-edition" },
   { name: "multiple", value: "multiple-edition" },
-
 ];
 const sortData = [
   { name: "Lastest", value: "b" },
@@ -23,16 +22,21 @@ const MarketContent = ({
   setOpenSide,
   allListedNfts,
   loading,
-  collectionType,setCollectionType, searchText, setSearchText, handleSearch
+  collectionType,
+  setCollectionType,
+  searchText,
+  setSearchText,
+  handleSearch,
 }: any) => {
   const [selectedType, setSelectedType] = useState({ name: "", value: "" });
   const [selectedSort, setSelectedSort] = useState({ name: "", value: "" });
   // if (loading) return <NftLoading />;
-const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-  if (event.key === "Enter") {
-    handleSearch();
-  }
-};
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <div
       className={`sidebar-h  overflow-y-scroll  ${
@@ -88,9 +92,17 @@ const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
       <div className="mt-8  gap-5 grid grid-cols-2 2xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 place-items-center ">
         {allListedNfts?.length > 0 &&
           allListedNfts?.map((item: any, index: number) => {
+            console.log(item);
             return (
               <SingleNftCard
-                item={item}
+                item={{
+                  contractAddress: item?.contractAddress,
+                  token_id: item?.nftid,
+                  nftName: item?.nftName,
+                  price: item?.price,
+                  status: item?.status,
+                  name: item?.nftName,
+                }}
                 key={index}
                 cardType="listed"
                 isTrending={false}
