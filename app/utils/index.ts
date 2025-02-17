@@ -47,18 +47,14 @@ export const getSimplifiedError = (error: any) => {
     if (error.response?.status === 400) {
         console.log(error.response)
       // window.alert(error.response.data.error);
-      toast.error(error.response.data.message);
+      // toast.error(error.response.data.message);
   
       // window.location.reload();
    
   }
   if (error.response.status === 404) {
-    toast.error(error.response.error);
-    if (error.response.data.error === "user not found") {
-      setTimeout(() => {
-        window.location.replace("/register");
-      }, 1000);
-    }
+    console.log(error.response.error);
+   
     return error.response.data.message;
   }
   else if (error.response.status === 401) {

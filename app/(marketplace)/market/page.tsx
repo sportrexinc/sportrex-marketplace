@@ -8,10 +8,10 @@ import { useAppDispatch, useAppSelector } from "@/app/redux/store";
 import { getAllListedNft, getAllNftCollection, getMarketplaceCollections } from "@/app/redux/features/marketplace/marketplaceSlice";
 
 const Marketplace = () => {
+  const dispatch = useAppDispatch();
   const [openSidebar, setOpenSidebar] = useState(true);
   const [loading, setLoading] = useState(false);
   const [collectionLoading, setCollectionLoading] = useState(false);
-  const dispatch = useAppDispatch();
   const [allListedNfts, setAllListedNfts] = useState<any>([]);
   const [allCollections, setAllCollections] = useState<any>([]);
   const [searchText, setSearchText] = useState<string>("");
