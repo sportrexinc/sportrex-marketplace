@@ -106,9 +106,6 @@ const SingleNftCard = ({
   }, [marketplaceContract, item?.contractAddress, item.token_id]);
 
   if (loading) return <NftLoading />;
-  console.log(item?.contractAddress);
-  console.log(item?.token_id);
-  console.log(priceData);
 
   return (
     <div>

@@ -97,7 +97,6 @@ const OwnedCard = ({
   }, [marketplaceContract, item.token_address, item.token_id]); // Add dependencies
 
   if (loading) return <NftLoading />;
-  console.log(isAuction);
   return (
     <div>
       <>
