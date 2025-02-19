@@ -22,6 +22,7 @@ import MintModal from "../../components/modals/MintModal";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
+import { useAppDispatch } from "@/app/redux/store";
 export interface TraitsProps {
   value: string;
   trait_type: string;
@@ -39,6 +40,7 @@ const SingleNft = () => {
     value: "",
     trait_type: "",
   });
+  const [allCollections, setAllCollections] = useState<CreateCollectionProps[]>([]);
   const { created_collections } = useSelector((state: RootState) => state.userNft )
 
   const handleDeleteTrait = (id:number) => {
@@ -72,11 +74,40 @@ const SingleNft = () => {
   
 
   const { t } = useTranslation("translation");
+   const address = useAddress();
+  //  const dispatch = useAppDispatch();
+  //  const auth = useAppSelector((state) => state.userNft);
+   console.log(address);
+   const getAllUserCollections = async () => {
+     try {
+       const res = await APIService.post(`/user/${address}/collections`, {
+         chain: "binance-testnet",
+         cursor: null,
+       });
+       console.log(res.data?.data, "response");
+       if (res.data?.data) {
+         //  dispatch(setCreatedCollections(res.data.result));
+         setAllCollections(res.data?.data?.result);
+         
+       }
+     } catch (error: any) {
+       console.log(error.message);
+     }
+   };
+
+   useEffect(() => {
+     if (address) {
+       getAllUserCollections();
+       console.log("I am called");
+     }
+   }, [address]);
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, []);
 
+  console.log(allCollections);
+  console.log(created_collections,"I am created");
   return (
     <>
       
@@ -151,28 +182,28 @@ const SingleNft = () => {
                   </div>
                   <div className="mt-12">
                   {
-                    created_collections?.length > 0 ?  <SelectInput
+                    allCollections?.length > 0 ?  <SelectInput
                     placeholder={"Select Collection"}
                     // label={t("blockchain_technology")}
                     label="Choose your collection"
                     name="select"
                     optionRender={(_, { index }) =>  (
-                      <div onClick={() =>  setErcType(created_collections[index].contractType)} className="flex items-center gap-4">
-                           <Image alt="collection" src={created_collections[index].logoImage?.url as string} width={45} height={45} className="rounded-[10px]"/> 
+                      <div onClick={() =>  setErcType(allCollections[index]?.contractType)} className="flex items-center gap-4">
+                           <Image alt="collection" src={allCollections[index].logoImage?.url as string} width={45} height={45} className="rounded-[10px]"/> 
                         <div>
-                          <div className="capitalize text-[14px] text-gray-400">{created_collections[index].name}</div>
-                          <div className="uppercase text-[11px]  text-gray-600">{created_collections[index].contractType}</div>
+                          <div className="capitalize text-[14px] text-gray-400">{allCollections[index].name}</div>
+                          <div className="uppercase text-[11px]  text-gray-600">{allCollections[index].contractType}</div>
                         </div>
                       </div>
                     )}
-                    options={ created_collections?.length === 0
+                    options={ allCollections?.length === 0
                         ? [
                             {
                               value: "",
                               label: "Select a collection",
                             },
                           ]
-                        : created_collections.map((item) => ({
+                        : allCollections?.map((item) => ({
                             value: item.contractAddress as string,
                             label: item.name,
                           }))

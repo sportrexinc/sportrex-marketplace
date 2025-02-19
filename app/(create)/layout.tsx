@@ -14,19 +14,19 @@ const Layout:FC<{children: ReactNode}> = ({
   const dispatch = useDispatch<AppDispatch>()
   const { created_collections } = useSelector((state: RootState) => state.userNft)
 
-    const getAllUserCollections = async () => {
-        try {
-          const res = await APIService.get(`/user/${address}/collection`);
-          console.log(res.data, "response");
-          dispatch(setCreatedCollections(res.data.data))
-        } catch (error: any) {
-          console.log(error.message);
-        }
-      };
+    // const getAllUserCollections = async () => {
+    //     try {
+    //       const res = await APIService.get(`/user/${address}/collection`);
+    //       console.log(res.data, "response");
+    //       dispatch(setCreatedCollections(res.data.data))
+    //     } catch (error: any) {
+    //       console.log(error.message);
+    //     }
+    //   };
 
-      useEffect(() => {
-        if(created_collections?.length == 0)  getAllUserCollections();
-      }, [address, created_collections]);
+    //   useEffect(() => {
+    //     if(address)  getAllUserCollections();
+    //   }, [address, ]);
 
   return (
     <div>
