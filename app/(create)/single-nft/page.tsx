@@ -106,7 +106,6 @@ const SingleNft = () => {
   }, []);
 
   console.log(allCollections);
-  console.log(created_collections, "I am created");
   return (
     <>
       {!isMinted && (
