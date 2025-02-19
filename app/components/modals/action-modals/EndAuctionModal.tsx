@@ -32,7 +32,9 @@ const EndAuctionModal = ({ open, setOpen, item }: listingProps) => {
   const [active, setActive] = useState(1);
   const [isAuction, setIsAuction] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const parseMetadata = JSON.parse(item.metadata);
+  const parseMetadata = item?.metadata
+    ? JSON.parse(item?.metadata)
+    : { item: "" };
 
   const daysToSeconds = (days: any) => {
     return days * 24 * 60 * 60;
@@ -72,7 +74,7 @@ const EndAuctionModal = ({ open, setOpen, item }: listingProps) => {
   const { contract: nftContract } = useContract(item.token_address, SPT721Abi);
 
   const ipfsGateway = "https://ipfs.io/ipfs/";
-  const ipfsUrl = parseMetadata.image.replace("ipfs://", "");
+  const ipfsUrl = parseMetadata?.image?.replace("ipfs://", "");
   const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
 
   const handleListNft = async () => {
@@ -146,6 +148,8 @@ const EndAuctionModal = ({ open, setOpen, item }: listingProps) => {
       setCurrent("error");
     }
   };
+
+  console.log(item);
 
   const handleNavigation = () => {};
   return (
