@@ -93,11 +93,10 @@ const OwnedCard = ({
       }
     };
 
-    fetchData(); // Call the fetchData function as soon as the component mounts
+    fetchData();
   }, [marketplaceContract, item.token_address, item.token_id]); // Add dependencies
 
   if (loading) return <NftLoading />;
-  console.log(isAuction);
   return (
     <div>
       <>

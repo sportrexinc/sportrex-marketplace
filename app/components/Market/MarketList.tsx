@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Carousel from "../Carousel/NewNftCarousel";
 import NormalLayout from "../../layouts/NormalLayout";
 import { useParams } from "next/navigation";
@@ -8,37 +8,37 @@ import { object } from "yup";
 import SingleNftCard from "./SingleNftCard";
 
 const MarketList = ({ title }: { title: string }) => {
-  const dispatch  = useAppDispatch();
-    const params = useParams();
-    const address = params.contractId;
+  const dispatch = useAppDispatch();
+  const params = useParams();
+  const address = params.contractId;
   const tokenId = params.nftId;
   const [moreCollections, setMoreCollections] = useState<[]>([]);
   const [isObject, setIsObject] = useState(false);
 
   const handleFetchMore = async () => {
     try {
-      const { payload } = await dispatch(getMarketplaceCollections(address as string));
+      const { payload } = await dispatch(
+        getMarketplaceCollections(address as string)
+      );
       console.log(payload);
       if (payload) {
-        setMoreCollections(payload?.data);
-      if (Array.isArray(payload?.data)) {
-        setIsObject(false);
-      } else if (typeof payload?.data === 'object' && payload?.data !== null) {
-        setIsObject(true);
+        setMoreCollections(payload?.data?.result);
+        if (Array.isArray(payload?.data?.result)) {
+          setIsObject(false);
+        } else if (
+          typeof payload?.data?.result === "object" &&
+          payload?.data?.result !== null
+        ) {
+          setIsObject(true);
+        }
       }
-      }
-    } catch (error) {
-      
-    }
-  }
+    } catch (error) {}
+  };
 
   useEffect(() => {
     handleFetchMore();
-  }, [])
-  
-
-  
-
+  }, []);
+  console.log(moreCollections);
   return (
     <NormalLayout>
       <div className="w-full px-[12px] ">
@@ -47,13 +47,13 @@ const MarketList = ({ title }: { title: string }) => {
         </h1>
 
         {isObject ? (
-          <div>
-            <SingleNftCard
+          <div className="mt-8  gap-5 grid grid-cols-2 2xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 place-items-center ">
+            {/* <SingleNftCard
               item={moreCollections}
-              
               cardType="listed"
               isTrending={false}
-            />
+              isToken={true}
+            /> */}
           </div>
         ) : (
           <div className="mt-8  gap-5 grid grid-cols-2 2xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 place-items-center ">
@@ -61,7 +61,11 @@ const MarketList = ({ title }: { title: string }) => {
               moreCollections?.map((item: any, index: number) => {
                 return (
                   <SingleNftCard
-                    item={item}
+                    item={{
+                      contractAddress: item?.token_address,
+                      token_id: item?.token_id,
+                      nftName: item?.normalized_metadata?.name,
+                    }}
                     key={index}
                     cardType="listed"
                     isTrending={false}

@@ -26,10 +26,10 @@ import { ethers } from "ethers";
 //   return errors;
 // };
 
-export const convertTowei = (value: number) => ethers.utils.parseEther(value.toString())
+export const convertTowei = (value: number) =>
+  ethers.utils.parseEther(value.toString());
 
 export const getSimplifiedError = (error: any) => {
-  
   if (!error.response) {
     // window.alert(
     //   "Something went wrong, check your internet and please try again"
@@ -44,36 +44,32 @@ export const getSimplifiedError = (error: any) => {
     toast.error("Sorry an unexpected error occurred.");
     return "Sorry an unexpected error occurred.";
   }
-    if (error.response?.status === 400) {
-        console.log(error.response)
-      // window.alert(error.response.data.error);
-      // toast.error(error.response.data.message);
-  
-      // window.location.reload();
-   
+  if (error.response?.status === 400) {
+    console.log(error.response);
+    // window.alert(error.response.data.error);
+    // toast.error(error.response.data.message);
+
+    // window.location.reload();
   }
   if (error.response.status === 404) {
     console.log(error.response.error);
-   
+
     return error.response.data.message;
-  }
-  else if (error.response.status === 401) {
+  } else if (error.response.status === 401) {
     // window.alert("Token has expired, please log in");
     toast.error("Token has expired, please log in");
     setTimeout(() => {
       window.location.replace("/login");
     }, 1000);
     return "Token has expired, please log in";
-  }
-  else if (error.response.status === 409) {
+  } else if (error.response.status === 409) {
     // window.alert(error.response.data.error);
     toast.error(error.response.data.error);
     setTimeout(() => {
       window.location.replace("/login");
     }, 500);
     return error.response.data.message;
-  }
-  else {
+  } else {
     // window.alert(error.response.data.error);
     toast.error(error.response.data.error);
     // window.location.reload();

@@ -21,10 +21,19 @@ const SingleNftCard = ({
   isTrending,
   item,
   cardType,
+  isToken,
 }: {
   isTrending: boolean;
-  item: any;
+  item: {
+    contractAddress: string;
+    token_id: string;
+    status?: string;
+    nftName: string;
+    price?: string;
+    name?: string;
+  };
   cardType?: string;
+  isToken?: boolean;
 }) => {
   const [liked, setLiked] = useState(false);
   const [openOptions, setOpenOptions] = useState(false);
@@ -44,23 +53,23 @@ const SingleNftCard = ({
     name: "NFT not found",
   });
 
-  const { contract } = useContract(item.contractAddress);
+  const { contract } = useContract(item?.contractAddress);
 
   const { contract: marketplaceContract } = useContract(
     process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
     sptMarketplaceAbi
   );
-  const { data: nft, isLoading, error } = useNFT(contract, item.nftId);
+  const { data: nft, isLoading, error } = useNFT(contract, item?.token_id);
   const router = useRouter();
   const handleNavigate = () => {
-    router.push(`/nft/${item.contractAddress}/${item.nftId}`);
+    router.push(`/nft/${item.contractAddress}/${item.token_id}`);
   };
 
   const handleAuctionState = async () => {
     try {
       const auctionState = await marketplaceContract?.call("getAuctionState", [
         item?.contractAddress,
-        item?.nftId,
+        item?.token_id,
       ]);
       console.log("Auction state: ", auctionState);
       setIsAuction(auctionState);
@@ -68,13 +77,12 @@ const SingleNftCard = ({
       console.log("Error fetching auction state: ", error);
     }
   };
-
   const handleGetPrice = async () => {
     setIsFetchingPrice(true);
     try {
       const getPriceData = await marketplaceContract?.call("getPrice", [
-        contract,
-        item?._id,
+        item?.contractAddress,
+        item?.token_id,
       ]);
       console.log({ getPriceData });
       const priceInWei = ethers.utils.formatEther(getPriceData);
@@ -88,14 +96,17 @@ const SingleNftCard = ({
   };
 
   useEffect(() => {
-    handleAuctionState();
-    if (marketplaceContract && item.contractAddress && item.nftId) {
-      handleGetPrice();
-    }
-  }, [item.contractAddress, item.nftId]);
+    const handleFetchData = async () => {
+      handleAuctionState();
+      if (marketplaceContract && item.contractAddress && item.token_id) {
+        await handleGetPrice();
+      }
+    };
+    handleFetchData();
+  }, [marketplaceContract, item?.contractAddress, item.token_id]);
 
   if (loading) return <NftLoading />;
-  console.log(nft);
+
   return (
     <div>
       <>
@@ -176,7 +187,7 @@ const SingleNftCard = ({
             </Options>
           </div>
           <Link
-            href={`/nft/${item?.contractAddress}/${item?.nftid}`}
+            href={`/nft/${item?.contractAddress}/${item?.token_id}`}
             className="w-full relative"
           >
             {cardType === "listed" &&
@@ -201,15 +212,15 @@ const SingleNftCard = ({
             />
           </Link>
           <div className="flex flex-1 overflow-hidden justify-between items-center w-full mb-2 px-2">
-            <Link href={`/nft/${item?.contractAddress}/${item?.nftid}`}>
+            <Link href={`/nft/${item?.contractAddress}/${item?.token_id}`}>
               <p className="text-[16px] semibold" onClick={handleNavigate}>
                 {item?.nftName}
               </p>
               <div className="text-[#FAC744]  text-[14px] semibold leading-[22px]">
                 {isFetchingPrice
                   ? "Loading..."
-                  : item?.price
-                  ? `${item?.price} BNB`
+                  : priceData
+                  ? `${priceData} BNB`
                   : "NFT not listed"}
 
                 {/* {priceData ? `${priceData} BNB` : "NFT not listed"} */}
@@ -267,7 +278,7 @@ const SingleNftCard = ({
         setOpenShare={setOpenShare}
         item={item}
         text={`Check out this ${item?.name} NFT out from Sportrex NFT Marketplace.`}
-        url={`https://sportrex-marketplace-18bv.vercel.app/nft/${item?.contractAddress}/${item?.nftId}`}
+        url={`https://sportrex-marketplace-18bv.vercel.app/nft/${item?.contractAddress}/${item?.token_id}`}
       />
     </div>
   );
