@@ -79,14 +79,11 @@ const SingleNft = () => {
   console.log(address);
   const getAllUserCollections = async () => {
     try {
-      const res = await APIService.post(`/user/${address}/collections`, {
-        chain: "binance-testnet",
-        cursor: null,
-      });
+      const res = await APIService.get(`/user/${address}/collection`);
       console.log(res.data?.data, "response");
       if (res.data?.data) {
         //  dispatch(setCreatedCollections(res.data.result));
-        setAllCollections(res.data?.data?.result);
+        setAllCollections(res.data?.data);
       }
     } catch (error: any) {
       console.log(error.message);
