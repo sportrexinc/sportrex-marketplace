@@ -155,7 +155,7 @@ const Top = () => {
               </div>
             </Marquee>
           </div>
-          <div className="mt-11 flex justify-center">
+          <div className="mt-11 flex justify-center md:hidden ">
             <Link
               href={"/nft-ranking"}
               className="text-yellow text-center regular text-base"

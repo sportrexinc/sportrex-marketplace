@@ -102,7 +102,7 @@ const SingleNft = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  console.log(allCollections);
+
   return (
     <>
       {!isMinted && (

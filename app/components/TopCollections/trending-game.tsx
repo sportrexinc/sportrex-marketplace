@@ -92,7 +92,7 @@ const nftItems = [
 ];
 const TrendingGame = () => {
   return (
-    <div className="w-full ">
+    <div className="w-full xl:-mt-40 ">
       <NormalLayout>
         <div className="w-full game-bg pb-8 xl:h-[535px]  relative flex flex-col overflow-hidden ">
           <p className="mt-11 bold text-white lg:text-[30px] lg:leading-10 xl:px-10 px-4 lg:px-0">
