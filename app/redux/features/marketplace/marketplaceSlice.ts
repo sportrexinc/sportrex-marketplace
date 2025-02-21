@@ -195,7 +195,7 @@ export const getMarketplaceCollections = createAsyncThunk(
     const { auth }: any = getState();
     try {
       const { data } = await APIService.get(
-        `${url.collections}/nfts?address=${payload}&limit=100`
+        `${url.marketplace}/marketplace-collection${payload}`
       );
       return data;
     } catch (error: any) {

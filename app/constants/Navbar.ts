@@ -28,13 +28,13 @@ export const navData: {
   //   linkTo: "/faq",
   // },
 
-  // {
-  //   id: 4,
-  //   text: "Staking" ,
+  {
+    id: 4,
+    text: "Staking" ,
 
-  //   linkTo: "/staking",
+    linkTo: "/staking",
 
-  // },
+  },
 ];
 export const marketNavData: {
   id: number;
