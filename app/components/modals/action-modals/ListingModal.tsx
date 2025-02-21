@@ -295,7 +295,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
                       name=""
                     />
                   </div>
-                  <div className="w-full mx-aut mt-12">
+                  <div className="w-full mx-auto mt-12">
                     <ActionBtn
                       name="Auction"
                       action={() => {
