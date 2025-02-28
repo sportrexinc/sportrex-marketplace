@@ -92,7 +92,7 @@ const MarketContent = ({
       <div className="mt-8  gap-5 grid grid-cols-2 2xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 place-items-center ">
         {allListedNfts?.length > 0 &&
           allListedNfts?.map((item: any, index: number) => {
-            console.log(item);
+          
             return (
               <SingleNftCard
                 item={{

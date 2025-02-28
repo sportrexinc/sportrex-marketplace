@@ -119,6 +119,16 @@ const MarketSidebar = ({ openSide, setOpenSide,minPrice,setMinPrice,maxPrice,set
                 Bid
               </label>
             </span>
+            <span className="flex items-center space-x-3">
+              <input
+                type="checkbox"
+                checked={ status === ""}
+                onClick={() => setStatus("")}
+              />
+              <label htmlFor="" className="regular text-sm text-white">
+                All
+              </label>
+            </span>
           </div>
         )}
       </div>
