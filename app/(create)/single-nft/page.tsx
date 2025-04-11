@@ -286,7 +286,7 @@ const SingleNft = () => {
                         />
 
                         <TextInput
-                          placeholder={"external link"}
+                          placeholder={"External link"}
                           label={"External Link*"}
                           name="external_link"
                           value={values.external_link}

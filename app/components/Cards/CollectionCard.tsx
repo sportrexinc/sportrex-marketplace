@@ -12,7 +12,6 @@ import Abi from "@/abi/SptNFTContract.json";
 
 const CollectionCard: FC<{
   data?: CreateCollectionProps | null;
-  
 }> = ({ data }) => {
   const { contract } = useContract(data?.contractAddress, Abi);
   const { mutateAsync: updateMetadata } = useUpdateMetadata(contract);
@@ -31,7 +30,7 @@ const CollectionCard: FC<{
       });
       setDisabled(true);
       setLoading(false);
-      console.log(res)
+      console.log(res);
     } catch (error: any) {
       alert(error.message);
       setLoading(false);
@@ -40,34 +39,34 @@ const CollectionCard: FC<{
 
   return (
     <div className="lg:h-[500px] w-full ">
-      
-
       <MediaRenderer
         height="200px"
         width="70%"
         className="object-contain  rounded-[10px] -ml-8"
         src={data?.logoImage?.url || heart}
-        />
-       
+      />
+
       <div className="mt-4">
         <span className="grad-text text-[18px]">Name: </span>
-        <span className="text-gray-300 text-[20px]">
+        <span className="text-gray-300 text-[20px] regular">
           {data?.name || "name"}
         </span>
       </div>
       <div className="mt-4">
         <span className="grad-text text-[18px]">Symbol: </span>
-        <span className="text-gray-300 text-[20px]">{data?.symbol || "N"}</span>
+        <span className="text-gray-300 text-[20px] regular">
+          {data?.symbol || ""}
+        </span>
       </div>
       <div className="mt-4 flex justify-between">
         <div>
           <span className="grad-text text-[18px]">Chain: </span>
-          <span className="text-gray-300 text-[20px]">
+          <span className="text-gray-300 text-[20px] regular">
             {data?.blockChain || "Binance-testnet"}
           </span>
         </div>
         <a
-          className="text-blue-600 underline"
+          className="text-blue-600 underline regular"
           href={`https://testnet.bscscan.com/address/${
             data?.contractAddress || ""
           }`}

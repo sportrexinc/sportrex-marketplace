@@ -76,7 +76,7 @@ const Favourite = () => {
                 </div>
 
                 <div>
-                  <p className="text-center mt-5">
+                  <p className="text-center mt-5 regular">
                     You are yet to have a Favorite Collection...
                   </p>
                 </div>

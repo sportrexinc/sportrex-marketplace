@@ -2,20 +2,15 @@
 import React, { useState, useEffect, useLayoutEffect, Fragment } from "react";
 import "./modal.css";
 import { CloseIcon } from "../../../public/assets/svg/index";
-import {
-  ThirdwebSDK,
-  useSigner,
-  useAddress
-} from "@thirdweb-dev/react";
+import { ThirdwebSDK, useSigner, useAddress } from "@thirdweb-dev/react";
 import SPT721Abi from "@/abi/SptERC721.json";
-import SPT1155ABI from "@/abi/SptERC1155.json"
+import SPT1155ABI from "@/abi/SptERC1155.json";
 import { useStorageUpload } from "@thirdweb-dev/react";
 import ActionBtn from "../Button/ActionBtn";
 import { TraitsProps } from "@/app/(create)/single-nft/page";
 import { CreateSingleNFTProps } from "@/types";
 
 import { BiSolidError } from "react-icons/bi";
-
 
 interface modalProps {
   showHeader?: boolean;
@@ -43,8 +38,8 @@ interface modalProps {
     external_link: string;
     traits: TraitsProps[];
     collectionAddress: string;
-    supply?: number,
-    ercType?: 'erc 1155' | 'erc 721'
+    supply?: number;
+    ercType?: "erc 1155" | "erc 721";
   };
   setOpenModal: any;
   openModal: boolean;
@@ -152,18 +147,21 @@ const StandardModal = ({
       const sdk = new ThirdwebSDK(signer);
       const customContract = await sdk.getContract(
         singleNFTData.collectionAddress,
-        singleNFTData.ercType === 'erc 721' ?  SPT721Abi : SPT1155ABI // Pass your custom ABI here
+        singleNFTData.ercType === "erc 721" ? SPT721Abi : SPT1155ABI // Pass your custom ABI here
       );
       console.log(singleNFTData.collectionAddress);
       console.log(SPT721Abi);
       try {
-        let data: any
-        if(singleNFTData.ercType === 'erc 721') {
-          data = await customContract.call("safeMint", [metaDataURI[0]])
+        let data: any;
+        if (singleNFTData.ercType === "erc 721") {
+          data = await customContract.call("safeMint", [metaDataURI[0]]);
         }
-        if(singleNFTData.ercType === 'erc 1155') {
-          data = await customContract.call("mintToken",
-             [ address, metaDataURI[0], singleNFTData.supply])
+        if (singleNFTData.ercType === "erc 1155") {
+          data = await customContract.call("mintToken", [
+            address,
+            metaDataURI[0],
+            singleNFTData.supply,
+          ]);
         }
         setLoadingC(false);
         console.log(data);
@@ -223,7 +221,7 @@ const StandardModal = ({
                 <Fragment key="header">
                   <div className="flex items-center">
                     <h4 className="text-lg semibold text-white">
-                      Creating your item
+                      Minting you NFT
                     </h4>
                   </div>
                 </Fragment>

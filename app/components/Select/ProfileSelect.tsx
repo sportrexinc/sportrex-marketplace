@@ -5,10 +5,10 @@ interface Profile {
   data: any;
   setIsOpen: any;
   setActive: any;
-  active?:  number |any;
+  active?: number | any;
   isOpen: boolean;
   selected: any;
-  setSelected:any
+  setSelected: any;
 }
 const ProfileSelect = ({
   name,
@@ -16,15 +16,15 @@ const ProfileSelect = ({
   isOpen,
   setIsOpen,
   setActive,
-  selected,setSelected,
+  selected,
+  setSelected,
   active,
-} : Profile) => {
-
+}: Profile) => {
   const [options, setOptions] = useState(data);
   const toggleOpen = () => {
     setIsOpen(!isOpen);
   };
-  const selectOption = (option:any) => {
+  const selectOption = (option: any) => {
     setSelected(option);
     setIsOpen(false);
   };
@@ -35,7 +35,7 @@ const ProfileSelect = ({
         className="bg-blue-card flex px-4 text-white justify-between py-3 rounded-md"
         onClick={toggleOpen}
       >
-        <p className="text-white ">{selected ? selected.label : name}</p>
+        <p className="text-white light">{selected ? selected.label : name}</p>
         <div className="flex items-center justify-center">
           {isOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
         </div>
@@ -43,7 +43,7 @@ const ProfileSelect = ({
       {isOpen && (
         <div className="bg-blue-header text-white rounded-md shadow-md regular text-md w-full top-12 absolute left-0 z-[100]">
           <div className="flex flex-col p-4">
-            {options.map((option:any) => (
+            {options.map((option: any) => (
               <div
                 key={option.value}
                 className="flex items-center justify-between px-4 py-2 text-white text-md regular hover:bg-blue-btn"

@@ -7,8 +7,8 @@ import SingleItem from "../Cards/SingleItem";
 import SingleNftCard from "./SingleNftCard";
 import NftLoading from "../Loader/NftLoading";
 const selectTypeData = [
-  { name: "single", value: "single-edition" },
-  { name: "multiple", value: "multiple-edition" },
+  { name: "Single", value: "single-edition" },
+  { name: "Bundle", value: "multiple-edition" },
 ];
 const sortData = [
   { name: "Lastest", value: "b" },
@@ -58,8 +58,8 @@ const MarketContent = ({
             </span>
             <input
               type="text"
-              className="placeholder:text-white placeholder:text-opacity-50 placeholder:text-sm text-white text-sm bg-transparent outline-none border-none  "
-              placeholder="Enter Search Querry"
+              className="placeholder:text-white placeholder:text-opacity-50 placeholder:text-sm text-white text-sm bg-transparent outline-none border-none light "
+              placeholder="Search NFTs"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -71,7 +71,7 @@ const MarketContent = ({
           <span className="w-1/2">
             <Select
               options={selectTypeData}
-              title={"select"}
+              title={"Select"}
               selected={collectionType}
               setSelected={setCollectionType}
             />
@@ -90,25 +90,31 @@ const MarketContent = ({
       {/* start of the content side of things */}
 
       <div className="mt-8  gap-5 grid grid-cols-2 2xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 place-items-center ">
-        {allListedNfts?.length > 0 &&
-          allListedNfts?.map((item: any, index: number) => {
-          
-            return (
-              <SingleNftCard
-                item={{
-                  contractAddress: item?.contractAddress,
-                  token_id: item?.nftid,
-                  nftName: item?.nftName,
-                  price: item?.price,
-                  status: item?.status,
-                  name: item?.nftName,
-                }}
-                key={index}
-                cardType="listed"
-                isTrending={false}
-              />
-            );
-          })}
+        {allListedNfts && allListedNfts.length > 0 ? (
+          allListedNfts.map((item: any, index: any) => (
+            <SingleNftCard
+              key={index}
+              item={{
+                contractAddress: item.contractAddress,
+                token_id: item.nftid,
+                nftName: item.nftName,
+                price: item.price,
+                status: item.status,
+                name: item.nftName,
+              }}
+              cardType="listed"
+              isTrending={false}
+            />
+          ))
+        ) : (
+          <div className="flex items-center justify-center">
+            <div>
+              <p className="text-white text-lg light text-center">
+                No NFTs Found...
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* {
           SingleItemsData?.map((item: any, index: number) => {
