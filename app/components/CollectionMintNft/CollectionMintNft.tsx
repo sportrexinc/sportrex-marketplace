@@ -79,10 +79,10 @@ const CollectionMintNft = (
   const [pD, setPd] = useState(true);
   const [aP, setaP] = useState(true);
   const [details, setDetails] = useState(true);
-  const [pA, setPA] = useState(true);
-  const [offers, setOffers] = useState(true);
-  const [listing, setListing] = useState(true);
-  const [events, setEvents] = useState(true);
+  const [pA, setPA] = useState(false);
+  const [offers, setOffers] = useState(false);
+  const [listing, setListing] = useState(false);
+  const [events, setEvents] = useState(false);
 
   const truncateMiddle = (text: string, length: number) => {
     if (typeof text !== "string") return text;
@@ -100,7 +100,7 @@ const CollectionMintNft = (
           {/* Header */}
           <div className="flex flex-col md:flex-row md:space-x-8 ">
             <div className="w-full md:w-6/12  lg:w-4/12 flex flex-col">
-            {isLoading ? (
+              {isLoading ? (
                 <Skeleton.Image
                   active={true}
                   className="w-full h-auto rounded-[16px]"
@@ -164,11 +164,11 @@ const CollectionMintNft = (
                   </p>
                 </div>
                 <p className="text-md text-grey-800 regular  mt-2">
-                  2000 items sold
+                  {/* 2000 items sold */}
                 </p>
                 <p className="mt-12 text-grey-800 regular text-md">Price</p>
                 <p className="mt-2 grad-text text-lg regular bold">
-                  0.5343 SPT
+                  {/* 0.5343 SPT */}
                 </p>
                 <div className="mt-20 flex space-x-8 items-center w-full">
                   <div className="w-3/12">
