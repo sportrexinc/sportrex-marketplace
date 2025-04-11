@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
 const TrendingNFT = () => {
-   const { t } = useTranslation(["translation"]);
+  const { t } = useTranslation(["translation"]);
   return (
     <NormalLayout>
       <div className="trending-bg py-20 lg:py-12 p-2 sm:p-6 lg:p-4 lg:px-8 rounded-[30px] ">
@@ -17,8 +17,8 @@ const TrendingNFT = () => {
             </h1>
           </div>
           <div className="w-full md:min-h-[296px] h-full grid grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 gap-[16px]   lg:gap-[32px]">
-            {[1, 2, 3, 4, 5, 6, 7, 8,9,10].map((ist:any,index:number) => (
-              <NftCard isTrending={false} key={index} />
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((ist: any, index: number) => (
+              <NftCard isTrending={false} key={index} item={ist} />
             ))}
           </div>
           <div className="w-full flex justify-center items-center mt-8">

@@ -147,10 +147,10 @@ const SingleMintNft = () => {
   const [pD, setPd] = useState(true);
   const [aP, setaP] = useState(true);
   const [details, setDetails] = useState(true);
-  const [pA, setPA] = useState(true);
-  const [offers, setOffers] = useState(true);
-  const [listing, setListing] = useState(true);
-  const [events, setEvents] = useState(true);
+  const [pA, setPA] = useState(false);
+  const [offers, setOffers] = useState(false);
+  const [listing, setListing] = useState(false);
+  const [events, setEvents] = useState(false);
   const truncateMiddle = (text: string, length: number) => {
     if (typeof text !== "string") return text;
     if (text.length <= length) return text;
@@ -252,7 +252,7 @@ const SingleMintNft = () => {
                   </p>
                 </div>
                 <p className="text-md text-grey-800 regular  mt-2">
-                  2000 items sold
+                  {/* 2000 items sold */}
                 </p>
                 <p className="mt-12 text-grey-800 regular text-md">Price</p>
                 <p className="mt-2 grad-text text-lg regular bold">
