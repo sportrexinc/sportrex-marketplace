@@ -54,7 +54,7 @@ const Profile: FC<ProfileProps> = ({ address }) => {
             href="/profile"
             className="text-yellow regular text-lg regular cursor-pointer"
           >
-            My Portfolio
+            Portfolio
           </Link>
           <p className="text-grey-800 regular cursor-pointer">
             Profile Settings

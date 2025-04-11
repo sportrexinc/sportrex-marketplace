@@ -10,40 +10,49 @@ import { CollectionResult } from "@/types";
 import { useRouter } from "next/navigation";
 
 const OwnedByMe = () => {
-  const { collection_data, nft_loading } = useAppSelector(state => state.userNft)
-  const dispatch = useAppDispatch()
-  const address = useAddress()
-  
+  const { collection_data, nft_loading } = useAppSelector(
+    (state) => state.userNft
+  );
+  const dispatch = useAppDispatch();
+  const address = useAddress();
+
   const back = () => {
-    address && dispatch(getUserCollection({
-      address,
-      chain: "binace-testnet",
-      cursor: null,
-      limit: 15
-     }))
+    address &&
+      dispatch(
+        getUserCollection({
+          address,
+          chain: "binace-testnet",
+          cursor: null,
+          limit: 15,
+        })
+      );
   };
   const next = () => {
-    address && dispatch(getUserCollection({
-      address,
-      chain: "binace-testnet",
-      cursor:  collection_data?.cursor,
-      limit: 15
-     }))
+    address &&
+      dispatch(
+        getUserCollection({
+          address,
+          chain: "binace-testnet",
+          cursor: collection_data?.cursor,
+          limit: 15,
+        })
+      );
   };
   const navigate = useRouter();
   const createCollection = () => {
     navigate.push("/collection-nft");
   };
 
- 
-
   useEffect(() => {
-   address && dispatch(getUserCollection({
-      address,
-      chain: 'binance-testnet',
-      limit: 15
-    }))
-  },[address])
+    address &&
+      dispatch(
+        getUserCollection({
+          address,
+          chain: "binance-testnet",
+          limit: 15,
+        })
+      );
+  }, [address]);
 
   return (
     <div>
@@ -63,27 +72,26 @@ const OwnedByMe = () => {
             )}
       </div>
       <div className="my-10 w-full justify-center space-x-12 flex">
-           <button
-                 className="bg-grey-800 rounded-full text-black cursor-pointer  text-lg regular  p-4 max-w-[150px] justify-center flex items-center gap-4"
-                 onClick={back}
-               >
-                 <BsArrowLeft />
-                 Previous
-               </button>
-               <button
-                 className="bg-yellow text-lg regular rounded-full text-black p-4 flex items-center gap-4 max-w-[150px] justify-center"
-                 onClick={next}
-               >
-                 Next
-                 <BsArrowRight />
-               </button>
+        <button
+          className="bg-grey-800 rounded-full text-black cursor-pointer  text-lg regular  p-4 max-w-[150px] justify-center flex items-center gap-4"
+          onClick={back}
+        >
+          <BsArrowLeft />
+          Previous
+        </button>
+        <button
+          className="bg-yellow text-lg regular rounded-full text-black p-4 flex items-center gap-4 max-w-[150px] justify-center"
+          onClick={next}
+        >
+          Next
+          <BsArrowRight />
+        </button>
       </div>
       <div className="mt-12 flex">
         <div className="w-2/12 mx-auto">
           <ActionBtn name="Add new collection" action={createCollection} />
         </div>
       </div>
-   
     </div>
   );
 };

@@ -42,7 +42,14 @@ const CollectionItems = ({ data, loading, address }: any) => {
       <div className="w-full md:min-h-[296px] h-full grid grid-cols-2 lg:grid-cols-5 gap-3 ">
         {!loading && data && data.data?.result
           ? data.data?.result.map((item: any, index: number) => {
-              return <OwnedCard item={item} isTrending={true} key={index} cardType="general" />;
+              return (
+                <OwnedCard
+                  item={item}
+                  isTrending={true}
+                  key={index}
+                  cardType="general"
+                />
+              );
             })
           : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((_, index: number) => (
               <NftLoading key={index} />
@@ -50,15 +57,17 @@ const CollectionItems = ({ data, loading, address }: any) => {
       </div>
       <div className="my-10 w-full justify-center space-x-12 flex">
         <button
-          className="bg-grey-800 rounded-full text-black cursor-pointer  text-lg regular  p-4"
+          className="bg-grey-800 rounded-full text-black cursor-pointer  text-lg regular  p-4 max-w-[150px] justify-center flex items-center gap-4"
           onClick={back}
         >
           <BsArrowLeft />
+          Previous
         </button>
         <button
-          className="bg-yellow text-lg regular rounded-full text-black p-4"
+          className="bg-yellow text-lg regular rounded-full text-black p-4 flex items-center gap-4 max-w-[150px] justify-center"
           onClick={next}
         >
+          Next
           <BsArrowRight />
         </button>
       </div>
