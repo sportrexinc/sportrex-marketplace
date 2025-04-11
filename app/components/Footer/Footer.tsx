@@ -142,7 +142,7 @@ const Footer = () => {
           <div className={styles.partA}>
             <div className={styles.partAContainer}>
               <Image src={logo} alt="logo" className={styles.logo} />
-              <p className={styles.partAText}>NFT Market Pool</p>
+              <p className={styles.partAText}>NFT Marketplace</p>
             </div>
           </div>
           <div className={styles.partB}>

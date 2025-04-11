@@ -4,9 +4,9 @@ import NftCard from "../Carousel/NftCard";
 
 interface Nft {
   name: string;
-  price: string;
-  image: string;
-  isTrending: boolean;
+  floor_price: string;
+  image: string | any;
+  isTrending?: boolean;
 }
 
 interface CarouselProps {
@@ -20,13 +20,13 @@ const SalesCarousel: React.FC<CarouselProps> = ({ items }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 4) % items.length);
-      setCurrentMobileIndex((prevIndex) => (prevIndex + 2) % items.length);
+      setCurrentMobileIndex((prevIndex) => (prevIndex + 2) % items?.length);
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [items.length]);
+  }, [items?.length]);
 
-  const indicators = Array(Math.ceil(items.length / 4))
+  const indicators = Array(Math.ceil(items?.length / 4))
     .fill(null)
     .map((_, index) => (
       <div
@@ -42,15 +42,15 @@ const SalesCarousel: React.FC<CarouselProps> = ({ items }) => {
   return (
     <div className="relative flex flex-col">
       <div className="  lg:grid-cols-4 gap-4 overflow-hidden hidden lg:grid">
-        {items.slice(currentIndex, currentIndex + 4).map((item, index) => (
-          <NftCard key={index}  isTrending={false}  />
+        {items?.slice(currentIndex, currentIndex + 4).map((item, index) => (
+          <NftCard item={item} key={index}  isTrending={false}  />
         ))}
       </div>
       <div className="  lg:hidden gap-0 overflow-hidden flex">
-        {items.slice(currentMobileIndex, currentMobileIndex + 4).map((item, index) => (
+        {items?.slice(currentMobileIndex, currentMobileIndex + 4)?.map((item, index) => (
           <div className="min-w-[304px]"  key={index}>
 
-          <NftCard isTrending={false}  />
+          <NftCard item={item} key={index} isTrending={false}  />
           </div>
         ))}
       </div>

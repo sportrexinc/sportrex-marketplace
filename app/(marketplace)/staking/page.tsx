@@ -38,16 +38,19 @@ const Staking = () => {
         </div>
         <div className="mt-32 w-full justify-center space-x-12 flex">
           <button
-            className="bg-grey-800 rounded-full text-black cursor-pointer  text-lg regular  p-4"
+            className="bg-grey-800 rounded-full text-black cursor-pointer  text-lg regular  p-4 max-w-[200px] flex items-center "
             onClick={back}
           >
             <BsArrowLeft />
+            Previous
           </button>
           <button
-            className="bg-yellow text-lg regular rounded-full text-black p-4"
+            className="bg-yellow text-lg regular rounded-full text-black p-4 max-w-[200px] flex items-center "
             onClick={next}
           >
+            Next
             <BsArrowRight />
+            
           </button>
         </div>
       </div>

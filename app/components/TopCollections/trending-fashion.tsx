@@ -8,6 +8,7 @@ import starbox from "@/public/assets/png/star-box.png"
 import Link from "next/link";
 import { ArrowForward } from "@/public/assets/svg";
 import Image from "next/image";
+import { nftItemsB } from "./index";
 export const nftItems = [
   {
     name: "Heartcrib",
@@ -115,7 +116,7 @@ const TrendingFashion = () => {
             Trending in Fashion
           </p>
           <div className="w-full mt-8 pl-10">
-            <CollectionCarousel items={nftItems} />
+            <CollectionCarousel items={nftItemsB} />
           </div>
           <div className="flex xl:hidden mt-8 justify-center w-full">
             <Link href={"/"} className="flex items-center gap-4 text-yellow">
