@@ -16,7 +16,7 @@ const SelectNft = () => {
           <h1 className="grad-text bold text-3xl mb-3">{t("choose")}</h1>
           <p className="text-grey-800  text-md regular">
             Select the type of NFT you want to create
-            {t("choose_type")}
+            {/* {t("choose_type")} */}
           </p>
           <p className="text-grey-800 text-md flex items-center space-x-1 regular">
             <span className="text-white">
@@ -26,7 +26,7 @@ const SelectNft = () => {
             <span>or</span>
 
             <span className="text-white">
-              Single
+              Single NFTs
             {/* {t("single")} */}
             </span>
           </p>
@@ -45,18 +45,18 @@ const SelectNft = () => {
               </p>
             </Link>
           </div>
-          <div className="box-bordery  p-[2px] ">
+          {/* <div className="box-bordery  p-[2px] ">
               <Link href={"/bundle-nft"}
               className="flex justify-center  items-center bold text-white xl:text-3xl h-[150px] xl:h-[225px] bg-blue-header rounded-[25px] cursor-pointer"
-              // onClick={() => navigate.push("/bundle-nft")}
+              
             >
               <p>
-                {/* {t("bundle_nft")} */}
+               
                 Bundle NFT
 
               </p>
             </Link>
-          </div>
+          </div> */}
           <div className="box-bordery  p-[2px] ">
 
             <Link href={"/collection-nft"}

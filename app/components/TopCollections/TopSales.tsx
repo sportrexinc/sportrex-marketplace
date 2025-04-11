@@ -1,7 +1,8 @@
 import React from 'react'
 import NormalLayout from '../../layouts/NormalLayout'
 import SalesCarousel from './SalesCarousel'
-import { nftItems } from './trending-fashion'
+// import { nftItems } from './trending-fashion'
+import { nftItemsB } from '.'
 import LinkBtn, { WhiteBtn } from '../Button/LinkBtn'
 import first from "@/public/assets/png/first-rec.png";
 import second from "@/public/assets/png/second-rec.png";
@@ -15,7 +16,7 @@ const TopSales = () => {
           <h1 className="bold text-white lg:text-[30px]">Top sales today</h1>
           <div className="w-full bg-yellow pb-10 lg:pb-0  xl:h-[200px] relative  mt-56 ">
             <div className="w-full -mt-48 overflow-x-hidden">
-              <SalesCarousel items={nftItems} />
+              <SalesCarousel items={nftItemsB} />
             </div>
           </div>
           <div className="w-full bg-yellow rounded-[20px] -mt-6">

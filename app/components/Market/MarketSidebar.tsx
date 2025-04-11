@@ -240,7 +240,7 @@ const MarketSidebar = ({ openSide, setOpenSide,minPrice,setMinPrice,maxPrice,set
       )}
       {/* enf of collection */}
       {/* start of collection */}
-      <div className="w-full flex items-center justify-between pl-6 pr-10 h-[50px] bg-blue-body py-3  ">
+      {/* <div className="w-full flex items-center justify-between pl-6 pr-10 h-[50px] bg-blue-body py-3  ">
         <div className="flex space-x-4 items-center">
           <p className="text-white semibold">Categories</p>
         </div>
@@ -254,7 +254,7 @@ const MarketSidebar = ({ openSide, setOpenSide,minPrice,setMinPrice,maxPrice,set
             {catData.map((item: any, index: number) => {
               return (
                 <div className="flex space-x-4 items-center cursor-pointer " key={index}
-                  // onClick={() => setCategory(item?.name)}
+                
                 >
                   <Image src={item.image} alt="name" />
                   <p className="semibold text-white capitalize">{item.name}</p>
@@ -263,7 +263,7 @@ const MarketSidebar = ({ openSide, setOpenSide,minPrice,setMinPrice,maxPrice,set
             })}
           </div>
         </div>
-      )}
+      )} */}
       {/* enf of collection */}
     </div>
   );

@@ -55,7 +55,7 @@ const Profile = (): any => {
    </div> 
      </>
    :
-        <div className="h-[30vh] grid place-items-center">{t("connect_profile_message") }</div>
+        <div className="h-[30vh] grid place-items-center">connect profile message</div>
     }
     </NonControlledLayout>
   );

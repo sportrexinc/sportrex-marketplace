@@ -4,92 +4,81 @@ import heart from "@/public/assets/heart.svg";
 import CollectionCarousel from './CollectionCarousel';
 import Link from 'next/link';
 import { ArrowForward } from '@/public/assets/svg';
-const nftItems = [
+import {
+  azuki,
+  bored,
+  doodles,
+  goodVibes,
+  milady,
+  pudgy,
+  punk,
+  tyler,
+  xcopy,
+  ethIcon,
+} from "@/public/assets/general";
+const nftItemsA = [
   {
-    name: "Heartcrib",
-    price: "0.3 SPT",
-    isTrending: true,
-    image:heart
+    name: "Azuki",
+    floor_price: "2.57 ETH",
+    image: azuki,
+    rate: "+4.7%",
   },
   {
-    name: "Starhome",
-    price: "0.5 SPT",
-    isTrending: false,
-    image:heart,
+    name: "Pudgy Penguins",
+    floor_price: "9.22 ETH",
+    image: pudgy,
+    rate: "+3.3%",
   },
   {
-    name: "Moonvilla",
-    price: "0.8 SPT",
-    isTrending: true,
-    image:heart
+    name: "Crypto Punks",
+    floor_price: "42.5 ETH",
+    image: punk,
+    rate: "+11%",
   },
   {
-    name: "SunsetBungalow",
-    price: "0.4 SPT",
-    isTrending: false,
-    image:heart,
+    name: "Bored Ape Yacht Club",
+    floor_price: "14.195 ETH",
+    image: bored,
+    rate: "+1.5%",
   },
   {
-    name: "CosmosCottage",
-    price: "1.0 SPT",
-    isTrending: true,
-    image:heart
+    name: "Bored Ape Yacht Club",
+    floor_price: "14.195 ETH",
+    image: bored,
+    rate: "+1.5%",
   },
   {
-    name: "GalaxyGrove",
-    price: "1.2 SPT",
-    isTrending: false,
-    image:heart,
+    name: "X COPY",
+    floor_price: "30 ETH",
+    image: xcopy,
+    rate: "+36.4%",
   },
   {
-    name: "Moonvilla",
-    price: "0.8 SPT",
-    isTrending: true,
-    image:heart
+    name: "Fidenza by Tyler Hobbs",
+    floor_price: "34.38 ETH",
+    image: tyler,
+    rate: "+0%",
   },
   {
-    name: "SunsetBungalow",
-    price: "0.4 SPT",
-    isTrending: false,
-    image:heart,
+    name: "Doodles",
+    floor_price: "2.81 ETH",
+    image: doodles,
+    rate: "+4.3%",
   },
   {
-    name: "CosmosCottage",
-    price: "1.0 SPT",
-    isTrending: true,
-    image:heart
+    name: "Milady Maker",
+    floor_price: "3.14 ETH",
+    image: milady,
+    rate: "+1.6%",
   },
   {
-    name: "SunsetBungalow",
-    price: "0.4 SPT",
-    isTrending: false,
-    image:heart,
-  },
-  {
-    name: "CosmosCottage",
-    price: "1.0 SPT",
-    isTrending: true,
-    image:heart
-  },
-  {
-    name: "GalaxyGrove",
-    price: "1.2 SPT",
-    isTrending: false,
-    image:heart,
-  },
-  {
-    name: "OrbitOasis",
-    price: "0.7 SPT",
-    isTrending: true,
-    image:heart
-  },
-  {
-    name: "NebulaNest",
-    price: "0.6 SPT",
-    isTrending: false,
-    image:heart,
+    name: "Good Vibe Club",
+    floor_price: "0.26 ETH",
+    image: goodVibes,
+    rate: "+5%",
   },
 ];
+
 const TrendingGame = () => {
   return (
     <div className="w-full xl:-mt-40 ">
@@ -99,7 +88,7 @@ const TrendingGame = () => {
             Trending in Game
           </p>
           <div className="w-full mt-8 pl-10 overflow-x-hidden">
-            <CollectionCarousel items={nftItems} />
+            <CollectionCarousel items={nftItemsA} />
           </div>
           <div className="flex xl:hidden mt-8 justify-center w-full">
             <Link href={"/"} className="flex items-center gap-4 text-yellow">

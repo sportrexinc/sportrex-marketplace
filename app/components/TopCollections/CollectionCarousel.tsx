@@ -3,9 +3,9 @@ import NewNftCard from "./NewNftCard";
 
 interface Nft {
   name: string;
-  price: string;
-  image: string;
-  isTrending: boolean;
+  floor_price: string;
+  image: any;
+  isTrending?: boolean;
 }
 
 interface CarouselProps {

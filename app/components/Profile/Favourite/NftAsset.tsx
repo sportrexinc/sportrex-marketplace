@@ -29,18 +29,20 @@ const Owned = () => {
             ))}
           </div>
           <div className="mt-32 w-full justify-center space-x-12 flex">
-            <button
-              className="bg-grey-800 rounded-full text-black cursor-pointer text-lg regular p-4"
-              onClick={back}
-            >
-              <BsArrowLeft />
-            </button>
-            <button
-              className="bg-yellow text-lg regular rounded-full text-black p-4"
-              onClick={next}
-            >
-              <BsArrowRight />
-            </button>
+             <button
+                   className="bg-grey-800 rounded-full text-black cursor-pointer  text-lg regular  p-4 max-w-[150px] justify-center flex items-center gap-4"
+                   onClick={back}
+                 >
+                   <BsArrowLeft />
+                   Previous
+                 </button>
+                 <button
+                   className="bg-yellow text-lg regular rounded-full text-black p-4 flex items-center gap-4 max-w-[150px] justify-center"
+                   onClick={next}
+                 >
+                   Next
+                   <BsArrowRight />
+                 </button>
           </div>
         </>
       ) : (

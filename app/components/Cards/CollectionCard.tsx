@@ -39,13 +39,16 @@ const CollectionCard: FC<{
   };
 
   return (
-    <div className="lg:h-[500px] w-full">
+    <div className="lg:h-[500px] w-full ">
+      
+
       <MediaRenderer
         height="200px"
         width="70%"
-        className="object-cover rounded-[10px]"
+        className="object-contain  rounded-[10px] -ml-8"
         src={data?.logoImage?.url || heart}
-      />
+        />
+       
       <div className="mt-4">
         <span className="grad-text text-[18px]">Name: </span>
         <span className="text-gray-300 text-[20px]">
