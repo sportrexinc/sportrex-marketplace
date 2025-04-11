@@ -1,58 +1,73 @@
-import {useState} from 'react'
-import { CollapseIcon, FilterIcon,SearchIcon } from '@/public/assets/icons';
+import { useState } from "react";
+import { CollapseIcon, FilterIcon, SearchIcon } from "@/public/assets/icons";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import pricePic from "@/public/assets/png/price-samp.png"
+import pricePic from "@/public/assets/png/price-samp.png";
 import one from "@/public/assets/png/unsplash_CuEvrPd3NYc.png";
 import two from "@/public/assets/png/unsplash_iMdsjoiftZo.png";
 import three from "@/public/assets/png/unsplash_lylCw4zcA7I.png";
 import four from "@/public/assets/png/unsplash_tXz6g8JYYoI.png";
-import Image from 'next/image';
+import Image from "next/image";
 
 const collectData = [
   {
     name: "New Age",
-    image:one,
+    image: one,
   },
   {
     name: "Grand Apes",
-    image:two,
+    image: two,
   },
   {
     name: "New Age",
-    image:three,
+    image: three,
   },
   {
     name: "Grand Apes",
-    image:four,
+    image: four,
   },
   {
     name: "New Age",
-    image:one,
+    image: one,
   },
-]
+];
 const catData = [
   {
     name: "art",
-    image:one,
+    image: one,
   },
   {
     name: "social",
-    image:two,
+    image: two,
   },
   {
     name: "interface",
-    image:three,
+    image: three,
   },
   {
     name: "gaming",
-    image:four,
+    image: four,
   },
   {
     name: "Avatar",
-    image:one,
+    image: one,
   },
-]
-const MarketSidebar = ({ openSide, setOpenSide,minPrice,setMinPrice,maxPrice,setMaxPrice,status, setStatus,category, setCategory, allCollections,  handleSearchCollection, collectionSearchText, setCollectionSearchText }: any) => {
+];
+const MarketSidebar = ({
+  openSide,
+  setOpenSide,
+  minPrice,
+  setMinPrice,
+  maxPrice,
+  setMaxPrice,
+  status,
+  setStatus,
+  category,
+  setCategory,
+  allCollections,
+  handleSearchCollection,
+  collectionSearchText,
+  setCollectionSearchText,
+}: any) => {
   const [openFilterBy, setOpenFilterBy] = useState<boolean>(true);
   const [openPrice, setOpenPrice] = useState<boolean>(true);
   const [openCollection, setOpenCollection] = useState<boolean>(true);
@@ -122,7 +137,7 @@ const MarketSidebar = ({ openSide, setOpenSide,minPrice,setMinPrice,maxPrice,set
             <span className="flex items-center space-x-3">
               <input
                 type="checkbox"
-                checked={ status === ""}
+                checked={status === ""}
                 onClick={() => setStatus("")}
               />
               <label htmlFor="" className="regular text-sm text-white">
@@ -200,8 +215,8 @@ const MarketSidebar = ({ openSide, setOpenSide,minPrice,setMinPrice,maxPrice,set
             </span>
             <input
               type="text"
-              className="placeholder:text-white placeholder:text-sm text-white text-sm bg-transparent outline-none border-none  "
-              placeholder="Search Here"
+              className="placeholder:text-white placeholder:text-sm text-white text-sm bg-transparent outline-none border-none  regular"
+              placeholder="Search Collections"
               value={collectionSearchText}
               onChange={(e) => setCollectionSearchText(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -209,33 +224,31 @@ const MarketSidebar = ({ openSide, setOpenSide,minPrice,setMinPrice,maxPrice,set
           </div>
           {/* end of search  */}
           <div className="flex flex-col space-y-4">
-            {
-            (showAll ? allCollections : allCollections?.slice(0,10))
-              ?.map((item: any, index: number) => {
-              return (
-                <div className="flex space-x-4 items-center " key={index}>
-                  <Image
-                    src={item?.logoImage?.url}
-                    alt="name"
-                    width={40}
-                    height={40}
-                    className="rounded-full w-10 h-10"
-                  />
-                  <p className="semibold text-white">{item.name}</p>
-                </div>
-              );
-            })}
+            {(showAll ? allCollections : allCollections?.slice(0, 10))?.map(
+              (item: any, index: number) => {
+                return (
+                  <div className="flex space-x-4 items-center " key={index}>
+                    <Image
+                      src={item?.logoImage?.url}
+                      alt="name"
+                      width={40}
+                      height={40}
+                      className="rounded-full w-10 h-10"
+                    />
+                    <p className="semibold text-white">{item.name}</p>
+                  </div>
+                );
+              }
+            )}
           </div>
-          {
-            allCollections?.length > 10 && (
-
-              <p className="semibold text-sm text-[#ababab]" onClick={() => setShowAll(!showAll)}>
-                {
-                  showAll ? "Show less" : "Show all"
-              }  
-              </p>
-            )
-          }
+          {allCollections?.length > 10 && (
+            <p
+              className="semibold text-sm text-[#ababab]"
+              onClick={() => setShowAll(!showAll)}
+            >
+              {showAll ? "Show less" : "Show all"}
+            </p>
+          )}
         </div>
       )}
       {/* enf of collection */}
@@ -267,6 +280,6 @@ const MarketSidebar = ({ openSide, setOpenSide,minPrice,setMinPrice,maxPrice,set
       {/* enf of collection */}
     </div>
   );
-}
+};
 
-export default MarketSidebar
+export default MarketSidebar;

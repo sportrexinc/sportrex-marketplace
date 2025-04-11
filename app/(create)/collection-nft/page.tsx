@@ -13,11 +13,7 @@ import {
 import { Formik, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { CreateCollectionProps } from "@/types";
-import {
-  contractType,
-  useAddress,
-  useContract,
-} from "@thirdweb-dev/react";
+import { contractType, useAddress, useContract } from "@thirdweb-dev/react";
 import APIService from "@/app/utils/APIServices";
 import { baseUrl, url } from "@/app/utils/endpoints";
 import ReUseModal from "@/app/components/modals/ReUseModal";
@@ -34,7 +30,7 @@ const CollectionNft = () => {
     process.env.NEXT_PUBLIC_SPT_MASTER_CONTRACT_FACTORY,
     ContractFactoryAbi
   );
- 
+
   const address = useAddress();
   const [collection, setCollection] = useState<CreateCollectionProps | null>(
     null
@@ -146,7 +142,6 @@ const CollectionNft = () => {
                 }) => (
                   <div className="w-full flex flex-col xl:flex-row xl:w-full mx-auto mb-32 gap-12 ">
                     <div className="xl:w-1/2 w-full mt-20 flex flex-col ">
-                      
                       <FileInput
                         name="logo"
                         onChange={(e) => {
@@ -225,8 +220,8 @@ const CollectionNft = () => {
                           value={values.contractType}
                           handleChange={handleChange("contractType")}
                           options={[
-                            { value: "erc 721", label: "Single collection" },
-                            { value: "erc 1155", label: "Bundle collection" },
+                            { value: "erc 721", label: "Single Collection" },
+                            { value: "erc 1155", label: "Bundle Collection" },
                           ]}
                           errMessage={
                             <ErrorMessage

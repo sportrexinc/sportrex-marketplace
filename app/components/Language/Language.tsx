@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MdArrowDropDown } from "react-icons/md";
 import i18next from "i18next";
 
@@ -86,7 +86,7 @@ const Drop = () => {
         <p className="light text-white text-[18px]">Eng</p>
         <MdArrowDropDown />
       </div>
-      <div className={open ? styles.listContainer : styles.close}>
+      {/* <div className={open ? styles.listContainer : styles.close}>
         <ul>
           {languages.map(({ code, name, country_code }) => (
             <li key={country_code} className={styles.item}>
@@ -101,7 +101,7 @@ const Drop = () => {
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 };

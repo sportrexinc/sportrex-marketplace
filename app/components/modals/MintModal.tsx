@@ -1,7 +1,7 @@
 "use-client";
 import React, { useState, useEffect, useLayoutEffect, Fragment } from "react";
 import "./modal.css";
-import {useRouter} from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { CloseIcon } from "../../../public/assets/svg/index";
 import { useAddress, useContract } from "@thirdweb-dev/react";
 import SPT721Abi from "@/abi/SptERC721.json";
@@ -27,14 +27,17 @@ const MintModal = ({
   setIsMinted,
   mintedNFTData,
   setMintedNFTData,
-}: mintModalProps) => { 
-    const router = useRouter();
+}: mintModalProps) => {
+  const router = useRouter();
 
-    const handleCancel = () =>{
-        setIsMinted(false);
-        router.push('/single-nft')
-        setMintedNFTData({})
-      }
+  const handleCancel = () => {
+    setIsMinted(false);
+    router.push("/single-nft");
+    setMintedNFTData({});
+  };
+  const handleNavigate = () => {
+    router.push("/profile");
+  };
   return (
     <>
       {console.log(mintedNFTData)}
@@ -78,17 +81,19 @@ const MintModal = ({
                     />
                   </span>
                   <p className="bold text-white mt-6 text-xl sm:text-2xl lg:text-3xl text-center mx-auto  ">
-                    Your item has been minted
+                    Your NFT has been minted
                   </p>
                   <div className="w-full sm:w-9/12 lg:w-1/2 mt-8 flex justify-center items-center mx-auto gap-4">
-                    <ActionBtn name={"List Item"} />
-                    <YellowActionBtn name={"View Item"} />
+                    <YellowActionBtn
+                      name={"View Item"}
+                      action={handleNavigate}
+                    />
                   </div>
                   <div className="mx-auto mt-7">
                     <Link
                       target="_blank"
                       href={`https://testnet.bscscan.com/tx/${mintedNFTData.transactionHash}`}
-                      className="text-white flex items-center gap-2"
+                      className="text-white flex items-center gap-2 light"
                     >
                       View on BSCscan{" "}
                       <span>

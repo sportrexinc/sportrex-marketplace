@@ -1,20 +1,25 @@
 import { useEffect, useState } from "react";
 import thumbnail from "@/public/assets/profile/thumbnail.jpg";
 
-
 import { FiSettings } from "react-icons/fi";
 import { AiFillCamera } from "react-icons/ai";
 import "./profile.css";
 import defaultPic from "@/public/assets/png/default-profile-pic.jpg";
-import logo from "@/public/assets/sportrex-logo.png"
+import logo from "@/public/assets/sportrex-logo.png";
 import ReUseModal from "../modals/ReUseModal";
 import ActionBtn from "../Button/ActionBtn";
 import { toast } from "react-toastify";
 import { useAddress } from "@thirdweb-dev/react";
 import { useAppDispatch, useAppSelector } from "@/app/redux/store";
 import { useRouter } from "next/navigation";
-import Image from "next/image"
-import { createUserProfile, getUserProfile, resetImageUpload, updateUserProfileAvatar, updateUserProfileBanner } from "@/app/redux/features/auth/AuthSlice";
+import Image from "next/image";
+import {
+  createUserProfile,
+  getUserProfile,
+  resetImageUpload,
+  updateUserProfileAvatar,
+  updateUserProfileBanner,
+} from "@/app/redux/features/auth/AuthSlice";
 import Link from "next/link";
 import { YellowActionBtn } from "..";
 import { setLoading } from "@/app/redux/features/auth/MyNftSlice";
@@ -43,45 +48,40 @@ const ProfileHero = () => {
   const [openNewUser, setOpenNewUser] = useState(false);
   const [avatarImage, setAvatarImage] = useState<File | null>(null);
   const [bannerImage, setBannerImage] = useState<File | null>(null);
-  
+
   const navigate = useRouter();
   const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const address = useAddress()
+  const address = useAddress();
 
- const handleImageChange = (
-   event: React.ChangeEvent<HTMLInputElement>,
-   isAvatar: boolean
- ) => {
-   const files = event.target.files;
-   if (files && files.length > 0) {
-     if (isAvatar) {
-       setAvatarImage(files[0]);
-       uploadImage(files[0], true);
-     } else {
-       setBannerImage(files[0]);
-       uploadImage(files[0], false);
-     }
-   }
- };
+  const handleImageChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    isAvatar: boolean
+  ) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      if (isAvatar) {
+        setAvatarImage(files[0]);
+        uploadImage(files[0], true);
+      } else {
+        setBannerImage(files[0]);
+        uploadImage(files[0], false);
+      }
+    }
+  };
 
- const uploadImage = async (image: File, isAvatar: boolean) => {
-   if (!image || !address) return;
+  const uploadImage = async (image: File, isAvatar: boolean) => {
+    if (!image || !address) return;
 
- 
-   if (isAvatar) {
-    
-   await  dispatch(updateUserProfileAvatar({ image, address }));
-   } else {
-  await dispatch(updateUserProfileBanner({ image, address }));
-   }
- };
-
-
-  
+    if (isAvatar) {
+      await dispatch(updateUserProfileAvatar({ image, address }));
+    } else {
+      await dispatch(updateUserProfileBanner({ image, address }));
+    }
+  };
 
   let defualtData = {
-    username: "No Username",
+    username: "Anonymous",
     bio: "No Bio",
     website: "No Website",
     address: "No Address",
@@ -89,10 +89,10 @@ const ProfileHero = () => {
       url: defaultPic,
     },
     banner: {
-      url:thumbnail
-    }
+      url: thumbnail,
+    },
   };
-  const { bio, website, username, banner,avatar } = auth?.userData
+  const { bio, website, username, banner, avatar } = auth?.userData
     ? auth?.userData
     : defualtData;
 
@@ -104,7 +104,7 @@ const ProfileHero = () => {
       setOpen(false);
       setTimeout(() => {
         dispatch(resetImageUpload());
-      address&&  dispatch(getUserProfile({ address }));
+        address && dispatch(getUserProfile({ address }));
       }, 2000);
     }
   }, [auth.avatarUpdateSuccess]);
@@ -113,37 +113,35 @@ const ProfileHero = () => {
     if (address) {
       const { payload, meta } = await dispatch(getUserProfile({ address }));
       setLoading(false);
-     
+
       if (meta.requestStatus === "rejected") {
         setLoading(false);
         setOpenNewUser(true);
       }
     }
-  }
+  };
   useEffect(() => {
     // address && dispatch(getUserProfile({ address }));
     handleFetchProfile();
   }, [address]);
-  
 
   const handleRegister = async () => {
     setLoading(true);
     try {
-        const { payload } = await dispatch(createUserProfile({ address }));
-        if (payload.status === "success") {
-          setOpenNewUser(false);
-          setLoading(false);
-          toast.success("Registered Successfully");
-          handleFetchProfile();
-        }
+      const { payload } = await dispatch(createUserProfile({ address }));
+      if (payload.status === "success") {
+        setOpenNewUser(false);
+        setLoading(false);
+        toast.success("Registered Successfully");
+        handleFetchProfile();
+      }
     } catch (error) {
       console.log(error);
     }
-  
-  }
+  };
 
-  const thumb = banner?.url ? banner?.url : thumbnail
- 
+  const thumb = banner?.url ? banner?.url : thumbnail;
+
   // console.log({ avatar });
   return (
     <div className={styles.parentContainer}>
@@ -168,8 +166,6 @@ const ProfileHero = () => {
           layout="fill"
           objectFit="cover"
           className="backdrop-blur-2xl"
-          
-        
         />
         <div className="flex space-x-4 absolute right-8 bottom-4">
           <FiSettings
@@ -216,7 +212,7 @@ const ProfileHero = () => {
           <div className={styles.nameContainer}>
             <p className="text-xl regular text-white ">Username</p>
             <p className="text-2xl  text-yellow semibold ">
-              {username ? username : "No Username"}
+              {username ? username : "Anonymous"}
             </p>
           </div>
           <div className="mt-6 regular text-white text-lg regular text-center">
@@ -239,7 +235,6 @@ const ProfileHero = () => {
             accept="image/*"
             onChange={(e) => handleImageChange(e, true)}
           />
-        
         </div>
       </ReUseModal>
       <ReUseModal open={openNewUser} setOpen={setOpenNewUser}>

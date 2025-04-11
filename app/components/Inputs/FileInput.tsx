@@ -4,8 +4,6 @@ interface FileInput {
   name?: string;
   label?: string;
   errMessage?: React.ReactNode | string;
- 
-
 }
 const FileInput = ({ onChange, name, label, errMessage }: FileInput) => {
   const [preview, setPreview] = useState<string | null>(null);
@@ -32,7 +30,7 @@ const FileInput = ({ onChange, name, label, errMessage }: FileInput) => {
         <input
           type="file"
           className="absolute left-0 opacity-0 cursor-pointer top-0 w-full h-full"
-          accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
+          accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml,image/avif"
           name={name}
           onChange={handleFileChange}
         />
@@ -49,7 +47,7 @@ const FileInput = ({ onChange, name, label, errMessage }: FileInput) => {
               Click to upload file(s)
             </p>
             <p className="text-grey-800 text-sm md:text-md regular text-center">
-              JPG, PNG, GIF, WEBP, MP4 or MP3. Max 30mb.
+              JPG, PNG, GIF, WEBP, AVIF, MP4 or MP3. Max 30mb.
             </p>
           </div>
         )}
