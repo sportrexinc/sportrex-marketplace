@@ -12,6 +12,7 @@ import {
   useSDK,
   useDisconnect,
 } from "@thirdweb-dev/react";
+import { ConnectButton } from "thirdweb/react";
 import { FaUserCircle, FaBell } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "@/app/redux/store";
 import { setAddress } from "@/app/redux/features/auth/AuthSlice";
@@ -20,11 +21,27 @@ import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+
+import { createThirdwebClient } from "thirdweb";
+import { createWallet } from "thirdweb/wallets";
+import { useActiveAccount } from "thirdweb/react";
+
+const client = createThirdwebClient({
+  clientId: process.env.NEXT_PUBLIC_THIRD_WEB_CLIENT_ID as string,
+});
 const styles = {
   active: "text-white regular light text-[18px] border-b-[1px] border-white",
   inactive: "text-white text-[18px] text-grey-800 regular",
   listItem: "flex items-center justify-center",
 };
+
+const wallets = [
+  createWallet("io.metamask"),
+  createWallet("com.coinbase.wallet"),
+  createWallet("me.rainbow"),
+  createWallet("io.rabby"),
+  createWallet("io.zerion.wallet"),
+];
 const ConnectedNav = ({ current }: any) => {
   const navigate = useRouter();
   const disconnect = useDisconnect();
@@ -39,7 +56,8 @@ const ConnectedNav = ({ current }: any) => {
     return storedSignature || null;
   });
   const [walletConnected, setWalletConnected] = useState<boolean>(false);
-  const address = useAddress();
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
   const currentDate = new Date();
   const currentTime =
     currentDate.getHours() +
@@ -55,31 +73,27 @@ const ConnectedNav = ({ current }: any) => {
   \n Login Date & Time: ${date} ${currentTime}`;
   const sdk = useSDK();
 
-  const checkWalletConnection = async () =>{
-    if (!address){
+  const checkWalletConnection = async () => {
+    if (!address) {
       console.log("Wallet not connected, address is undefined.");
-    return false;
+      return false;
     }
     // Optionally, check if the SDK is connected properly
-  const walletInfo = await sdk?.wallet.getAddress();
-  if (!walletInfo || walletInfo !== address) {
-    console.log("Wallet address from SDK does not match:", walletInfo);
-    return false;
-  }
+    const walletInfo = await sdk?.wallet.getAddress();
+    if (!walletInfo || walletInfo !== address) {
+      console.log("Wallet address from SDK does not match:", walletInfo);
+      return false;
+    }
 
-  console.log("Wallet is connected with address:", address);
-  return true;
-  }
-
-
-
-
+    console.log("Wallet is connected with address:", address);
+    return true;
+  };
 
   const signMessageFunc = async () => {
     const connected = await checkWalletConnection();
-    if(!connected){
+    if (!connected) {
       console.error("Wallet not connected, cannot sign the message.");
-    return;
+      return;
     }
 
     try {
@@ -103,14 +117,14 @@ const ConnectedNav = ({ current }: any) => {
 
   useEffect(() => {
     if (address) {
-      setWalletConnected(true)
+      setWalletConnected(true);
       dispatch(setAddress(address));
       setOpen(false);
-    }else{
-      setWalletConnected(false)
+    } else {
+      setWalletConnected(false);
     }
     // Check if signature exists, otherwise sign in
-     if (walletConnected && !signature) {
+    if (walletConnected && !signature) {
       console.log("No signature found, calling signMessageFunc.");
       signMessageFunc();
     } else if (!walletConnected) {
@@ -126,7 +140,7 @@ const ConnectedNav = ({ current }: any) => {
       setMainAddress(address);
     }
   }, [signature, address]);
-  
+
   console.log("Current signature state:", signature);
   return (
     <div className="hidden lg:flex w-full bg-blue-card h-[82px]   px-16  items-center  ">
@@ -167,20 +181,32 @@ const ConnectedNav = ({ current }: any) => {
                 )}
               </div>
               {!address ? (
-                <ActionBtn
-                  name="Connect Wallet"
-                  action={() => {
-                    setOpen((prev) => !prev);
-                  }}
-                />
+                // <ActionBtn
+                //   name="Connect Wallet"
+                //   action={() => {
+                //     setOpen((prev) => !prev);
+                //   }}
+                // />
+
+                <div className="connect-button semi-bold">
+                  <ConnectButton
+                    client={client}
+                    connectButton={{
+                      label: "Connect Wallet",
+                    }}
+                    wallets={wallets}
+                  />
+                </div>
               ) : (
-                <ConnectWallet
-                  style={{
-                    background: "transparent",
-                    border: "0px solid",
-                    outline: "none",
-                  }}
-                />
+                <div className="connect-button semi-bold">
+                  <ConnectButton
+                    client={client}
+                    connectButton={{
+                      label: "Connect Wallet",
+                    }}
+                    wallets={wallets}
+                  />
+                </div>
               )}
             </li>
             {/* <li>

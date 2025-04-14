@@ -22,7 +22,7 @@ import { AxiosResponse } from "axios";
 import { useTranslation } from "react-i18next";
 import ContractFactoryAbi from "@/abi/SptContractFactory.json";
 import CollectionMintModal from "@/app/components/modals/CollectionMintModal";
-
+import { useActiveAccount } from "thirdweb/react";
 const CollectionNft = () => {
   // @ts-ignore
   const { t } = useTranslation("translation");
@@ -31,7 +31,8 @@ const CollectionNft = () => {
     ContractFactoryAbi
   );
 
-  const address = useAddress();
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
   const [collection, setCollection] = useState<CreateCollectionProps | null>(
     null
   );

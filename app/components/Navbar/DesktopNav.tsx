@@ -8,6 +8,7 @@ import { setAddress } from "@/app/redux/features/auth/AuthSlice";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import Link from "next/link";
+import { useActiveAccount } from "thirdweb/react";
 const styles = {
   active: "text-white light text-[18px] border-b-[1px] border-white",
   inactive: "text-white text-[18px] text-grey light",
@@ -27,7 +28,8 @@ const DesktopNav = () => {
     setOpen(false);
   };
 
-  const address = useAddress();
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
 
   useEffect(() => {
     if (address !== undefined) {

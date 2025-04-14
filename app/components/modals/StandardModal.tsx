@@ -11,7 +11,7 @@ import { TraitsProps } from "@/app/(create)/single-nft/page";
 import { CreateSingleNFTProps } from "@/types";
 
 import { BiSolidError } from "react-icons/bi";
-
+import { useActiveAccount } from "thirdweb/react";
 interface modalProps {
   showHeader?: boolean;
   children?: any;
@@ -90,7 +90,8 @@ const StandardModal = ({
     useState<CreateSingleNFTProps | null>(null);
   const [tokenURI, setTokenURI] = useState<any>();
   const [fullURI, setFullURI] = useState<any>();
-  const address = useAddress();
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
   const findByKey = (name: string) =>
     children.map((child: { key: any }) => {
       if (child.key === name) return child;

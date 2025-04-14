@@ -8,13 +8,14 @@ import { getUserCollection } from "@/app/redux/features/auth/MyNftSlice";
 import { useAddress } from "@thirdweb-dev/react";
 import { CollectionResult } from "@/types";
 import { useRouter } from "next/navigation";
-
+import { useActiveAccount } from "thirdweb/react";
 const OwnedByMe = () => {
   const { collection_data, nft_loading } = useAppSelector(
     (state) => state.userNft
   );
   const dispatch = useAppDispatch();
-  const address = useAddress();
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
 
   const back = () => {
     address &&
