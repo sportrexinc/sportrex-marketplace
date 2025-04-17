@@ -101,7 +101,6 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
   const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
 
   const handleListNft = async () => {
-    console.log(wallet);
     try {
       const ethValue = ethers.utils.parseEther(fixedPrice);
       // await nftContract?.call("approve", [

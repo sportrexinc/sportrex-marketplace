@@ -13,6 +13,18 @@ import { contractType, useAddress, useContract } from "@thirdweb-dev/react";
 import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 import SPT721Abi from "@/abi/SptERC721.json";
 import errorIcon from "@/public/assets/icons/error-icon.png";
+import {
+  createThirdwebClient,
+  getContract,
+  prepareContractCall,
+  sendTransaction,
+  waitForReceipt,
+} from "thirdweb";
+import { bscTestnet } from "thirdweb/chains";
+import { useActiveAccount } from "thirdweb/react";
+const client = createThirdwebClient({
+  clientId: process.env.NEXT_PUBLIC_THIRD_WEB_CLIENT_ID as string,
+});
 interface listingProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -28,7 +40,10 @@ const AuctionModal = ({ open, setOpen, item }: listingProps) => {
   const [active, setActive] = useState(1);
   const [isAuction, setIsAuction] = useState(false);
   const parseMetadata = JSON.parse(item.metadata);
+  const chain = bscTestnet;
 
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
   const daysToSeconds = (days: any) => {
     return days * 24 * 60 * 60;
   };
@@ -70,37 +85,32 @@ const AuctionModal = ({ open, setOpen, item }: listingProps) => {
   const ipfsUrl = parseMetadata.image.replace("ipfs://", "");
   const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
 
-  const handleListNft = async () => {
-    try {
-      const ethValue = ethers.utils.parseEther(fixedPrice);
-      await nftContract?.call("approve", [
-        process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
-        item.token_id,
-      ]);
-      const data = await marketplaceContract?.call("listNft", [
-        item.token_address,
-        item.token_id,
-        ethValue,
-      ]);
-      setCurrent("success");
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-      setOpen(false);
-    } finally {
-      //setOpen(false);
-    }
-  };
-
   const handleAuction = async () => {
+    const customContract = getContract({
+      client: client,
+      chain: chain as any,
+      address: process.env.NEXT_PUBLIC_SPT_MARKETPLACE as any,
+      abi: sptMarketplaceAbi as any,
+    });
     try {
-      const data = await marketplaceContract?.call("startAuction", [
-        item.token_address,
-        item.token_id,
-        auctionDuration,
-      ]);
+      // const data = await marketplaceContract?.call("startAuction", [
+      //   item.token_address,
+      //   item.token_id,
+      //   auctionDuration,
+      // ]);
+
+      const auctionCall = prepareContractCall({
+        contract: customContract,
+        method: "startAuction",
+        params: [item.token_address, item.token_id, auctionDuration],
+      });
+      const { transactionHash } = await sendTransaction({
+        transaction: auctionCall,
+        account: wallet as any,
+      });
+
       setCurrent("success");
-      console.log(data);
+      console.log(transactionHash);
     } catch (error) {
       console.error(error);
       setOpen(false);
