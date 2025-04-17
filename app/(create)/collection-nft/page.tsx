@@ -22,7 +22,18 @@ import { AxiosResponse } from "axios";
 import { useTranslation } from "react-i18next";
 import ContractFactoryAbi from "@/abi/SptContractFactory.json";
 import CollectionMintModal from "@/app/components/modals/CollectionMintModal";
-import { useActiveAccount } from "thirdweb/react";
+import { useActiveAccount, useWaitForReceipt } from "thirdweb/react";
+import {
+  createThirdwebClient,
+  getContract,
+  prepareContractCall,
+  sendTransaction,
+  waitForReceipt,
+} from "thirdweb";
+import { bscTestnet } from "thirdweb/chains";
+const client = createThirdwebClient({
+  clientId: process.env.NEXT_PUBLIC_THIRD_WEB_CLIENT_ID as string,
+});
 const CollectionNft = () => {
   // @ts-ignore
   const { t } = useTranslation("translation");
@@ -30,6 +41,14 @@ const CollectionNft = () => {
     process.env.NEXT_PUBLIC_SPT_MASTER_CONTRACT_FACTORY,
     ContractFactoryAbi
   );
+  const chain = bscTestnet;
+
+  const customContract = getContract({
+    client: client,
+    chain: chain as any,
+    address: process.env.NEXT_PUBLIC_SPT_MASTER_CONTRACT_FACTORY as any,
+    abi: ContractFactoryAbi as any,
+  });
 
   const wallet = useActiveAccount();
   const address = wallet?.address;
@@ -85,10 +104,16 @@ const CollectionNft = () => {
                   try {
                     setSubmitting(true);
                     if (values.contractType === "erc 721") {
-                      data = await contract?.call("create_nft_collection", [
-                        values.name,
-                        values.symbol,
-                      ]);
+                      // data = await contract?.call("create_nft_collection", [
+                      //   values.name,
+                      //   values.symbol,
+                      // ]);
+
+                      data = prepareContractCall({
+                        contract: customContract,
+                        method: "create_nft_collection",
+                        params: [values.name, values.symbol],
+                      });
                     }
 
                     if (values.contractType === "erc 1155") {
@@ -97,11 +122,27 @@ const CollectionNft = () => {
                         values.symbol,
                         "",
                       ]);
+
+                      data = prepareContractCall({
+                        contract: customContract,
+                        method: "create_nft_bundle",
+                        params: [values.name, values.symbol, ""],
+                      });
                     }
-                    console.log(data);
+                    const { transactionHash } = await sendTransaction({
+                      transaction: data,
+                      account: wallet as any,
+                    });
+                    const receipt = await waitForReceipt({
+                      client,
+                      chain,
+                      transactionHash,
+                    });
+
+                    console.log(receipt, "receipt");
                     console.log(contract);
 
-                    const contractAddress = data.receipt.logs[0].address;
+                    const contractAddress = receipt.logs[0].address;
 
                     const formData = new FormData();
                     formData.append("logo", values.logo);

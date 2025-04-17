@@ -126,7 +126,7 @@ const ConnectedNav = ({ current }: any) => {
     // Check if signature exists, otherwise sign in
     if (walletConnected && !signature) {
       console.log("No signature found, calling signMessageFunc.");
-      signMessageFunc();
+      // signMessageFunc();
     } else if (!walletConnected) {
       console.log("Wallet not connected, waiting for connection.");
     } else {
