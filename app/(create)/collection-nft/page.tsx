@@ -37,10 +37,10 @@ const client = createThirdwebClient({
 const CollectionNft = () => {
   // @ts-ignore
   const { t } = useTranslation("translation");
-  const { contract } = useContract(
-    process.env.NEXT_PUBLIC_SPT_MASTER_CONTRACT_FACTORY,
-    ContractFactoryAbi
-  );
+  // const { contract } = useContract(
+  //   process.env.NEXT_PUBLIC_SPT_MASTER_CONTRACT_FACTORY,
+  //   ContractFactoryAbi
+  // );
   const chain = bscTestnet;
 
   const customContract = getContract({
@@ -117,11 +117,11 @@ const CollectionNft = () => {
                     }
 
                     if (values.contractType === "erc 1155") {
-                      data = await contract?.call("create_nft_bundle", [
-                        values.name,
-                        values.symbol,
-                        "",
-                      ]);
+                      // data = await contract?.call("create_nft_bundle", [
+                      //   values.name,
+                      //   values.symbol,
+                      //   "",
+                      // ]);
 
                       data = prepareContractCall({
                         contract: customContract,
@@ -140,7 +140,7 @@ const CollectionNft = () => {
                     });
 
                     console.log(receipt, "receipt");
-                    console.log(contract);
+                    // console.log(contract);
 
                     const contractAddress = receipt.logs[0].address;
 
