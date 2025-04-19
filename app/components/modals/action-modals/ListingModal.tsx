@@ -14,6 +14,18 @@ import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 import SPT721Abi from "@/abi/SptERC721.json";
 import APIService from "@/app/utils/APIServices";
 import errorIcon from "@/public/assets/icons/error-icon.png";
+import {
+  createThirdwebClient,
+  getContract,
+  prepareContractCall,
+  sendTransaction,
+  waitForReceipt,
+} from "thirdweb";
+import { bscTestnet } from "thirdweb/chains";
+import { useActiveAccount } from "thirdweb/react";
+const client = createThirdwebClient({
+  clientId: process.env.NEXT_PUBLIC_THIRD_WEB_CLIENT_ID as string,
+});
 interface listingProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -29,7 +41,10 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
   const [active, setActive] = useState(1);
   const [isAuction, setIsAuction] = useState(false);
   const parseMetadata = JSON.parse(item.metadata);
+  const chain = bscTestnet;
 
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
   const daysToSeconds = (days: any) => {
     return days * 24 * 60 * 60;
   };
@@ -65,7 +80,21 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
     process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
     sptMarketplaceAbi
   );
-  const { contract: nftContract } = useContract(item.token_address, SPT721Abi);
+
+  const customContract = getContract({
+    client: client,
+    chain: chain as any,
+    address: process.env.NEXT_PUBLIC_SPT_MARKETPLACE as any,
+    abi: sptMarketplaceAbi as any,
+  });
+
+  const nftContract = getContract({
+    client: client,
+    chain: chain as any,
+    address: item.token_address as any,
+    abi: SPT721Abi as any,
+  });
+  // const { contract: nftContract } = useContract(item.token_address, SPT721Abi);
 
   const ipfsGateway = "https://ipfs.io/ipfs/";
   const ipfsUrl = parseMetadata.image.replace("ipfs://", "");
@@ -74,15 +103,36 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
   const handleListNft = async () => {
     try {
       const ethValue = ethers.utils.parseEther(fixedPrice);
-      await nftContract?.call("approve", [
-        process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
-        item.token_id,
-      ]);
-      const data = await marketplaceContract?.call("listNft", [
-        item.token_address,
-        item.token_id,
-        ethValue,
-      ]);
+      // await nftContract?.call("approve", [
+      //   process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
+      //   item.token_id,
+      // ]);
+      const approveCall = prepareContractCall({
+        contract: nftContract,
+        method: "approve",
+        params: [process.env.NEXT_PUBLIC_SPT_MARKETPLACE, item.token_id],
+      });
+      await sendTransaction({
+        transaction: approveCall,
+        account: wallet as any,
+      });
+
+      // const data = await marketplaceContract?.call("listNft", [
+      //   item.token_address,
+      //   item.token_id,
+      //   ethValue,
+      // ]);
+
+      const liftNFTCall = prepareContractCall({
+        contract: customContract,
+        method: "listNft",
+        params: [item.token_address, item.token_id, ethValue],
+      });
+      await sendTransaction({
+        transaction: liftNFTCall,
+        account: wallet as any,
+      });
+
       const metadataString = item?.metadata;
       const metadata = JSON.parse(metadataString);
 
@@ -108,7 +158,7 @@ const ListingModal = ({ open, setOpen, item }: listingProps) => {
       );
       console.log(listApiResponse);
       setCurrent("success");
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.error(error);
       setCurrent("error");

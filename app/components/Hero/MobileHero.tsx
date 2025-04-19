@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import ActionBtn from "../Button/ActionBtn";
@@ -10,9 +10,10 @@ import { useAppDispatch, useAppSelector } from "@/app/redux/store";
 import { setAddress } from "@/app/redux/features/auth/AuthSlice";
 import Notification from "../Navbar/Notification";
 import logo from "@/public/assets/sportrex-new-logo.svg";
-import LinkBtn from '../Button/LinkBtn';
-import YellowBtn from '../Button/YellowBtn';
-import Image from 'next/image';
+import LinkBtn from "../Button/LinkBtn";
+import YellowBtn from "../Button/YellowBtn";
+import { useActiveAccount } from "thirdweb/react";
+import Image from "next/image";
 const styles = {
   active: "text-white regular light text-[18px] border-b-[1px] border-white",
   inactive: "text-white text-[18px] text-grey-800 regular",
@@ -24,26 +25,27 @@ const styles = {
   imgContainer: "w-full sm:w-9/12 lg:w-10/12 mx-auto  element-index",
 };
 const MobileHero = () => {
-      const { t } = useTranslation(["translation"]);
-      const auth = useAppSelector((state) => state.auth);
-      const dispatch = useAppDispatch();
-      const [open, setOpen] = useState(false);
-      const [mainAddress, setMainAddress] = useState<any>(auth?.address);
+  const { t } = useTranslation(["translation"]);
+  const auth = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+  const [open, setOpen] = useState(false);
+  const [mainAddress, setMainAddress] = useState<any>(auth?.address);
 
-      const handleClose = () => {
-        setOpen(false);
-      };
-      const address = useAddress();
-      useEffect(() => {
-        setMainAddress(address);
-        if (address) setOpen(false);
-      }, [address]);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
+  useEffect(() => {
+    setMainAddress(address);
+    if (address) setOpen(false);
+  }, [address]);
 
-      useEffect(() => {
-        if (address) {
-          dispatch(setAddress(mainAddress));
-        }
-      }, [address]);
+  useEffect(() => {
+    if (address) {
+      dispatch(setAddress(mainAddress));
+    }
+  }, [address]);
   return (
     <div className="w-full pt-8 px-2">
       <div className="w-full p-[2px]  xl:hidden new-hero-bg-grad rounded-[30px] ">
@@ -165,6 +167,6 @@ const MobileHero = () => {
       </div>
     </div>
   );
-}
+};
 
-export default MobileHero
+export default MobileHero;

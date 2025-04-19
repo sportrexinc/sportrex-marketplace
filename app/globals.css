@@ -662,3 +662,26 @@ input {
 .activities-table .ant-pagination a {
   color: #192468 !important;
 }
+
+.connect-button > button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  color: #fff;
+  background-color: #3333ff;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-family: "biome-semibold" !important;
+  height: 40px;
+  width: 100%;
+}
+
+.connect-button .tw-connected-wallet {
+  background-color: transparent !important;
+}
+.connect-button .css-1rblltx {
+  border: none !important;
+}

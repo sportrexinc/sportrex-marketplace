@@ -13,7 +13,18 @@ import { contractType, useAddress, useContract } from "@thirdweb-dev/react";
 import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 import SPT721Abi from "@/abi/SptERC721.json";
 import errorIcon from "@/public/assets/icons/error-icon.png";
-
+import {
+  createThirdwebClient,
+  getContract,
+  prepareContractCall,
+  sendTransaction,
+  waitForReceipt,
+} from "thirdweb";
+import { bscTestnet } from "thirdweb/chains";
+import { useActiveAccount } from "thirdweb/react";
+const client = createThirdwebClient({
+  clientId: process.env.NEXT_PUBLIC_THIRD_WEB_CLIENT_ID as string,
+});
 interface listingProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -35,6 +46,11 @@ const EndAuctionModal = ({ open, setOpen, item }: listingProps) => {
   const parseMetadata = item?.metadata
     ? JSON.parse(item?.metadata)
     : { item: "" };
+
+  const chain = bscTestnet;
+
+  const wallet = useActiveAccount();
+  const userAddress = wallet?.address;
 
   const daysToSeconds = (days: any) => {
     return days * 24 * 60 * 60;
@@ -71,33 +87,26 @@ const EndAuctionModal = ({ open, setOpen, item }: listingProps) => {
     process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
     sptMarketplaceAbi
   );
-  const { contract: nftContract } = useContract(item.token_address, SPT721Abi);
+
+  const marketContract = getContract({
+    client: client,
+    chain: chain as any,
+    address: process.env.NEXT_PUBLIC_SPT_MARKETPLACE as any,
+    abi: sptMarketplaceAbi as any,
+  });
+
+  const nftContract = getContract({
+    client: client,
+    chain: chain as any,
+    address: item.token_address as any,
+    abi: SPT721Abi as any,
+  });
+
+  // const { contract: nftContract } = useContract(item.token_address, SPT721Abi);
 
   const ipfsGateway = "https://ipfs.io/ipfs/";
   const ipfsUrl = parseMetadata?.image?.replace("ipfs://", "");
   const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
-
-  const handleListNft = async () => {
-    try {
-      const ethValue = ethers.utils.parseEther(fixedPrice);
-      await nftContract?.call("approve", [
-        process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
-        item.token_id,
-      ]);
-      const data = await marketplaceContract?.call("listNft", [
-        item.token_address,
-        item.token_id,
-        ethValue,
-      ]);
-      setCurrent("success");
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-      setOpen(false);
-    } finally {
-      //setOpen(false);
-    }
-  };
 
   const [selected, setSelected] = useState({
     value: "Select Duration",
@@ -134,16 +143,26 @@ const EndAuctionModal = ({ open, setOpen, item }: listingProps) => {
 
   const handleEndAuction = async () => {
     try {
-      const endAuctionData = await marketplaceContract?.call("endAuction", [
-        item.token_address,
-        item.token_id,
-      ]);
-      console.log(endAuctionData);
+      // const endAuctionData = await marketplaceContract?.call("endAuction", [
+      //   item.token_address,
+      //   item.token_id,
+      // ]);
+
+      const endAuctionCall = prepareContractCall({
+        contract: marketContract,
+        method: "endAuction",
+        params: [item.token_address, item.token_id],
+      });
+      const { transactionHash } = await sendTransaction({
+        transaction: endAuctionCall,
+        account: wallet as any,
+      });
+      console.log(transactionHash);
       setCurrent("success");
     } catch (error: any) {
       const reason =
         error?.reason || error?.data?.message || "An unexpected error occurred";
-      console.log("Error bidding NFT: ", error);
+      console.log("Error Ending Auction: ", error);
       setErrorMessage(reason);
       setCurrent("error");
     }

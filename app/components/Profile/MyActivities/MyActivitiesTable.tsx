@@ -8,6 +8,7 @@ import { AiOutlineLink } from "react-icons/ai";
 import APIService from "@/app/utils/APIServices";
 import { AxiosResponse } from "axios";
 import { useAddress } from "@thirdweb-dev/react";
+import { useActiveAccount } from "thirdweb/react";
 import Image from "next/image";
 const truncateMiddle = (text: string, length: number) => {
   if (typeof text !== "string") return text;
@@ -195,8 +196,8 @@ const MyActivitiesTable = ({}) => {
     },
   ];
 
-  const address = useAddress();
-
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
   useEffect(() => {
     const handleGetWalletActivities = async () => {
       if (!address) return;

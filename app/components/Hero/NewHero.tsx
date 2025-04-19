@@ -1,23 +1,30 @@
-import { useState, useEffect } from 'react';
-import NormalLayout from '../../layouts/NormalLayout';
+import { useState, useEffect } from "react";
+import NormalLayout from "../../layouts/NormalLayout";
 import logo from "@/public/assets/sportrex-new-logo.svg";
 import { navData } from "../../constants/Navbar";
 import { useTranslation } from "react-i18next";
 import gifImage from "@/public/assets/gifs/hero-gif.gif";
-import ActionBtn from '../Button/ActionBtn';
-import Language from '../Language/Language';
-import Profile from '../Navbar/Profile';
-import Resources from '../Navbar/Resources';
+import ActionBtn from "../Button/ActionBtn";
+import Language from "../Language/Language";
+import Profile from "../Navbar/Profile";
+import Resources from "../Navbar/Resources";
+import { ConnectButton } from "thirdweb/react";
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
 import { useAppDispatch, useAppSelector } from "@/app/redux/store";
 import { setAddress } from "@/app/redux/features/auth/AuthSlice";
 import Notification from "../Navbar/Notification";
-import LinkBtn from '../Button/LinkBtn';
-import YellowBtn from '../Button/YellowBtn';
-import BlockhainList from './BlockhainList';
-import Link from 'next/link';
-import Image from 'next/image';
-import ConnectModal from '../modals/WalletConnectModal';
+import LinkBtn from "../Button/LinkBtn";
+import YellowBtn from "../Button/YellowBtn";
+import BlockhainList from "./BlockhainList";
+import Link from "next/link";
+import Image from "next/image";
+import ConnectModal from "../modals/WalletConnectModal";
+import { createThirdwebClient } from "thirdweb";
+import { createWallet } from "thirdweb/wallets";
+import { useActiveAccount } from "thirdweb/react";
+const client = createThirdwebClient({
+  clientId: process.env.NEXT_PUBLIC_THIRD_WEB_CLIENT_ID as string,
+});
 const styles = {
   active: "text-white regular light text-[18px] border-b-[1px] border-white",
   parentContainer: "w-full h-full px-4   ",
@@ -26,34 +33,44 @@ const styles = {
   inactive: "text-white text-opacity-50 text-[18px] text-grey-800 regular",
   listItem: "flex items-center justify-center",
   left: "w-full lg:w-6/12 h-full justify-start flex items-center  element-index max-w-[451px] z-10",
-  right: "w-full lg:w-6/12  h-full  element-index  flex justify-end bg-blue-body",
+  right:
+    "w-full lg:w-6/12  h-full  element-index  flex justify-end bg-blue-body",
   leftContainer:
     "w-full h-full z-10  element-index flex flex-col lg:mt-[84px] mb-[84px] lg:mb-0 ",
   imgContainer: "w-full flex justify-end sm:w-9/12 lg:w-10/12   element-index",
 };
 const NewHero = ({ current = 1 }: any) => {
   const { t } = useTranslation(["translation"]);
-    const auth = useAppSelector((state) => state.auth);
+  const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   const [mainAddress, setMainAddress] = useState<any>(auth?.address);
 
-
   const handleClose = () => {
     setOpen(false);
   };
-  const address = useAddress();
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
+
   useEffect(() => {
     setMainAddress(address);
     if (address) setOpen(false);
   }, [address]);
+
+  const wallets = [
+    createWallet("io.metamask"),
+    createWallet("com.coinbase.wallet"),
+    createWallet("me.rainbow"),
+    createWallet("io.rabby"),
+    createWallet("io.zerion.wallet"),
+  ];
 
   useEffect(() => {
     if (address) {
       dispatch(setAddress(mainAddress));
     }
   }, [address]);
-  
+
   return (
     <div className="w-full hidden xl:flex  ">
       <ConnectModal open={open} setOpen={handleClose} />
@@ -110,18 +127,37 @@ const NewHero = ({ current = 1 }: any) => {
                         )}
                       </div>
                       {!address ? (
-                        <ActionBtn
-                          name="Connect Wallet"
-                          action={() => setOpen((prev) => !prev)}
-                        />
+                        // <ActionBtn
+                        //   name="Connect Wallet"
+                        //   action={() => setOpen((prev) => !prev)}
+                        // />
+                        <div className="connect-button semi-bold">
+                          <ConnectButton
+                            client={client}
+                            connectButton={{
+                              label: "Connect Wallet",
+                            }}
+                            wallets={wallets}
+                          />
+                        </div>
                       ) : (
-                        <ConnectWallet
-                          style={{
-                            background: "transparent",
-                            border: "0px solid",
-                            outline: "none",
-                          }}
-                        />
+                        // <ConnectWallet
+                        //   style={{
+                        //     background: "transparent",
+                        //     border: "0px solid",
+                        //     outline: "none",
+                        //   }}
+                        // />
+
+                        <div className="connect-button semi-bold">
+                          <ConnectButton
+                            client={client}
+                            connectButton={{
+                              label: "Connect Wallet",
+                            }}
+                            wallets={wallets}
+                          />
+                        </div>
                       )}
                     </div>
                   </div>
@@ -216,4 +252,4 @@ const NewHero = ({ current = 1 }: any) => {
   );
 };
 
-export default NewHero
+export default NewHero;

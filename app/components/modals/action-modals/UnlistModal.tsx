@@ -14,7 +14,18 @@ import sptMarketplaceAbi from "@/abi/SptMarketplace.json";
 import SPT721Abi from "@/abi/SptERC721.json";
 import APIService from "@/app/utils/APIServices";
 import errorIcon from "@/public/assets/icons/error-icon.png";
-
+import {
+  createThirdwebClient,
+  getContract,
+  prepareContractCall,
+  sendTransaction,
+  waitForReceipt,
+} from "thirdweb";
+import { bscTestnet } from "thirdweb/chains";
+import { useActiveAccount } from "thirdweb/react";
+const client = createThirdwebClient({
+  clientId: process.env.NEXT_PUBLIC_THIRD_WEB_CLIENT_ID as string,
+});
 interface listingProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -33,6 +44,11 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
   const [active, setActive] = useState(1);
   const [isAuction, setIsAuction] = useState(false);
   const parseMetadata = JSON.parse(item.metadata);
+
+  const chain = bscTestnet;
+
+  const wallet = useActiveAccount();
+  const userAddress = wallet?.address;
 
   const daysToSeconds = (days: any) => {
     return days * 24 * 60 * 60;
@@ -69,6 +85,14 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
     process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
     sptMarketplaceAbi
   );
+
+  const customContract = getContract({
+    client: client,
+    chain: chain as any,
+    address: process.env.NEXT_PUBLIC_SPT_MARKETPLACE as any,
+    abi: sptMarketplaceAbi as any,
+  });
+
   const { contract: nftContract } = useContract(item.token_address, SPT721Abi);
 
   const ipfsGateway = "https://ipfs.io/ipfs/";
@@ -91,6 +115,7 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
         item.token_address,
         item.token_id,
       ]);
+
       const priceInWei = ethers.utils.formatEther(getPriceData);
       setPriceData(priceInWei);
       setPriceDataWei(getPriceData);
@@ -115,6 +140,17 @@ const UnListModal = ({ open, setOpen, item }: listingProps) => {
         item.token_address,
         item.token_id,
       ]);
+
+      const unListNFTCall = prepareContractCall({
+        contract: customContract,
+        method: "unlistNft",
+        params: [item.token_address, item.token_id],
+      });
+
+      await sendTransaction({
+        transaction: unListNFTCall,
+        account: wallet as any,
+      });
 
       const unListApiResponse = await APIService.patch(
         `/marketplace/list/status?contractAddress=${item?.token_address}&nftid=${item?.token_id}`

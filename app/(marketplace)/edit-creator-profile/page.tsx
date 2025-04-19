@@ -1,8 +1,8 @@
-"use client"
-import  { useEffect, useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 import ParentLayout from "@/app/layouts/ParentLayout";
-import { AiFillCheckCircle } from "react-icons/ai"
-import { FaTimesCircle } from "react-icons/fa"
+import { AiFillCheckCircle } from "react-icons/ai";
+import { FaTimesCircle } from "react-icons/fa";
 import {
   FileInput,
   TextInput,
@@ -16,11 +16,16 @@ import { toast } from "react-toastify";
 import { useAddress } from "@thirdweb-dev/react";
 import { useAppDispatch, useAppSelector } from "@/app/redux/store";
 import { useRouter } from "next/navigation";
-import { resetAll, updateUserProfile, verifyUsername } from "@/app/redux/features/auth/AuthSlice";
+import {
+  resetAll,
+  updateUserProfile,
+  verifyUsername,
+} from "@/app/redux/features/auth/AuthSlice";
+import { useActiveAccount } from "thirdweb/react";
 const EditCreatorProfile = () => {
   const dispatch = useAppDispatch();
   const navigate = useRouter();
-  const auth = useAppSelector(state => state.auth)
+  const auth = useAppSelector((state) => state.auth);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -31,27 +36,26 @@ const EditCreatorProfile = () => {
   const [errorName, setErrorName] = useState<boolean>(false);
   const [successName, setSuccessName] = useState<boolean>(false);
   const [image, setImage] = useState<any>("");
-  
+
   const [profileImageUrl, setProfileImageUrl] = useState("");
-  const address = useAddress()
-   useEffect(() => {
-     if (userName.length > 3) {
-       dispatch(verifyUsername(userName));
-     }
-   }, [userName]);
-  
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
   useEffect(() => {
-    if (auth?.verifyStatus === "success" && userName?.length > 3 ) {
+    if (userName.length > 3) {
+      dispatch(verifyUsername(userName));
+    }
+  }, [userName]);
+
+  useEffect(() => {
+    if (auth?.verifyStatus === "success" && userName?.length > 3) {
       setSuccessName(true);
       setErrorName(false);
-    }
-    else if (auth?.verifyStatus === "error" && userName.length > 3 ) {
+    } else if (auth?.verifyStatus === "error" && userName.length > 3) {
       setErrorName(true);
-      setSuccessName(false)
-    }
-    else return
+      setSuccessName(false);
+    } else return;
   }, [auth?.verifyStatus]);
-  
+
   const updateProfile = () => {
     if (auth?.verifyStatus === "success") {
       const data = {
@@ -60,11 +64,10 @@ const EditCreatorProfile = () => {
         username: userName,
         website: website,
       };
-     address && dispatch(updateUserProfile({data, address}));
+      address && dispatch(updateUserProfile({ data, address }));
+    } else {
+      toast.error("Please make sure username is valid");
     }
-    else {
-      toast.error("Please make sure username is valid")
-}
   };
 
   useEffect(() => {
@@ -73,14 +76,9 @@ const EditCreatorProfile = () => {
       setTimeout(() => {
         dispatch(resetAll());
         navigate.push("/profile");
-        
       }, 2000);
     }
-  }, [auth.success])
-  
-
-  
-  
+  }, [auth.success]);
 
   return (
     <ParentLayout>
@@ -98,7 +96,7 @@ const EditCreatorProfile = () => {
             </p>
           </div>
           <div className="form space-y-8 mt-4">
-            <FileInput  />
+            <FileInput />
             {/* <TextInput
               placeholder="Your Username"
               label="User name*"
@@ -132,7 +130,9 @@ const EditCreatorProfile = () => {
                       <FaTimesCircle className="text-red-500 text-2xl" />
                     )}
                     {auth.loading && (
-                      <span className="text-[12px] text-white">please wait...</span>
+                      <span className="text-[12px] text-white">
+                        please wait...
+                      </span>
                     )}
                   </span>
                 </div>
@@ -173,7 +173,10 @@ const EditCreatorProfile = () => {
           <div className="mt-10 flex flex-col  ">
             <div className="mt-20 flex justify-center items-center space-x-8">
               <div className="w-5/12">
-                <ActionBtn name={auth?.loading ? "Loading..." : "Save"} action={updateProfile} />
+                <ActionBtn
+                  name={auth?.loading ? "Loading..." : "Save"}
+                  action={updateProfile}
+                />
               </div>
             </div>
             <div className="flex justify-center items-center mt-10">

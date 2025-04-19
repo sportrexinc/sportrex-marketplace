@@ -22,6 +22,7 @@ import {
 } from "@/app/redux/features/auth/AuthSlice";
 import Link from "next/link";
 import { YellowActionBtn } from "..";
+import { useActiveAccount } from "thirdweb/react";
 import { setLoading } from "@/app/redux/features/auth/MyNftSlice";
 interface ImageUploaderProps {
   onImageUpload: (image: File) => void;
@@ -52,7 +53,8 @@ const ProfileHero = () => {
   const navigate = useRouter();
   const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const address = useAddress();
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
 
   const handleImageChange = (
     event: React.ChangeEvent<HTMLInputElement>,

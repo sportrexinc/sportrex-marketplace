@@ -1,7 +1,7 @@
 import defaultPic from "@/public/assets/png/default-profile-pic.jpg";
 import Image from "next/image";
 import { useAddress } from "@thirdweb-dev/react";
-
+import { useActiveAccount } from "thirdweb/react";
 const styles = {
   parentContainer: "w-full flex flex-col",
   thumbContainer: "relative flex flex-col items-center ",
@@ -23,8 +23,8 @@ const truncateMiddle = (text: string, length: number) => {
 };
 
 const CollectionHero = ({ data, loading, address }: any) => {
-  const userAddress = useAddress();
-
+  const wallet = useActiveAccount();
+  const userAddress = wallet?.address;
   return (
     <div className={styles.parentContainer}>
       <div

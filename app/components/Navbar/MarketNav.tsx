@@ -1,6 +1,6 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "@/public/assets/sportrex-logo.png";
-import { marketNavData  } from "@/app/constants/Navbar";
+import { marketNavData } from "@/app/constants/Navbar";
 import Language from "../Language/Language";
 import Resources from "./Resources";
 import Profile from "./Profile";
@@ -16,6 +16,7 @@ import { SearchIcon } from "@/public/assets/icons";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { useActiveAccount } from "thirdweb/react";
 const styles = {
   active: "text-white regular light text-[18px] border-b-[1px] border-white",
   inactive: "text-white text-[18px] text-grey-800 regular",
@@ -32,7 +33,8 @@ const MarketNav = ({ current }: any) => {
   const handleClose = () => {
     setOpen(false);
   };
-  const address = useAddress();
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
   useEffect(() => {
     setMainAddress(address);
     if (address) setOpen(false);
@@ -56,7 +58,6 @@ const MarketNav = ({ current }: any) => {
           />
         </div>
         <div className="right w-9/12 flex  items-center  justify-between">
-         
           <ul className="w-full flex items-center justify-around space-x-5">
             {marketNavData.map((item, index) => {
               return (

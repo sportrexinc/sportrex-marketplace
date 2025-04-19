@@ -12,6 +12,7 @@ import { useAppDispatch } from "@/app/redux/store";
 import { setAddress } from "@/app/redux/features/auth/AuthSlice";
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
 import Image from "next/image";
+import { useActiveAccount } from "thirdweb/react";
 const styles = {
   parentContainer: "w-full overflow-x-hidden m-sticky-nav lg:hidden",
   container:
@@ -34,9 +35,6 @@ const MobileNavbar = () => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
-
-  
-
   const handleCloseModal = () => {
     setOpen(false);
   };
@@ -46,17 +44,15 @@ const MobileNavbar = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  let hash = "#Home"
+  let hash = "#Home";
   const dispatch = useAppDispatch();
   let current = 1;
-  
- 
 
-  const address = useAddress();
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
 
   useEffect(() => {
     if (address !== undefined) {
-
       dispatch(setAddress(address));
     }
   }, [address]);
@@ -73,13 +69,13 @@ const MobileNavbar = () => {
                 </button> */}
                 <ConnectWallet
                   style={{
-                   background: "rgba(255, 255, 255, 0.20)",
+                    background: "rgba(255, 255, 255, 0.20)",
                     backdropFilter: "blur(25px)",
                     color: "white",
                     borderRadius: "10px",
                     border: "0.5px solid rgba(255, 255, 255, 0.30)",
                     fontSize: "12px",
-                      maxWidth:"102px",
+                    maxWidth: "102px",
                   }}
                 />
               </span>
