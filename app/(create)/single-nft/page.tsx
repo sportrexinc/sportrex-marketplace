@@ -23,6 +23,7 @@ import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
 import { useAppDispatch } from "@/app/redux/store";
+import { useActiveAccount } from "thirdweb/react";
 export interface TraitsProps {
   value: string;
   trait_type: string;
@@ -73,7 +74,8 @@ const SingleNft = () => {
   });
 
   const { t } = useTranslation("translation");
-  const address = useAddress();
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
   //  const dispatch = useAppDispatch();
   //  const auth = useAppSelector((state) => state.userNft);
   console.log(address);

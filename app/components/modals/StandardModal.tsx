@@ -1,5 +1,12 @@
 "use-client";
-import React, { useState, useEffect, useLayoutEffect, Fragment } from "react";
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  Fragment,
+  use,
+  useRef,
+} from "react";
 import "./modal.css";
 import { CloseIcon } from "../../../public/assets/svg/index";
 import { ThirdwebSDK, useSigner, useAddress } from "@thirdweb-dev/react";
@@ -9,8 +16,25 @@ import { useStorageUpload } from "@thirdweb-dev/react";
 import ActionBtn from "../Button/ActionBtn";
 import { TraitsProps } from "@/app/(create)/single-nft/page";
 import { CreateSingleNFTProps } from "@/types";
-
+import {
+  AccountProvider,
+  useActiveAccount,
+  useActiveWalletChain,
+  useSendTransaction,
+} from "thirdweb/react";
 import { BiSolidError } from "react-icons/bi";
+import { ethers5Adapter } from "thirdweb/adapters/ethers5";
+import {
+  createThirdwebClient,
+  getContract,
+  prepareContractCall,
+  sendTransaction,
+} from "thirdweb";
+import { bscTestnet } from "thirdweb/chains";
+
+const client = createThirdwebClient({
+  clientId: process.env.NEXT_PUBLIC_THIRD_WEB_CLIENT_ID as string,
+});
 
 interface modalProps {
   showHeader?: boolean;
@@ -85,12 +109,37 @@ const StandardModal = ({
   const [errorA, setErrorA] = useState<boolean>(false);
   const [errorB, setErrorB] = useState<boolean>(false);
   const [errorC, setErrorC] = useState<boolean>(false);
-  const signer = useSigner();
+  // const signer = useSigner();
   const [singleCreatedNFT, setSingleCreatedNFT] =
     useState<CreateSingleNFTProps | null>(null);
   const [tokenURI, setTokenURI] = useState<any>();
   const [fullURI, setFullURI] = useState<any>();
-  const address = useAddress();
+  const [signer, setSigner] = useState<any>();
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
+  const chain = bscTestnet;
+
+  const isMintingRef = useRef(false);
+
+  async function initializeSigner() {
+    if (!wallet || !client) {
+      console.error("Wallet or client is not defined.");
+      return;
+    }
+
+    try {
+      const signer = await ethers5Adapter.signer.toEthers({
+        client: client,
+        chain: chain,
+        account: wallet,
+      });
+      setSigner(signer);
+      console.log("Signer initialized:", signer);
+    } catch (error) {
+      console.error("Error initializing signer:", error);
+    }
+  }
+
   const findByKey = (name: string) =>
     children.map((child: { key: any }) => {
       if (child.key === name) return child;
@@ -106,12 +155,12 @@ const StandardModal = ({
   //   singleNFTData.collectionAddress,
   //   SPT721Abi
   // );
-  let isMinting = false;
   const handleSingleNFTMint = async () => {
     console.log("handleSingleNFTMint called");
 
-    if (isMinting) return;
-    isMinting = true;
+    if (isMintingRef.current) return;
+    isMintingRef.current = true;
+
     try {
       let tokenURI;
       const imageToUpload = [singleNFTData.logo];
@@ -123,7 +172,7 @@ const StandardModal = ({
       const httpsImageUrl = `${ipfsGateway}${ipfsUrl}`;
       setTokenURI(httpsImageUrl);
       setLoadingA(false);
-      // Uploading MetaDATA to IPFS
+
       const filesToUpload = {
         name: singleNFTData.name,
         ...(singleNFTData.desc && { description: singleNFTData.desc }),
@@ -139,61 +188,76 @@ const StandardModal = ({
       setFullURI(metaDataURI[0]);
       setLoadingB(false);
       console.log(metaDataURI[0]);
-      // Step 2: Check if signer is defined
+
       if (!signer) {
         console.error("Wallet is not connected. Signer is undefined.");
         return;
       }
-      const sdk = new ThirdwebSDK(signer);
-      const customContract = await sdk.getContract(
-        singleNFTData.collectionAddress,
-        singleNFTData.ercType === "erc 721" ? SPT721Abi : SPT1155ABI // Pass your custom ABI here
-      );
-      console.log(singleNFTData.collectionAddress);
-      console.log(SPT721Abi);
-      try {
-        let data: any;
-        if (singleNFTData.ercType === "erc 721") {
-          data = await customContract.call("safeMint", [metaDataURI[0]]);
-        }
-        if (singleNFTData.ercType === "erc 1155") {
-          data = await customContract.call("mintToken", [
-            address,
-            metaDataURI[0],
-            singleNFTData.supply,
-          ]);
-        }
-        setLoadingC(false);
-        console.log(data);
-        setMintedNFTData({
-          tokenURI: httpsImageUrl,
-          metaDataURI: metaDataURI[0],
-          transactionHash: data.receipt.transactionHash,
+
+      const customContract = getContract({
+        client: client,
+        chain: chain as any,
+        address: contractAddress as any,
+        abi:
+          singleNFTData.ercType === "erc 721" ? (SPT721Abi as any) : SPT1155ABI,
+      });
+      console.log("ERC 721", contractAddress);
+
+      let data: any;
+      if (singleNFTData.ercType === "erc 721") {
+        data = prepareContractCall({
+          contract: customContract,
+          method: "safeMint",
+          params: [metaDataURI[0]],
         });
-        setOpenModal(false);
-        setIsMinted(true);
-      } catch (error) {
-        setLoadingC(false);
-        setErrorC(true);
-        console.error("Contract call failed", error);
+      } else if (singleNFTData.ercType === "erc 1155") {
+        data = prepareContractCall({
+          contract: customContract,
+          method: "mintToken",
+          params: [address, metaDataURI[0], singleNFTData.supply],
+        });
       }
 
-      //setSingleCreatedNFT(data);
-    } catch (error: any) {
-      console.log(error.message);
+      console.log(data);
+
+      const { transactionHash } = await sendTransaction({
+        transaction: data,
+        account: wallet as any,
+      });
+      setLoadingC(false);
+
+      setMintedNFTData({
+        tokenURI: httpsImageUrl,
+        metaDataURI: metaDataURI[0],
+        transactionHash: transactionHash,
+      });
       setOpenModal(false);
-      //alert(error.message);
+      setIsMinted(true);
+    } catch (error) {
+      setLoadingC(false);
+      setErrorC(true);
+      console.error("Contract call failed", error);
     } finally {
-      isMinting = false;
+      isMintingRef.current = false;
     }
   };
+
   useEffect(() => {
-    if (contractAddress && !isMinted) {
+    console.log(wallet);
+
+    if (openModal) {
+      initializeSigner();
+    }
+  }, [openModal]);
+
+  useEffect(() => {
+    console.log(signer, contractAddress, isMinted, address, chain);
+    if (contractAddress && !isMinted && signer && address) {
       handleSingleNFTMint();
     } else {
       console.log("ContractAddress is not set or already minted");
     }
-  }, [contractAddress, isMinted]);
+  }, [contractAddress, isMinted, signer, address]);
   return (
     <>
       {/* Uploading Modal */}

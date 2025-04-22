@@ -1,9 +1,10 @@
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import ProfileSelect from "../../Select/ProfileSelect";
 import Owned from "./Owned";
 import { useAddress } from "@thirdweb-dev/react";
 import { useAppDispatch, useAppSelector } from "@/app/redux/store";
 import { getUserNft } from "@/app/redux/features/auth/MyNftSlice";
+import { useActiveAccount } from "thirdweb/react";
 const MyNfts = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [active, setActive] = useState(1);
@@ -12,13 +13,16 @@ const MyNfts = () => {
     label: "Owned by me",
     id: 1,
   });
-  const address = useAddress()
-  const dispatch = useAppDispatch()
-  const { nft_data, nft_loading, nft_data_history_count, nft_data_history } = useAppSelector(state => state.userNft)
- 
+  const wallet = useActiveAccount();
+  const address = wallet?.address;
+  const dispatch = useAppDispatch();
+  const { nft_data, nft_loading, nft_data_history_count, nft_data_history } =
+    useAppSelector((state) => state.userNft);
+
   useEffect(() => {
-     if(address) dispatch(getUserNft({ address, chain: 'binance-testnet', limit: 15 }))
-  },[address])
+    if (address)
+      dispatch(getUserNft({ address, chain: "binance-testnet", limit: 15 }));
+  }, [address]);
   const data = [
     {
       value: "Owned by me",
@@ -37,25 +41,31 @@ const MyNfts = () => {
     },
   ];
 
-
   return (
     <div className="bg-blue-body w-full h-full">
-
       <div className="mt-3 w-64">
-
-        <ProfileSelect   selected={selected} setSelected={setSelected} isOpen={isOpen} setIsOpen={setIsOpen} setActive={setActive} active={active} data={data} name="Owned by me" />
+        <ProfileSelect
+          selected={selected}
+          setSelected={setSelected}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          setActive={setActive}
+          active={active}
+          data={data}
+          name="Owned by me"
+        />
       </div>
       <div className="mt-6">
         {/* <div className="flex-[1]"/>
          <div className="flex-[4]"> */}
-         <Owned
+        <Owned
           data={nft_data}
           loading={nft_loading}
           count={nft_data_history_count}
           address={address}
           history={nft_data_history}
         />
-         {/* </div> */}
+        {/* </div> */}
       </div>
     </div>
   );

@@ -14,6 +14,18 @@ import SPT721Abi from "@/abi/SptERC721.json";
 import { useAddress } from "@thirdweb-dev/react";
 import errorIcon from "@/public/assets/icons/error-icon.png";
 import APIService from "@/app/utils/APIServices";
+import {
+  createThirdwebClient,
+  getContract,
+  prepareContractCall,
+  sendTransaction,
+  waitForReceipt,
+} from "thirdweb";
+import { bscTestnet } from "thirdweb/chains";
+import { useActiveAccount } from "thirdweb/react";
+const client = createThirdwebClient({
+  clientId: process.env.NEXT_PUBLIC_THIRD_WEB_CLIENT_ID as string,
+});
 interface listingProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -27,7 +39,12 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
   const [auctionDuration, setAuctionDuration] = useState(0);
   const [makingOffer, setMakingOffer] = useState(false);
   const parseMetadata = JSON.parse(item.metadata);
-  const userAddress = useAddress();
+  // const userAddress = useAddress();
+
+  const chain = bscTestnet;
+
+  const wallet = useActiveAccount();
+  const userAddress = wallet?.address;
   const daysToSeconds = (days: any) => {
     return days * 24 * 60 * 60;
   };
@@ -63,6 +80,14 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
     process.env.NEXT_PUBLIC_SPT_MARKETPLACE,
     sptMarketplaceAbi
   );
+
+  const customContract = getContract({
+    client: client,
+    chain: chain as any,
+    address: process.env.NEXT_PUBLIC_SPT_MARKETPLACE as any,
+    abi: sptMarketplaceAbi as any,
+  });
+
   const { contract: nftContract } = useContract(item.token_address, SPT721Abi);
   const [offerPrice, setOfferPrice] = useState<any>();
   const [errorMessage, setErrorMessage] = useState("");
@@ -88,13 +113,24 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
   const currentTimeStamp = Date.now();
   const handleMakeOffer = async () => {
     try {
-      const data = await marketplaceContract?.call(
-        "bid",
-        [address, tokenId, offerPrice]
-        //   {
-        //   value: offerPrice,
-        // }
-      );
+      // const data = await marketplaceContract?.call(
+      //   "bid",
+      //   [address, tokenId, offerPrice]
+      //   {
+      //   value: offerPrice,
+      // }
+      // );
+
+      const offerCall = prepareContractCall({
+        contract: customContract,
+        method: "bid",
+        params: [address, tokenId, offerPrice],
+      });
+      const { transactionHash } = await sendTransaction({
+        transaction: offerCall,
+        account: wallet as any,
+      });
+
       const offerData = {
         bidder: userAddress,
         price: offerPrice,
@@ -105,7 +141,7 @@ const MakeOfferModal = ({ open, setOpen, item }: listingProps) => {
         offerData
       );
       console.log(offerResponse);
-      console.log("Bidding NFT: ", data);
+      console.log("Bidding NFT: ", transactionHash);
       setCurrent("success");
     } catch (error: any) {
       const reason =
