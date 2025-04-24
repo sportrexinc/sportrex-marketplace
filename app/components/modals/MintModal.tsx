@@ -52,13 +52,28 @@ const MintModal = ({
             overflow: "hidden",
           }}
         >
-          <Image
-            src={mintedNFTData.tokenURI} // Replace with the path to your image
-            alt="Background Image"
-            layout="fill"
-            objectFit="cover"
-            className="backdrop-blur-2xl"
-          />
+          {mintedNFTData?.tokenURI.includes("MP4") ? (
+            <>
+              <video
+                src={mintedNFTData.tokenURI}
+                autoPlay
+                muted
+                loop
+                className="w-full h-full object-cover"
+              />
+            </>
+          ) : (
+            <>
+              <Image
+                src={mintedNFTData.tokenURI} // Replace with the path to your image
+                alt="Background Image"
+                layout="fill"
+                objectFit="cover"
+                className="backdrop-blur-2xl"
+              />
+            </>
+          )}
+
           <div className="w-full backdrop-blur-2xl overlay-shadow ">
             <NormalLayout>
               <div className="w-full h-screen p-4 flex items-center justify-center relative ">
@@ -70,15 +85,29 @@ const MintModal = ({
                 </span>
                 <div className="w-full lg:w-9/12 xl:w-7/12 mx-auto flex items-center justify-center flex-col">
                   <span className="w-full max-w-[600px] mx-auto flex justify-center">
-                    <Image
-                      //   Daniel Change this to PicOne
-                      // src={mintedNFTData.tokenURI}
-                      src={mintedNFTData.tokenURI}
-                      alt="minted"
-                      className="w-full  max-w-[400px] lg:max-w-[400px]  h-auto rounded-md object-contain"
-                      width={600}
-                      height={100}
-                    />
+                    {mintedNFTData?.tokenURI.includes("MP4") ? (
+                      <>
+                        <video
+                          src={mintedNFTData.tokenURI}
+                          autoPlay
+                          muted
+                          loop
+                          className="max-w-[400px] h-[100px]object-cover "
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Image
+                          //   Daniel Change this to PicOne
+                          // src={mintedNFTData.tokenURI}
+                          src={mintedNFTData.tokenURI}
+                          alt="minted"
+                          className="w-full  max-w-[400px] lg:max-w-[400px]  h-auto rounded-md object-contain"
+                          width={600}
+                          height={100}
+                        />
+                      </>
+                    )}
                   </span>
                   <p className="bold text-white mt-6 text-xl sm:text-2xl lg:text-3xl text-center mx-auto  ">
                     Your NFT has been minted

@@ -166,7 +166,7 @@ const SingleMintNft = () => {
         <div className="w-full flex flex-col my-4">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:space-x-8 ">
-            <div className="w-full md:w-6/12  lg:w-4/12 flex flex-col ">
+            <div className="w-full md:w-6/12  lg:w-4/12 flex flex-col">
               {isLoading ? (
                 <Skeleton.Image
                   active={true}
@@ -176,6 +176,14 @@ const SingleMintNft = () => {
                     height: "400px",
                     borderRadius: "16px",
                   }}
+                />
+              ) : nftImage?.includes("MP4") ? (
+                <video
+                  src={nftImage}
+                  autoPlay
+                  muted
+                  loop
+                  className="w-full min-h-[400px] rounded-[16px]"
                 />
               ) : (
                 <Image

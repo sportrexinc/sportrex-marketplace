@@ -250,13 +250,23 @@ const AuctionModal = ({ open, setOpen, item }: listingProps) => {
                 <div className="w-full flex flex-col">
                   <div className="w-full flex items-center gap-4 lg:gap-8">
                     <div className="w-4/12">
-                      <Image
-                        src={httpsImageUrl}
-                        alt="NFT Image"
-                        width={100}
-                        height={0}
-                        className="max-w-[146px] max-h-[138px] w-full h-auto object-cover"
-                      />
+                      {httpsImageUrl?.includes("MP4") ? (
+                        <video
+                          src={httpsImageUrl}
+                          autoPlay
+                          muted
+                          loop
+                          className="w-full h-[100px]"
+                        />
+                      ) : (
+                        <Image
+                          src={httpsImageUrl}
+                          alt="NFT Image"
+                          className="max-w-[146px] max-h-[138px] w-full h-auto object-cover"
+                          width={100}
+                          height={0}
+                        />
+                      )}
                     </div>
                     <div className="flex flex-col gap-3">
                       <p className="regular text-[#ABABAB] text-sm">1 Item</p>
