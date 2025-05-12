@@ -95,12 +95,12 @@ const EndAuctionModal = ({ open, setOpen, item }: listingProps) => {
     abi: sptMarketplaceAbi as any,
   });
 
-  const nftContract = getContract({
-    client: client,
-    chain: chain as any,
-    address: item.token_address as any,
-    abi: SPT721Abi as any,
-  });
+  // const nftContract = getContract({
+  //   client: client,
+  //   chain: chain as any,
+  //   address: item.token_address as any,
+  //   abi: SPT721Abi as any,
+  // });
 
   // const { contract: nftContract } = useContract(item.token_address, SPT721Abi);
 
