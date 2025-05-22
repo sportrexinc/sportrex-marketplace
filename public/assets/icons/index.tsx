@@ -58,3 +58,85 @@ export const SearchIcon = () => {
       </svg>
     );
 }
+
+
+export const ChainsDropdownIcon = () => { 
+  return (
+    <svg
+      width="39"
+      height="40"
+      viewBox="0 0 39 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="0.5"
+        y="0.5"
+        width="38"
+        height="39"
+        rx="9.5"
+        fill="white"
+        fill-opacity="0.15"
+      />
+      <rect
+        x="0.5"
+        y="0.5"
+        width="38"
+        height="39"
+        rx="9.5"
+        stroke="url(#paint0_linear_10889_27333)"
+      />
+      <path d="M19 23L24 18H14L19 23Z" fill="white" />
+      <defs>
+        <linearGradient
+          id="paint0_linear_10889_27333"
+          x1="3.46574"
+          y1="4.90568"
+          x2="42.6346"
+          y2="5.5823"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#FAC744" />
+          <stop offset="0.505208" stop-color="#8B14EF" />
+          <stop offset="1" stop-color="#3333FF" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
+export const GradientCancelIcon = () => { 
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clip-path="url(#clip0_10890_27411)">
+        <path
+          d="M2.34416 13.6557C1.58008 12.9177 0.970622 12.0349 0.55135 11.0589C0.132078 10.0829 -0.0886119 9.03312 -0.0978425 7.97088C-0.107073 6.90865 0.0953406 5.85521 0.497588 4.87204C0.899835 3.88887 1.49386 2.99565 2.245 2.24451C2.99614 1.49337 3.88936 0.899347 4.87253 0.497099C5.8557 0.0948523 6.90914 -0.107561 7.97137 -0.0983308C9.03361 -0.0891002 10.0834 0.13159 11.0594 0.550862C12.0354 0.970134 12.9182 1.57959 13.6562 2.34367C15.1134 3.85249 15.9198 5.87331 15.9016 7.97088C15.8833 10.0685 15.042 12.075 13.5587 13.5582C12.0754 15.0415 10.0689 15.8828 7.97137 15.9011C5.8738 15.9193 3.85298 15.1129 2.34416 13.6557ZM9.12016 7.99967L11.3842 5.73567L10.2562 4.60767L8.00016 6.87167L5.73616 4.60767L4.60816 5.73567L6.87216 7.99967L4.60816 10.2637L5.73616 11.3917L8.00016 9.12767L10.2642 11.3917L11.3922 10.2637L9.12816 7.99967H9.12016Z"
+          fill="url(#paint0_linear_10890_27411)"
+        />
+      </g>
+      <defs>
+        <linearGradient
+          id="paint0_linear_10890_27411"
+          x1="1.3237"
+          y1="1.86364"
+          x2="17.3927"
+          y2="2.14834"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#FAC744" />
+          <stop offset="0.505208" stop-color="#8B14EF" />
+          <stop offset="1" stop-color="#3333FF" />
+        </linearGradient>
+        <clipPath id="clip0_10890_27411">
+          <rect width="16" height="16" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
