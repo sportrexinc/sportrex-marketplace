@@ -14,6 +14,7 @@ import LinkBtn from "../Button/LinkBtn";
 import YellowBtn from "../Button/YellowBtn";
 import { useActiveAccount } from "thirdweb/react";
 import Image from "next/image";
+import { MobileChainMenu } from "../ChainMenu/ChainMenu";
 const styles = {
   active: "text-white regular light text-[18px] border-b-[1px] border-white",
   inactive: "text-white text-[18px] text-grey-800 regular",
@@ -91,7 +92,9 @@ const MobileHero = () => {
             </div>
           </div>
           {/* end of the navbar */}
-          <div className="w-full flex flex-col mt-12"></div>
+          <div className="w-full flex flex-col mt-3 mb-9">
+            <MobileChainMenu />
+          </div>
           {/* end pf first images */}
           {/* CEnter pannel */}
           <div className="w-full xl:w-6/12 xl:min-w-[637px] xl:max-w-[637px] flex flex-col items-center xl:px-4 mt-[34px] ">

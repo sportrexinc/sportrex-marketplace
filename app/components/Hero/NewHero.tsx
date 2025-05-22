@@ -22,6 +22,7 @@ import ConnectModal from "../modals/WalletConnectModal";
 import { createThirdwebClient } from "thirdweb";
 import { createWallet } from "thirdweb/wallets";
 import { useActiveAccount } from "thirdweb/react";
+import ChainMenu from "../ChainMenu/ChainMenu";
 const client = createThirdwebClient({
   clientId: process.env.NEXT_PUBLIC_THIRD_WEB_CLIENT_ID as string,
 });
@@ -32,7 +33,7 @@ const styles = {
     "2xl:container 2xl:mx-auto flex flex-col  lg:flex-row space-y-6 lg:space-y-0 lg:justify-between",
   inactive: "text-white text-opacity-50 text-[18px] text-grey-800 regular",
   listItem: "flex items-center justify-center",
-  left: "w-full lg:w-6/12 h-full justify-start flex items-center  element-index max-w-[451px] z-10",
+  left: "w-full relative lg:w-6/12 h-full justify-start flex items-center  element-index max-w-[551px] z-10",
   right:
     "w-full lg:w-6/12  h-full  element-index  flex justify-end bg-blue-body",
   leftContainer:
@@ -168,6 +169,10 @@ const NewHero = ({ current = 1 }: any) => {
               <div className={styles.parentContainer}>
                 <div className={styles.container}>
                   <div className={styles.left}>
+                      <div className="w-[200px] -ml-10 ">
+
+                      <ChainMenu />
+                      </div>
                     <div className={styles.leftContainer}>
                       <div className=" flex px-4 py-2 items-center space-x-4 border-[#f1f1f1] border-[1px] rounded-[26px] semibold font-semibold semibold w-fit text-[10px] sm:text-base regular lg:text-xs regular ">
                         <div className="no  flex justify-center items-center ">
@@ -213,9 +218,10 @@ const NewHero = ({ current = 1 }: any) => {
                             VR/AR Mode
                           </p>
                         </div>
-                        <div className="flex mt-8 space-x-8 items-center">
+                        <div className="flex mt-8 gap-4 2xl:space-x-8 items-center">
                           <LinkBtn
                             path="/market"
+                            className="min-w-max"
                             // name={t("explore_market")}
                             name={"Explore Market"}
                           />
