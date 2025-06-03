@@ -1,0 +1,130 @@
+.shape-ex{
+    width: 340px;
+    height: 340px;
+    min-height: max-content;
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background:   linear-gradient(
+    91.02deg,
+    #fac744 8.95%,
+    #8b14ef 58.82%,
+    #3333ff 107.66%
+  );
+  
+  display: grid;
+  place-items: center;
+}
+.shape-in{
+    width: 338px;
+    height: 338px;
+    min-height: max-content;
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background:   #020733;
+  
+  display: grid;
+  place-items: center;
+
+}
+
+.internal{
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background-color: #0E1648;
+    width: 300px;
+    height: 300px;
+}
+
+@media screen and (min-width: 768px) {
+  .shape-ex{
+    width: 342px;
+    height: 342px;
+
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background:   linear-gradient(
+    91.02deg,
+    #fac744 8.95%,
+    #8b14ef 58.82%,
+    #3333ff 107.66%
+  );
+  
+  display: grid;
+  place-items: center;
+  }
+  .shape-in{
+    width: 340px;
+    height: 340px;
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background:   #020733;
+  
+  display: grid;
+  place-items: center;
+  }
+  .internal{
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background-color: #0E1648;
+    width: 300px;
+    height: 300px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .shape-ex{
+    width: 372px;
+    height: 372px;
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background:   linear-gradient(
+    91.02deg,
+    #fac744 8.95%,
+    #8b14ef 58.82%,
+    #3333ff 107.66%
+  );
+  
+  display: grid;
+  place-items: center;
+  }
+  .shape-in{
+    width: 370px;
+    height: 370px;
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background:   #020733;
+  
+  display: grid;
+  place-items: center;
+  }
+  .internal{
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background-color: #0E1648;
+    width: 332px;
+    height: 342px;
+  }
+}
+@media screen and (min-width: 1300px) {
+  .shape-ex{
+    width: 392px;
+    height: 392px;
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background:   linear-gradient(
+    91.02deg,
+    #fac744 8.95%,
+    #8b14ef 58.82%,
+    #3333ff 107.66%
+  );
+  
+  display: grid;
+  place-items: center;
+  }
+  .shape-in{
+    width: 390px;
+    height: 390px;
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background:   #020733;
+  
+  display: grid;
+  place-items: center;
+  }
+  .internal{
+    clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%, 0 12%);
+    background-color: #0E1648;
+    width: 352px;
+    height: 352px;
+  }
+}
+    

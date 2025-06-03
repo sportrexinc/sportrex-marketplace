@@ -8,9 +8,9 @@ import {
   avalancheMenuIcon,
   solanaMenuIcon,
   bnbMenuIcon,
-} from "../../../public/assets/icons/menuicons";
+} from "@/public/assets/icons/menuicons";
 import Image from "next/image";
-import { ChainsDropdownIcon,GradientCancelIcon } from "@/public/assets/icons";
+import { ChainsDropdownIcon, GradientCancelIcon } from "@/public/assets/icons";
 import { useRouter } from "next/navigation";
 
 const gradientBorderStyle = {
@@ -56,7 +56,7 @@ const icons = [
 ];
 const ChainMenu = () => {
   const router = useRouter();
- 
+
   const [activeIcon, setActiveIcon] = useState<null | number>(null);
   const [isHoveredAll, setIsAllHovered] = useState(false);
   const [isHovered, setAllHovered] = useState(false);
@@ -107,7 +107,7 @@ const ChainMenu = () => {
                   `}
                   onMouseEnter={() => setActiveIcon(idx)}
                   onMouseLeave={() => setActiveIcon(null)}
-                  onClick={() => router.push(`/${item.name.toLowerCase()}`)} 
+                  onClick={() => router.push(`/${item.name.toLowerCase()}`)}
                 >
                   <div className="flex items-center gap-4 justify-center w-[37px] z-10">
                     <Image
@@ -147,12 +147,10 @@ const ChainMenu = () => {
 
 export default ChainMenu;
 
-
-export const MobileChainMenu = () => { 
-
+export const MobileChainMenu = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  
+
   return (
     <div className="w-full relative flex flex-col ">
       <div className="w-full flex gap-4">
@@ -229,10 +227,10 @@ export const MobileChainMenu = () => {
                   </div>
                 );
               })}
-          </div>
+            </div>
           </div>
         )}
       </div>
     </div>
   );
-}
+};
