@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 // import "../../app/globals.css";
-import ContextProvider from "../ContextProvider";
+import ContextProvider from "./ContextProvider";
 const inter = Inter({ subsets: ["latin"] });
 import NextTopLoader from "nextjs-toploader";
 import "react-toastify/dist/ReactToastify.css";

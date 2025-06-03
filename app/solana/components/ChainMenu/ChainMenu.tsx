@@ -12,7 +12,7 @@ import {
 import Image from "next/image";
 import { ChainsDropdownIcon,GradientCancelIcon } from "@/public/assets/icons";
 import { useRouter } from "next/navigation";
-
+import Link from  "next/link";
 const gradientBorderStyle = {
   border: "5px solid transparent",
   backgroundClip: "padding-box, border-box",
@@ -69,7 +69,8 @@ const ChainMenu = () => {
       >
         <div className="flex flex-col items-center gap-4 py-2 px-2">
           {/* All button */}
-          <div
+          <Link
+            href={"/"}
             className={`
             flex items-center justify-center
             w-[37px] h-[37px]
@@ -84,14 +85,15 @@ const ChainMenu = () => {
             onMouseLeave={() => setIsAllHovered(false)}
           >
             <p className="text-white text-sm font-medium">All</p>
-          </div>
+          </Link>
 
           {/* Icons list */}
           <div className="flex flex-col gap-4">
             {icons.map((item, idx) => {
               const isActive = activeIcon === idx;
               return (
-                <div
+                <Link
+                href={`/${item.name.toLowerCase()}`}
                   key={item.name}
                   className={`
                     relative
@@ -107,7 +109,7 @@ const ChainMenu = () => {
                   `}
                   onMouseEnter={() => setActiveIcon(idx)}
                   onMouseLeave={() => setActiveIcon(null)}
-                  onClick={() => router.push(`/${item.name.toLowerCase()}`)} 
+                  // onClick={() => router.push(`/${item.name.toLowerCase()}`)} 
                 >
                   <div className="flex items-center gap-4 justify-center w-[37px] z-10">
                     <Image
@@ -135,7 +137,7 @@ const ChainMenu = () => {
                       </span>
                     </div>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>
