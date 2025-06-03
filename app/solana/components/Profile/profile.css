@@ -1,0 +1,12 @@
+.bg-gradient{
+     background: linear-gradient(
+    91.02deg,
+    #fac744 8.95%,
+    #8b14ef 58.82%,
+    #3333ff 107.66%
+  );
+}
+
+.bg-opacity{
+  background: rgba(0, 0, 0, 0.5);
+}
